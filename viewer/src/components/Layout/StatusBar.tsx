@@ -2,70 +2,63 @@
 
 import { useSimulator } from "@/store/simulator";
 import { CodeParams } from "@/components/ui/Math";
-import { formatNumber, formatSci, formatDays } from "@/lib/format";
+import { formatNumber } from "@/lib/format";
 
-function Stat({ label, value, warn }: { label: string; value: string; warn?: boolean }) {
-  return (
-    <div className="flex items-center gap-2">
-      <span className="text-[10px] text-[var(--text-quaternary)]">{label}</span>
-      <span className={`text-[11px] mono font-medium ${warn ? "text-[var(--warning)]" : "text-[var(--text-secondary)]"}`}>
-        {value}
-      </span>
-    </div>
-  );
+function fmtSci(n: number): string {
+  if (n === 0 || !isFinite(n) || isNaN(n)) return "\u2014";
+  const exp = Math.floor(Math.log10(Math.abs(n)));
+  return `10${superscript(exp)}`;
+}
+
+function superscript(n: number): string {
+  const map: Record<string, string> = { "0": "\u2070", "1": "\u00B9", "2": "\u00B2", "3": "\u00B3", "4": "\u2074", "5": "\u2075", "6": "\u2076", "7": "\u2077", "8": "\u2078", "9": "\u2079", "-": "\u207B" };
+  return String(n).split("").map(c => map[c] || c).join("");
+}
+
+function fmtRuntime(d: number): string {
+  if (!isFinite(d) || d < 0 || isNaN(d)) return "\u2014";
+  if (d >= 365) return `${(d / 365).toFixed(1)} yr`;
+  if (d >= 1) return `${d.toFixed(0)} days`;
+  return `${(d * 24).toFixed(1)} hr`;
+}
+
+function fmtToffoli(n: number): string {
+  if (!isFinite(n) || isNaN(n)) return "\u2014";
+  if (n >= 1e15) return `${(n / 1e15).toFixed(2)} \u00D7 10${superscript(15)}`;
+  if (n >= 1e12) return `${(n / 1e12).toFixed(2)} \u00D7 10${superscript(12)}`;
+  if (n >= 1e9) return `${(n / 1e9).toFixed(1)} \u00D7 10${superscript(9)}`;
+  return formatNumber(n);
 }
 
 export function StatusBar() {
   const computed = useSimulator((s) => s.computed);
 
+  const items = [
+    { label: "qubits", value: formatNumber(computed.totalQubits) },
+    { label: "block error", value: fmtSci(computed.blockErrorRate) },
+    { label: "runtime", value: fmtRuntime(computed.runtimeDays) },
+    { label: "toffoli budget", value: fmtToffoli(computed.toffoliBudget) },
+  ];
+
   return (
-    <div className="flex flex-wrap items-center gap-5 gap-y-1 px-5 h-10 border-t border-[var(--border-subtle)] bg-black shrink-0">
-      {/* Feasibility */}
-      <div className="flex items-center gap-1.5">
-        <div className={`w-[6px] h-[6px] rounded-full ${
-          computed.feasible
-            ? "bg-[var(--success)] shadow-[0_0_4px_rgba(34,197,94,0.4)]"
-            : "bg-[var(--danger)] animate-pulse"
-        }`} />
-        <span className={`text-[10px] font-medium tracking-wide ${
-          computed.feasible ? "text-[var(--success)]" : "text-[var(--danger)]"
-        }`}>
-          {computed.feasible ? "FEASIBLE" : "INFEASIBLE"}
-        </span>
+    <div className="status-bar">
+      <div className="status-chip" data-state={computed.feasible ? "feasible" : "infeasible"}>
+        <div style={{
+          width: 6, height: 6, borderRadius: "50%",
+          background: "currentColor",
+        }} />
+        {computed.feasible ? "feasible" : "infeasible"}
       </div>
 
-      <div className="w-px h-4 bg-[var(--border-subtle)]" />
-
-      <Stat label="Qubits" value={formatNumber(computed.totalQubits)} />
-      <Stat label="Error" value={formatSci(computed.blockErrorRate)} />
-      <Stat label="Runtime" value={formatDays(computed.runtimeDays)} />
-      <Stat label="Budget" value={formatNumber(computed.toffoliBudget)} />
-
-      {computed.extrapolationWarning && (
-        <>
-          <div className="w-px h-4 bg-[var(--border-subtle)]" />
-          <span className="text-[9px] text-[var(--warning)] truncate max-w-40 mono" title={computed.extrapolationWarning}>
-            {computed.extrapolationWarning}
-          </span>
-        </>
-      )}
-
-      <div className="ml-auto flex items-center gap-4">
-        <CodeParams n={computed.codeParams.n} k={computed.codeParams.k} d={computed.codeParams.d} />
-
-        <div className="flex items-center gap-3">
-          {[
-            { color: "var(--zone-memory)", val: computed.qubitBreakdown.memory },
-            { color: "var(--zone-processor)", val: computed.qubitBreakdown.processor },
-            { color: "var(--zone-operation)", val: computed.qubitBreakdown.operation },
-            { color: "var(--zone-resource)", val: computed.qubitBreakdown.resource },
-          ].map((z, i) => (
-            <div key={i} className="flex items-center gap-1">
-              <div className="w-[5px] h-[5px] rounded-full" style={{ backgroundColor: z.color }} />
-              <span className="text-[10px] mono text-[var(--text-quaternary)]">{formatNumber(z.val)}</span>
-            </div>
-          ))}
+      {items.map((item, i) => (
+        <div key={i} style={{ display: "flex", gap: "var(--s2)", alignItems: "baseline" }}>
+          <span>{item.label}</span>
+          <span className="value">{item.value}</span>
         </div>
+      ))}
+
+      <div style={{ marginLeft: "auto" }}>
+        <CodeParams n={computed.codeParams.n} k={computed.codeParams.k} d={computed.codeParams.d} />
       </div>
     </div>
   );

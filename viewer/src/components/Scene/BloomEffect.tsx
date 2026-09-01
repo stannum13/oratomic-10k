@@ -1,13 +1,14 @@
 "use client";
 
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { BLOOM } from "@/lib/motion";
 
 export function BloomEffect() {
   return (
     <EffectComposer>
       <Bloom
-        intensity={0.35}
-        luminanceThreshold={0.3}
+        intensity={BLOOM.strength}
+        luminanceThreshold={BLOOM.threshold}
         luminanceSmoothing={0.95}
         mipmapBlur
       />

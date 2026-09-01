@@ -5,9 +5,8 @@ import { useSimulator } from "@/store/simulator";
 import { encodeConfig } from "@/lib/url-state";
 import { mlxBridge } from "@/compute/mlx-bridge";
 
-function MLXStatus() {
+function MLXIndicator() {
   const [connected, setConnected] = useState(false);
-
   useEffect(() => {
     setConnected(mlxBridge.isConnected());
     const unsub = mlxBridge.onConnectionChange(setConnected);
@@ -17,17 +16,21 @@ function MLXStatus() {
   return (
     <button
       onClick={() => connected ? mlxBridge.disconnect() : mlxBridge.connect()}
-      className="flex items-center gap-1.5 h-7 px-2.5 border border-[var(--border-subtle)] hover:border-[var(--border-default)] rounded-[4px] transition-all"
-      title={connected ? "MLX backend connected" : "Click to connect to MLX backend"}
+      style={{
+        display: "flex", alignItems: "center", gap: "var(--s2)",
+        padding: `var(--s1) var(--s3)`,
+        background: "none", border: `1px solid var(--border)`,
+        borderRadius: 3, cursor: "pointer",
+        fontSize: "var(--fs-label)", color: "var(--text-tertiary)",
+        letterSpacing: "var(--tracking-label)", textTransform: "uppercase",
+      }}
     >
-      <div className={`w-1.5 h-1.5 rounded-full ${
-        connected
-          ? "bg-[var(--success)] shadow-[0_0_6px_rgba(34,197,94,0.4)]"
-          : "bg-[var(--text-quaternary)]"
-      }`} />
-      <span className="text-[10px] font-medium text-[var(--text-tertiary)] tracking-wide uppercase mono">
-        MLX
-      </span>
+      <div style={{
+        width: 6, height: 6, borderRadius: "50%",
+        background: connected ? "var(--status-ok)" : "var(--border)",
+        boxShadow: connected ? "0 0 6px rgba(74,222,128,0.4)" : "none",
+      }} />
+      MLX
     </button>
   );
 }
@@ -40,12 +43,9 @@ export function Header() {
   const handleShare = () => {
     const state = useSimulator.getState();
     const url = `${window.location.origin}${window.location.pathname}?${encodeConfig({
-      p: state.physicalErrorRate,
-      t: state.cycleTime,
-      a: state.architectureType,
-      prob: state.targetProblem,
-      mem: state.memoryCode,
-      proc: state.processorCode,
+      p: state.physicalErrorRate, t: state.cycleTime,
+      a: state.architectureType, prob: state.targetProblem,
+      mem: state.memoryCode, proc: state.processorCode,
     })}`;
     navigator.clipboard.writeText(url);
     setCopied(true);
@@ -53,48 +53,55 @@ export function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between px-5 h-12 border-b border-[var(--border-subtle)] bg-black shrink-0">
-      <div className="flex items-center gap-3">
-        <div className="w-1.5 h-1.5 rounded-full bg-[var(--zone-memory)] shadow-[0_0_6px_rgba(77,201,246,0.4)]" />
-        <span className="text-[13px] font-semibold text-[var(--text-primary)] tracking-tight">
+    <header style={{
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+      padding: `0 var(--s6)`, height: 48,
+      borderBottom: `1px solid var(--border)`,
+      background: "var(--bg)",
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>
+        <span style={{ fontSize: "var(--fs-body)", fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
           Oratomic
         </span>
-        <span className="text-[13px] text-[var(--text-quaternary)]">/</span>
-        <span className="text-[13px] text-[var(--text-tertiary)] font-light">
-          10k Qubit Architecture
+        <span style={{ color: "var(--border)", fontSize: "var(--fs-body)" }}>/</span>
+        <span style={{ fontSize: "var(--fs-body)", fontWeight: 300, color: "var(--text-tertiary)" }}>
+          10k Architecture
         </span>
       </div>
 
-      <div className="flex items-center gap-2">
-        <div className="flex h-8 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-[4px] overflow-hidden">
-          <button
-            onClick={() => setMode("paper")}
-            className={`px-4 text-[11px] font-medium tracking-wide transition-all ${
-              mode === "paper"
-                ? "bg-[var(--accent-muted)] text-[var(--accent)]"
-                : "text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]"
-            }`}
-          >
-            Read
-          </button>
-          <div className="w-px bg-[var(--border-subtle)]" />
-          <button
-            onClick={() => setMode("simulate")}
-            className={`px-4 text-[11px] font-medium tracking-wide transition-all ${
-              mode === "simulate"
-                ? "bg-[rgba(34,197,94,0.1)] text-[var(--success)]"
-                : "text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]"
-            }`}
-          >
-            Simulate
-          </button>
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>
+        <div style={{ display: "flex", border: `1px solid var(--border)`, borderRadius: 3, overflow: "hidden" }}>
+          {(["paper", "simulate"] as const).map((m) => (
+            <button
+              key={m}
+              onClick={() => setMode(m)}
+              style={{
+                padding: `var(--s2) var(--s4)`,
+                fontSize: "var(--fs-tab)", fontWeight: 500,
+                letterSpacing: "var(--tracking-tab)",
+                background: mode === m ? "var(--bg-elevated)" : "transparent",
+                color: mode === m ? "var(--text-primary)" : "var(--text-tertiary)",
+                border: "none", cursor: "pointer",
+                borderRight: m === "paper" ? `1px solid var(--border)` : "none",
+              }}
+            >
+              {m === "paper" ? "Read" : "Simulate"}
+            </button>
+          ))}
         </div>
 
-        <MLXStatus />
+        <MLXIndicator />
 
         <button
           onClick={handleShare}
-          className="h-8 px-3 text-[11px] font-medium text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] rounded-[4px] transition-all"
+          style={{
+            padding: `var(--s2) var(--s3)`,
+            fontSize: "var(--fs-label)", fontWeight: 500,
+            color: "var(--text-tertiary)",
+            background: "none", border: `1px solid var(--border)`,
+            borderRadius: 3, cursor: "pointer",
+            letterSpacing: "var(--tracking-label)", textTransform: "uppercase",
+          }}
         >
           {copied ? "Copied" : "Share"}
         </button>

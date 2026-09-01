@@ -1,135 +1,207 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
-@import "tailwindcss";
 @import "katex/dist/katex.min.css";
+@import "tailwindcss";
 
 :root {
-  /* Surfaces */
-  --bg-primary: #000000;
-  --bg-elevated: #080808;
-  --bg-surface: rgba(255, 255, 255, 0.025);
-  --bg-hover: rgba(255, 255, 255, 0.04);
+  --bg: #08090C;
+  --bg-elevated: #0E1015;
+  --bg-pane-left: #0B0D11;
+  --border: #1A1D24;
 
-  /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.05);
-  --border-default: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
+  --text-primary: #E8EAED;
+  --text-secondary: #9AA0AA;
+  --text-tertiary: #5C626C;
+  --text-watermark: #14171D;
 
-  /* Text */
-  --text-primary: #f0f0f0;
-  --text-secondary: #999999;
-  --text-tertiary: #5a5a5a;
-  --text-quaternary: #3a3a3a;
+  --emission-420: #6B7BFF;
+  --emission-420-hot: #B8C0FF;
+  --emission-780: #FF4D3D;
+  --emission-780-hot: #FFB0A5;
+  --emission-erasure: #FFD166;
 
-  /* Zones */
-  --zone-memory: #4dc9f6;
-  --zone-processor: #f67019;
-  --zone-operation: #4bc076;
-  --zone-resource: #e8548e;
+  --status-ok: #4ADE80;
+  --status-stall: #FFD166;
+  --status-fail: #FF4D3D;
 
-  /* Accents */
-  --accent: #6366f1;
-  --accent-muted: rgba(99, 102, 241, 0.15);
-  --success: #22c55e;
-  --warning: #eab308;
-  --danger: #ef4444;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
+  --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
 
-  /* Fonts */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
+
+  --fs-watermark: 180px;
+  --fs-h1: 34px;
+  --fs-h2: 22px;
+  --fs-body: 16px;
+  --fs-tab: 13px;
+  --fs-mono-sm: 12px;
+  --fs-label: 11px;
+
+  --lh-body: 1.58;
+  --lh-heading: 1.18;
+
+  --tracking-tab: 0.06em;
+  --tracking-label: 0.14em;
+
+  --measure: 68ch;
+
+  --ease-ui: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-scale: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-qec: cubic-bezier(0.37, 0, 0.63, 1);
+  --ease-flash-out: cubic-bezier(0.1, 0, 0.9, 0.2);
+
+  --dur-ui: 200ms;
+  --dur-ui-stagger: 40ms;
+  --dur-scale: 800ms;
+
+  --focus-ring: 2px solid var(--emission-420);
+  --focus-offset: 2px;
 }
 
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--bg-primary);
+  background: var(--bg);
   color: var(--text-primary);
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
   overflow: hidden;
   height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
-* {
-  box-sizing: border-box;
+* { box-sizing: border-box; }
+
+*:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 
-/* Typography scale (strict 4-size system) */
-/* nano:   9px  — badges, tertiary metadata */
-/* micro:  11px — captions, labels, control text */
-/* body:   13px — primary body text, values */
-/* title:  18px — section headings */
-
-/* Mono class */
-.mono {
+.mono, .num, .status-bar, .code-notation, [data-numeric] {
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+/* Panes */
+.pane-left {
+  background: var(--bg-pane-left);
+  scrollbar-gutter: stable;
+}
+.pane-left .article { max-width: var(--measure); margin-inline: auto; }
+.pane-right { background: var(--bg); }
 
-/* Selection */
+.pane-left::-webkit-scrollbar { width: 4px; }
+.pane-left::-webkit-scrollbar-track { background: transparent; }
+.pane-left::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 2px;
+  transition: background var(--dur-ui) var(--ease-ui);
+}
+.pane-left:hover::-webkit-scrollbar-thumb { background: var(--border); }
+
 ::selection {
-  background: var(--accent-muted);
+  background: rgba(107, 123, 255, 0.2);
   color: #fff;
 }
 
-/* Button states */
+/* Tabs */
+.tab {
+  font-size: var(--fs-tab);
+  letter-spacing: var(--tracking-tab);
+  color: var(--text-tertiary);
+  padding: var(--s2) 0;
+  margin-right: var(--s5);
+  border-bottom: 2px solid transparent;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.tab:hover { color: var(--text-secondary); }
+.tab[aria-selected="true"] {
+  color: var(--text-primary);
+  border-bottom-color: var(--text-primary);
+}
+
+/* Callout */
+.callout {
+  border-left: 2px solid var(--emission-420);
+  background: color-mix(in oklab, var(--emission-420) 6%, transparent);
+  padding: var(--s4) var(--s5);
+}
+
+/* Cards */
+.card {
+  background: var(--bg-elevated);
+  border: none;
+  box-shadow: none;
+  padding: var(--s4);
+}
+
+/* Status bar */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s5);
+  border-top: 1px solid var(--border);
+  padding: var(--s3) var(--s6);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+}
+.status-bar .value { color: var(--text-secondary); }
+.status-chip {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  padding: var(--s1) var(--s3);
+  border-radius: 999px;
+  background: color-mix(in oklab, currentColor 12%, transparent);
+}
+.status-chip[data-state="feasible"] { color: var(--status-ok); }
+.status-chip[data-state="stalled"] { color: var(--status-stall); }
+.status-chip[data-state="infeasible"] { color: var(--status-fail); }
+
+/* Watermark */
+.watermark {
+  font-family: var(--font-display);
+  font-size: var(--fs-watermark);
+  font-weight: 200;
+  color: var(--text-watermark);
+  letter-spacing: -0.02em;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Buttons */
 button {
-  transition: all 0.12s ease;
+  transition: all var(--dur-ui) var(--ease-ui);
   font-family: inherit;
 }
+button:active:not(:disabled) { transform: scale(0.97); }
 
-button:active:not(:disabled) {
-  transform: scale(0.97);
+/* KaTeX */
+.katex { font-size: 1em !important; color: inherit !important; }
+.katex .mathnormal, .katex .mathit { color: inherit !important; }
+
+/* Stagger animation */
+@keyframes fade-up { from { opacity: 0; transform: translateY(4px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 1ms !important; transition-duration: 1ms !important; }
 }
 
-button:focus-visible {
-  outline: 1px solid var(--accent);
-  outline-offset: 1px;
-}
-
-/* KaTeX overrides for dark theme */
-.katex {
-  font-size: 1em !important;
-  color: inherit !important;
-}
-
-.katex .mathnormal,
-.katex .mathit {
-  color: inherit !important;
-}
-
-/* Hero gradient */
-.hero-gradient {
-  background: radial-gradient(ellipse at 30% 50%, rgba(77, 201, 246, 0.04) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 50%, rgba(99, 102, 241, 0.03) 0%, transparent 60%);
-}
-
-/* Pulse */
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-.pulse-glow { animation: pulse-glow 1.5s ease-in-out infinite; }
-
-/* Count animation */
-@keyframes count-up {
-  from { opacity: 0; transform: translateY(3px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.count-animate { animation: count-up 0.25s ease forwards; }
-
-/* Select arrow */
+/* Select */
 select {
-  font-family: var(--font-sans);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E");
+  font-family: var(--font-body);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235C626C' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 8px center;
   padding-right: 24px;

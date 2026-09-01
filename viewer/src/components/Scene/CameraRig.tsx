@@ -5,6 +5,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useSimulator } from "@/store/simulator";
 import { CAMERA_PRESETS, SECTION_IDS } from "@/lib/constants";
+import { IDLE } from "@/lib/motion";
 
 const lerpVec = new THREE.Vector3();
 const lerpTarget = new THREE.Vector3();
@@ -21,13 +22,13 @@ export function getCameraRigCallbacks() {
  * Camera rig that guides the camera but yields to user interaction.
  * - In paper mode: lerps toward section presets, pauses when user is dragging
  * - In simulate mode: fully user-controlled via OrbitControls
- * - Hero section: slow auto-orbit that pauses on interaction
+ * - Hero section: slow auto-orbit using IDLE.cameraTheta from motion.ts
  */
 export function CameraRig() {
   const { camera } = useThree();
   const targetPos = useRef(new THREE.Vector3(0, 10, 22));
   const targetLookAt = useRef(new THREE.Vector3(1, 0, 0));
-  const angle = useRef(0);
+  const elapsedTime = useRef(0);
   const userInteracting = useRef(false);
   const idleTimer = useRef(0);
   const activeSection = useSimulator((s) => s.activeSection);
@@ -59,17 +60,19 @@ export function CameraRig() {
       if (idleTimer.current < 10) return;
     }
 
+    elapsedTime.current += delta;
+
     const sectionId = SECTION_IDS[activeSection] || "hero";
     const preset = CAMERA_PRESETS[sectionId];
 
     if (sectionId === "hero" && mode === "paper") {
-      angle.current += delta * 0.08;
+      const theta = IDLE.cameraTheta(elapsedTime.current);
       const radius = 24;
       const y = 10;
       targetPos.current.set(
-        Math.sin(angle.current) * radius + 1,
+        Math.sin(theta) * radius + 1,
         y,
-        Math.cos(angle.current) * radius,
+        Math.cos(theta) * radius,
       );
       targetLookAt.current.set(1, 0, 0);
     } else {
@@ -77,8 +80,8 @@ export function CameraRig() {
       targetLookAt.current.set(...preset.target);
     }
 
-    // Gentle lerp — doesn't fight, just guides
-    const lerpSpeed = mode === "simulate" ? 0.005 : 0.02;
+    // Smoother lerp
+    const lerpSpeed = mode === "simulate" ? 0.004 : 0.015;
     lerpVec.copy(camera.position).lerp(targetPos.current, lerpSpeed);
     camera.position.copy(lerpVec);
 
@@ -92,4 +95,3 @@ export function CameraRig() {
 
   return null;
 }
-
