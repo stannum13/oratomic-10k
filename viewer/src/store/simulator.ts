@@ -1,0 +1,155 @@
+import { create } from "zustand";
+import type {
+  ArchitectureType,
+  LiveCodeResult,
+  MemoryCode,
+  ProcessorCode,
+  TargetProblem,
+} from "@/compute/interface";
+import { computeWithEngine, type EngineComputeResult } from "@/compute/engine-compute";
+import { SEED_MATRICES } from "@/lib/seed-matrices";
+
+interface SimulatorState {
+  mode: "paper" | "simulate";
+  activeSection: number;
+  setMode: (mode: "paper" | "simulate") => void;
+  setActiveSection: (section: number) => void;
+
+  physicalErrorRate: number;
+  cycleTime: number;
+  architectureType: ArchitectureType;
+  targetProblem: TargetProblem;
+
+  memoryCode: MemoryCode;
+  processorCode: ProcessorCode;
+  decoderType: string;
+
+  computed: EngineComputeResult;
+
+  liveCode: LiveCodeResult | null;
+  liveCodeLoading: boolean;
+  computeLiveCode: () => void;
+
+  pinnedConfig: {
+    label: string;
+    computed: EngineComputeResult;
+    params: {
+      physicalErrorRate: number;
+      cycleTime: number;
+      architectureType: string;
+      targetProblem: string;
+      memoryCode: string;
+      processorCode: string;
+    };
+  } | null;
+  setPinnedConfig: (config: SimulatorState['pinnedConfig']) => void;
+
+  setPhysicalErrorRate: (v: number) => void;
+  setCycleTime: (v: number) => void;
+  setArchitectureType: (v: ArchitectureType) => void;
+  setTargetProblem: (v: TargetProblem) => void;
+  setMemoryCode: (v: MemoryCode) => void;
+  setProcessorCode: (v: ProcessorCode) => void;
+  setDecoderType: (v: string) => void;
+}
+
+function recompute(state: {
+  physicalErrorRate: number;
+  cycleTime: number;
+  architectureType: ArchitectureType;
+  targetProblem: TargetProblem;
+  memoryCode: MemoryCode;
+  processorCode: ProcessorCode;
+}): EngineComputeResult {
+  return computeWithEngine(state);
+}
+
+const defaults = {
+  physicalErrorRate: 0.001,
+  cycleTime: 1.0,
+  architectureType: "balanced" as ArchitectureType,
+  targetProblem: "ecc-256" as TargetProblem,
+  memoryCode: "lp20" as MemoryCode,
+  processorCode: "lp-proc" as ProcessorCode,
+};
+
+export const useSimulator = create<SimulatorState>((set) => ({
+  mode: "paper",
+  activeSection: 0,
+  ...defaults,
+  decoderType: "bp-lsd",
+  computed: recompute(defaults),
+  liveCode: null,
+  liveCodeLoading: false,
+  pinnedConfig: null,
+  setPinnedConfig: (pinnedConfig) => set({ pinnedConfig }),
+
+  setMode: (mode) => set({ mode }),
+  setActiveSection: (activeSection) => set({ activeSection }),
+
+  setPhysicalErrorRate: (physicalErrorRate) =>
+    set((s) => {
+      const next = { ...s, physicalErrorRate };
+      return { physicalErrorRate, computed: recompute(next) };
+    }),
+  setCycleTime: (cycleTime) =>
+    set((s) => {
+      const next = { ...s, cycleTime };
+      return { cycleTime, computed: recompute(next) };
+    }),
+  setArchitectureType: (architectureType) =>
+    set((s) => {
+      const next = { ...s, architectureType };
+      return { architectureType, computed: recompute(next) };
+    }),
+  setTargetProblem: (targetProblem) =>
+    set((s) => {
+      const next = { ...s, targetProblem };
+      return { targetProblem, computed: recompute(next) };
+    }),
+  setMemoryCode: (memoryCode) =>
+    set((s) => {
+      const next = { ...s, memoryCode };
+      return { memoryCode, computed: recompute(next) };
+    }),
+  setProcessorCode: (processorCode) =>
+    set((s) => {
+      const next = { ...s, processorCode };
+      return { processorCode, computed: recompute(next) };
+    }),
+  setDecoderType: (decoderType) => set({ decoderType }),
+
+  computeLiveCode: () => {
+    const state = useSimulator.getState();
+    const matrix = SEED_MATRICES[state.memoryCode];
+    if (!matrix) return;
+
+    set({ liveCodeLoading: true });
+
+    import("@/compute/code-worker").then(({ computeCodeSync }) => {
+      const result = computeCodeSync({
+        type: "construct",
+        seedExponents: matrix.entries,
+        ringOrder: matrix.ringOrder,
+      });
+
+      set({
+        liveCode: {
+          n: result.code.n,
+          k: result.code.k,
+          kLowerBound: result.code.kLowerBound,
+          stabilizerWeightX: result.code.stabilizerWeightX,
+          stabilizerWeightZ: result.code.stabilizerWeightZ,
+          encodingRate: result.code.encodingRate,
+          tannerEdgesX: result.tanner.sampleEdgesX,
+          tannerEdgesZ: result.tanner.sampleEdgesZ,
+          tannerDataNodes: result.tanner.dataNodes,
+          tannerCheckNodesX: result.tanner.checkNodesX,
+          tannerCheckNodesZ: result.tanner.checkNodesZ,
+          computeTimeMs: result.computeTimeMs,
+        },
+        liveCodeLoading: false,
+      });
+    });
+  },
+}));
