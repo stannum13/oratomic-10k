@@ -10,6 +10,7 @@ import { CameraRig, getCameraRigCallbacks } from "./CameraRig";
 import { Apparatus } from "./Apparatus";
 import { TeleportationArcs } from "./GateArcs";
 import { TannerOverlay } from "./TannerOverlay";
+import { EmissionLayer } from "./EmissionLayer";
 import * as THREE from "three";
 
 function ZoneLabel({ name, center, count, gridSize, spacing }: {
@@ -79,6 +80,7 @@ function Scene() {
 
       <TeleportationArcs activeSection={activeSection} />
       <TannerOverlay />
+      <EmissionLayer />
 
       <CameraRig />
       <OrbitControls
