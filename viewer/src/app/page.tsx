@@ -32,12 +32,14 @@ function SectionTabs() {
   return (
     <div style={{
       display: "flex",
-      padding: `var(--s3) var(--s6)`,
+      padding: `var(--s3) var(--s4)`,
       borderBottom: `1px solid var(--border)`,
       position: "sticky",
       top: 0,
       zIndex: 10,
       background: "var(--bg-pane-left)",
+      overflowX: "auto",
+      flexWrap: "nowrap",
     }}>
       {SECTION_LABELS.map((name, i) => (
         <button

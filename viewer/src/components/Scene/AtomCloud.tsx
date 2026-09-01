@@ -53,8 +53,15 @@ export function AtomCloud({ zone }: { zone: ZoneConfig }) {
 
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, zone.count]} frustumCulled={false}>
-      <sphereGeometry args={[baseScale, 8, 6]} />
-      <meshBasicMaterial color={color} transparent opacity={zone.opacity} toneMapped={false} />
+      <sphereGeometry args={[0.04 * zone.dotScale, 10, 8]} />
+      <meshStandardMaterial
+        color={color}
+        emissive={color}
+        emissiveIntensity={0.4}
+        transparent
+        opacity={zone.opacity}
+        toneMapped={false}
+      />
     </instancedMesh>
   );
 }

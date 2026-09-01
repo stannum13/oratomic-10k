@@ -23,10 +23,10 @@ function fmtRuntime(d: number): string {
 }
 
 function fmtToffoli(n: number): string {
-  if (!isFinite(n) || isNaN(n)) return "\u2014";
-  if (n >= 1e15) return `${(n / 1e15).toFixed(2)} \u00D7 10${superscript(15)}`;
-  if (n >= 1e12) return `${(n / 1e12).toFixed(2)} \u00D7 10${superscript(12)}`;
-  if (n >= 1e9) return `${(n / 1e9).toFixed(1)} \u00D7 10${superscript(9)}`;
+  if (!isFinite(n) || isNaN(n) || n === 0) return "\u2014";
+  const exp = Math.floor(Math.log10(Math.abs(n)));
+  const mantissa = n / Math.pow(10, exp);
+  if (exp >= 9) return `${mantissa.toFixed(1)} \u00D7 10${superscript(exp)}`;
   return formatNumber(n);
 }
 

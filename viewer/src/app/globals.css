@@ -115,7 +115,9 @@ html, body {
   letter-spacing: var(--tracking-tab);
   color: var(--text-tertiary);
   padding: var(--s2) 0;
-  margin-right: var(--s5);
+  margin-right: var(--s3);
+  white-space: nowrap;
+  flex-shrink: 0;
   border-bottom: 2px solid transparent;
   background: none;
   border-top: none;

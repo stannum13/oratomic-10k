@@ -54,9 +54,9 @@ function Scene() {
 
   return (
     <>
-      <ambientLight intensity={0.04} />
-      <directionalLight position={[5, 20, 10]} intensity={0.2} color="#ffffff" />
-      <directionalLight position={[-8, 10, -5]} intensity={0.06} color="#ffffff" />
+      <ambientLight intensity={0.12} />
+      <directionalLight position={[5, 20, 10]} intensity={0.35} color="#ffffff" />
+      <directionalLight position={[-8, 10, -5]} intensity={0.15} color="#ffffff" />
 
       <fog attach="fog" args={["#08090C", 20, 50]} />
 
