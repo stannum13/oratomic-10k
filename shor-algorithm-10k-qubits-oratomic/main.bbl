@@ -1,0 +1,812 @@
+\begin{thebibliography}{100}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem{deutsch1992rapid}
+\bibinfo{author}{Deutsch, D.} \& \bibinfo{author}{Jozsa, R.}
+\newblock \bibinfo{title}{Rapid solution of problems by quantum computation}.
+\newblock \emph{\bibinfo{journal}{Proc. R. Soc. Lond. A}} \textbf{\bibinfo{volume}{439}}, \bibinfo{pages}{553--558} (\bibinfo{year}{1992}).
+
+\bibitem{simon1997power}
+\bibinfo{author}{Simon, D.~R.}
+\newblock \bibinfo{title}{On the power of quantum computation}.
+\newblock \emph{\bibinfo{journal}{SIAM J. Comput.}} \textbf{\bibinfo{volume}{26}}, \bibinfo{pages}{1474--1483} (\bibinfo{year}{1997}).
+
+\bibitem{shor1994algorithms}
+\bibinfo{author}{Shor, P.~W.}
+\newblock \bibinfo{title}{Polynomial-time algorithms for prime factorization and discrete logarithms on a quantum computer}.
+\newblock \emph{\bibinfo{journal}{{SIAM} J. Comput.}} \textbf{\bibinfo{volume}{26}}, \bibinfo{pages}{1484--1509} (\bibinfo{year}{1997}).
+
+\bibitem{kitaev1995quantum}
+\bibinfo{author}{Kitaev, A.~Y.}
+\newblock \bibinfo{title}{{Quantum measurements and the Abelian Stabilizer Problem}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:quant-ph/9511026}}  (\bibinfo{year}{1995}).
+
+\bibitem{rivest1978method}
+\bibinfo{author}{Rivest, R.~L.}, \bibinfo{author}{Shamir, A.} \& \bibinfo{author}{Adleman, L.}
+\newblock \bibinfo{title}{A method for obtaining digital signatures and public-key cryptosystems}.
+\newblock \emph{\bibinfo{journal}{Commun. ACM}} \textbf{\bibinfo{volume}{21}}, \bibinfo{pages}{120–126} (\bibinfo{year}{1978}).
+
+\bibitem{koblitz1987elliptic}
+\bibinfo{author}{Koblitz, N.}
+\newblock \bibinfo{title}{Elliptic curve cryptosystems}.
+\newblock \emph{\bibinfo{journal}{Mathematics of Computation}} \textbf{\bibinfo{volume}{48}}, \bibinfo{pages}{203–209} (\bibinfo{year}{1987}).
+
+\bibitem{shor1995scheme}
+\bibinfo{author}{Shor, P.~W.}
+\newblock \bibinfo{title}{Scheme for reducing decoherence in quantum computer memory}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. A}} \textbf{\bibinfo{volume}{52}}, \bibinfo{pages}{R2493--R2496} (\bibinfo{year}{1995}).
+
+\bibitem{calderbank1996good}
+\bibinfo{author}{Calderbank, A.~R.} \& \bibinfo{author}{Shor, P.~W.}
+\newblock \bibinfo{title}{Good quantum error-correcting codes exist}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. A}} \textbf{\bibinfo{volume}{54}}, \bibinfo{pages}{1098--1105} (\bibinfo{year}{1996}).
+
+\bibitem{shor1996fault}
+\bibinfo{author}{Shor, P.~W.}
+\newblock \bibinfo{title}{{Fault-tolerant quantum computation}}.
+\newblock In \emph{\bibinfo{booktitle}{Proceedings of 37th conference on foundations of computer science}}, \bibinfo{pages}{56--65} (\bibinfo{publisher}{IEEE}, \bibinfo{year}{1996}).
+
+\bibitem{steane1996error}
+\bibinfo{author}{Steane, A.~M.}
+\newblock \bibinfo{title}{Error correcting codes in quantum theory}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Lett.}} \textbf{\bibinfo{volume}{77}}, \bibinfo{pages}{793--797} (\bibinfo{year}{1996}).
+
+\bibitem{steane1996simple}
+\bibinfo{author}{Steane, A.~M.}
+\newblock \bibinfo{title}{Simple quantum error-correcting codes}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. A}} \textbf{\bibinfo{volume}{54}}, \bibinfo{pages}{4741--4751} (\bibinfo{year}{1996}).
+
+\bibitem{gottesman1998theory}
+\bibinfo{author}{Gottesman, D.}
+\newblock \bibinfo{title}{Theory of fault-tolerant quantum computation}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. A}} \textbf{\bibinfo{volume}{57}}, \bibinfo{pages}{127--137} (\bibinfo{year}{1998}).
+
+\bibitem{kitaev2003fault}
+\bibinfo{author}{Kitaev, A.~Y.}
+\newblock \bibinfo{title}{{Fault-tolerant quantum computation by anyons}}.
+\newblock \emph{\bibinfo{journal}{Ann. Phys.}} \textbf{\bibinfo{volume}{303}}, \bibinfo{pages}{2--30} (\bibinfo{year}{2003}).
+
+\bibitem{dalzell2023quantum}
+\bibinfo{author}{Dalzell, A.~M.} \emph{et~al.}
+\newblock \bibinfo{title}{{Quantum algorithms: A survey of applications and end-to-end complexities}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2310.03011}}  (\bibinfo{year}{2023}).
+
+\bibitem{huang2025vast}
+\bibinfo{author}{Huang, H.-Y.}, \bibinfo{author}{Choi, S.}, \bibinfo{author}{McClean, J.~R.} \& \bibinfo{author}{Preskill, J.}
+\newblock \bibinfo{title}{The vast world of quantum advantage} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2508.05720}.
+\newblock {arXiv:2508.05720 [quant-ph]}.
+
+\bibitem{babbush2025grand}
+\bibinfo{author}{Babbush, R.} \emph{et~al.}
+\newblock \bibinfo{title}{The grand challenge of quantum applications}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2511.09124}}  (\bibinfo{year}{2025}).
+
+\bibitem{eisert2025mind}
+\bibinfo{author}{Eisert, J.} \& \bibinfo{author}{Preskill, J.}
+\newblock \bibinfo{title}{Mind the gaps: The fraught road to quantum advantage}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2510.19928}}  (\bibinfo{year}{2025}).
+
+\bibitem{gidney2025how}
+\bibinfo{author}{Gidney, C.}
+\newblock \bibinfo{title}{{How to factor 2048 bit RSA integers with less than a million noisy qubits}} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2505.15917}.
+\newblock {arXiv:2505.15917 [quant-ph]}.
+
+\bibitem{fowler2012surface}
+\bibinfo{author}{Fowler, A.~G.}, \bibinfo{author}{Mariantoni, M.}, \bibinfo{author}{Martinis, J.~M.} \& \bibinfo{author}{Cleland, A.~N.}
+\newblock \bibinfo{title}{Surface codes: Towards practical large-scale quantum computation}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. A}} \textbf{\bibinfo{volume}{86}}, \bibinfo{pages}{032324} (\bibinfo{year}{2012}).
+
+\bibitem{postler2022demonstration}
+\bibinfo{author}{Postler, L.} \emph{et~al.}
+\newblock \bibinfo{title}{{Demonstration of fault-tolerant universal quantum gate operations}}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{605}}, \bibinfo{pages}{675--680} (\bibinfo{year}{2022}).
+
+\bibitem{wang2023fault}
+\bibinfo{author}{Wang, Y.} \emph{et~al.}
+\newblock \bibinfo{title}{Fault-tolerant one-bit addition with the smallest interesting color code}.
+\newblock \emph{\bibinfo{journal}{Sci. Adv.}} \textbf{\bibinfo{volume}{10}} (\bibinfo{year}{2024}).
+
+\bibitem{acharya2024quantum}
+\bibinfo{author}{{Google Quantum AI and Collaborators}}.
+\newblock \bibinfo{title}{Quantum error correction below the surface code threshold}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{638}}, \bibinfo{pages}{920--926} (\bibinfo{year}{2025}).
+
+\bibitem{reichardt2024logical}
+\bibinfo{author}{Reichardt, B.~W.} \emph{et~al.}
+\newblock \bibinfo{title}{{Logical computation demonstrated with a neutral atom quantum processor}} (\bibinfo{year}{2024}).
+\newblock {arXiv:2411.11822 [quant-ph]}.
+
+\bibitem{ryan-anderson2024high}
+\bibinfo{author}{Ryan-Anderson, C.} \emph{et~al.}
+\newblock \bibinfo{title}{{High-fidelity teleportation of a logical qubit using transversal gates and lattice surgery}}.
+\newblock \emph{\bibinfo{journal}{Science}} \textbf{\bibinfo{volume}{385}}, \bibinfo{pages}{1327--1331} (\bibinfo{year}{2024}).
+
+\bibitem{bluvstein2025architectural}
+\bibinfo{author}{Bluvstein, D.} \emph{et~al.}
+\newblock \bibinfo{title}{A fault-tolerant neutral-atom architecture for universal quantum computation}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{649}}, \bibinfo{pages}{39--46} (\bibinfo{year}{2026}).
+
+\bibitem{reichardt2025fault}
+\bibinfo{author}{Reichardt, B.~W.} \emph{et~al.}
+\newblock \bibinfo{title}{Fault-tolerant quantum computation with a neutral atom processor} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2411.11822}.
+\newblock {arXiv:2411.11822 [quant-ph]}.
+
+\bibitem{saffman2010quantum}
+\bibinfo{author}{Saffman, M.}, \bibinfo{author}{Walker, T.~G.} \& \bibinfo{author}{M\o{}lmer, K.}
+\newblock \bibinfo{title}{{Quantum information with Rydberg atoms}}.
+\newblock \emph{\bibinfo{journal}{Rev. Mod. Phys.}} \textbf{\bibinfo{volume}{82}}, \bibinfo{pages}{2313--2363} (\bibinfo{year}{2010}).
+
+\bibitem{bluvstein2022quantum}
+\bibinfo{author}{Bluvstein, D.} \emph{et~al.}
+\newblock \bibinfo{title}{A quantum processor based on coherent transport of entangled atom arrays}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{604}}, \bibinfo{pages}{451--456} (\bibinfo{year}{2022}).
+
+\bibitem{graham2022multi1}
+\bibinfo{author}{Graham, T.~M.} \emph{et~al.}
+\newblock \bibinfo{title}{{Multi-qubit entanglement and algorithms on a neutral-atom quantum computer}}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{604}}, \bibinfo{pages}{457--462} (\bibinfo{year}{2022}).
+
+\bibitem{bluvstein2024logical}
+\bibinfo{author}{Bluvstein, D.} \emph{et~al.}
+\newblock \bibinfo{title}{{Logical quantum processor based on reconfigurable atom arrays}}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{626}}, \bibinfo{pages}{58--65} (\bibinfo{year}{2024}).
+
+\bibitem{jones2012layered}
+\bibinfo{author}{Jones, N.~C.} \emph{et~al.}
+\newblock \bibinfo{title}{Layered architecture for quantum computing}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. X}} \textbf{\bibinfo{volume}{2}}, \bibinfo{pages}{031007} (\bibinfo{year}{2012}).
+
+\bibitem{ogorman2017quantum}
+\bibinfo{author}{O'Gorman, J.} \& \bibinfo{author}{Campbell, E.~T.}
+\newblock \bibinfo{title}{Quantum computation with realistic magic-state factories}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. A}} \textbf{\bibinfo{volume}{95}}, \bibinfo{pages}{032338} (\bibinfo{year}{2017}).
+
+\bibitem{gheorghiu2019benchmarking}
+\bibinfo{author}{Gheorghiu, V.} \& \bibinfo{author}{Mosca, M.}
+\newblock \bibinfo{title}{Benchmarking the quantum cryptanalysis of symmetric, public-key and hash-based cryptographic schemes} (\bibinfo{year}{2019}).
+\newblock \urlprefix\url{https://arxiv.org/abs/1902.02332}.
+\newblock {arXiv:1902.02332 [quant-ph]}.
+
+\bibitem{gidney2019how}
+\bibinfo{author}{Gidney, C.} \& \bibinfo{author}{Eker{\aa}, M.}
+\newblock \bibinfo{title}{{How to factor 2048 bit RSA integers in 8 hours using 20 million noisy qubits}}.
+\newblock \emph{\bibinfo{journal}{Quantum}} \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{1--31} (\bibinfo{year}{2019}).
+
+\bibitem{dallairedemers2025brace}
+\bibinfo{author}{Dallaire-Demers, P.-L.}, \bibinfo{author}{Doyle, W.} \& \bibinfo{author}{Foo, T.}
+\newblock \bibinfo{title}{{Brace for impact: ECDLP challenges for quantum cryptanalysis}} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2508.14011}.
+\newblock {arXiv:2508.14011 [quant-ph]}.
+
+\bibitem{zhou2025resource}
+\bibinfo{author}{Zhou, H.} \emph{et~al.}
+\newblock \bibinfo{title}{{Resource Analysis of Low-Overhead Transversal Architectures for Reconfigurable Atom Arrays}}.
+\newblock In \emph{\bibinfo{booktitle}{International Symposium on Computer Architecture}} (\bibinfo{year}{2025}).
+
+\bibitem{webster2026pinnacle}
+\bibinfo{author}{Webster, P.} \emph{et~al.}
+\newblock \bibinfo{title}{{The Pinnacle Architecture: Reducing the cost of breaking RSA-2048 to 100{,}000 physical qubits using quantum LDPC codes}} (\bibinfo{year}{2026}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2602.11457}.
+\newblock {arXiv:2602.11457 [quant-ph]}.
+
+\bibitem{Breuckmann2021}
+\bibinfo{author}{Breuckmann, N.~P.} \& \bibinfo{author}{Eberhardt, J.~N.}
+\newblock \bibinfo{title}{{Quantum Low-Density Parity-Check Codes}}.
+\newblock \emph{\bibinfo{journal}{PRX Quantum}} \textbf{\bibinfo{volume}{2}}, \bibinfo{pages}{040101} (\bibinfo{year}{2021}).
+
+\bibitem{panteleev2021quantum}
+\bibinfo{author}{Panteleev, P.} \& \bibinfo{author}{Kalachev, G.}
+\newblock \bibinfo{title}{{Quantum LDPC codes with almost linear minimum distance}}.
+\newblock \emph{\bibinfo{journal}{IEEE Trans. Inf. Th.}} \textbf{\bibinfo{volume}{68}}, \bibinfo{pages}{213--229} (\bibinfo{year}{2021}).
+
+\bibitem{panteleev2022asymptotically}
+\bibinfo{author}{Panteleev, P.} \& \bibinfo{author}{Kalachev, G.}
+\newblock \bibinfo{title}{Asymptotically good quantum and locally testable classical ldpc codes}.
+\newblock In \emph{\bibinfo{booktitle}{Proceedings of the 54th annual ACM SIGACT symposium on theory of computing}}, \bibinfo{pages}{375--388} (\bibinfo{year}{2022}).
+
+\bibitem{leverrier2022quantum}
+\bibinfo{author}{Leverrier, A.} \& \bibinfo{author}{Zémor, G.}
+\newblock \bibinfo{title}{Quantum tanner codes} (\bibinfo{year}{2022}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2202.13641}.
+\newblock {arXiv:2202.13641 [quant-ph]}.
+
+\bibitem{dinur2022good}
+\bibinfo{author}{Dinur, I.}, \bibinfo{author}{Hsieh, M.-H.~H.}, \bibinfo{author}{Lin, T.-C.~C.} \& \bibinfo{author}{Vidick, T.}
+\newblock \bibinfo{title}{{Good Quantum LDPC Codes with Linear Time Decoders}}.
+\newblock \emph{\bibinfo{journal}{Proceedings of the Annual ACM Symposium on Theory of Computing}} \bibinfo{pages}{905--918} (\bibinfo{year}{2022}).
+
+\bibitem{bravyi2024high}
+\bibinfo{author}{Bravyi, S.} \emph{et~al.}
+\newblock \bibinfo{title}{High-threshold and low-overhead fault-tolerant quantum memory}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{627}}, \bibinfo{pages}{778--782} (\bibinfo{year}{2024}).
+
+\bibitem{xu2024constant}
+\bibinfo{author}{Xu, Q.} \emph{et~al.}
+\newblock \bibinfo{title}{Constant-overhead fault-tolerant quantum computation with reconfigurable atom arrays}.
+\newblock \emph{\bibinfo{journal}{Nat. Phys.}} \textbf{\bibinfo{volume}{20}}, \bibinfo{pages}{1084--1090} (\bibinfo{year}{2024}).
+
+\bibitem{hillmann2024localized}
+\bibinfo{author}{Hillmann, T.} \emph{et~al.}
+\newblock \bibinfo{title}{{Localized statistics decoding: A parallel decoding algorithm for quantum low-density parity-check codes}}.
+\newblock \emph{\bibinfo{journal}{arXiv:2406.18655}}  (\bibinfo{year}{2024}).
+
+\bibitem{yoder2025tour}
+\bibinfo{author}{Yoder, T.~J.} \emph{et~al.}
+\newblock \bibinfo{title}{Tour de gross: A modular quantum computer based on bivariate bicycle codes}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2506.03094}}  (\bibinfo{year}{2025}).
+
+\bibitem{yang2026rascql}
+\bibinfo{author}{Yang, W.}, \bibinfo{author}{Chadwick, J.}, \bibinfo{author}{Teo, M.~H.}, \bibinfo{author}{Viszlai, J.} \& \bibinfo{author}{Chong, F.}
+\newblock \bibinfo{title}{Rascql: Reaction-time-limited architecture for space-time-efficient complex qldpc logic}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2602.14273}}  (\bibinfo{year}{2026}).
+
+\bibitem{cohen2022low}
+\bibinfo{author}{Cohen, L.~Z.}, \bibinfo{author}{Kim, I.~H.}, \bibinfo{author}{Bartlett, S.~D.} \& \bibinfo{author}{Brown, B.~J.}
+\newblock \bibinfo{title}{{Low-overhead fault-tolerant quantum computing using long-range connectivity}}.
+\newblock \emph{\bibinfo{journal}{Sci. Adv.}} \textbf{\bibinfo{volume}{8}} (\bibinfo{year}{2022}).
+
+\bibitem{cross2024improved}
+\bibinfo{author}{Cross, A.}, \bibinfo{author}{He, Z.}, \bibinfo{author}{Rall, P.} \& \bibinfo{author}{Yoder, T.}
+\newblock \bibinfo{title}{{Improved QLDPC Surgery: Logical Measurements and Bridging Codes}}.
+\newblock \emph{\bibinfo{journal}{arXiv:2407.18393}}  (\bibinfo{year}{2024}).
+
+\bibitem{gidney2024magic}
+\bibinfo{author}{Gidney, C.}, \bibinfo{author}{Shutty, N.} \& \bibinfo{author}{Jones, C.}
+\newblock \bibinfo{title}{{Magic state cultivation: growing T states as cheap as CNOT gates}} (\bibinfo{year}{2024}).
+\newblock {arXiv:2409.17595 [quant-ph]}.
+
+\bibitem{xu2025fast}
+\bibinfo{author}{Xu, Q.} \emph{et~al.}
+\newblock \bibinfo{title}{Fast and parallelizable logical computation with homological product codes}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. X}} \textbf{\bibinfo{volume}{15}}, \bibinfo{pages}{021065} (\bibinfo{year}{2025}).
+
+\bibitem{zheng2025high}
+\bibinfo{author}{Zheng, G.}, \bibinfo{author}{Jiang, L.} \& \bibinfo{author}{Xu, Q.}
+\newblock \bibinfo{title}{High-rate surgery: towards constant-overhead logical operations}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2510.08523}}  (\bibinfo{year}{2025}).
+
+\bibitem{cuccaro2004new}
+\bibinfo{author}{Cuccaro, S.~A.}, \bibinfo{author}{Draper, T.~G.}, \bibinfo{author}{Kutin, S.~A.} \& \bibinfo{author}{Moulton, D.~P.} (\bibinfo{year}{2004}).
+\newblock {arXiv:quant-ph/0410184 [quant-ph]}.
+
+\bibitem{chevignard2025reducing}
+\bibinfo{author}{Chevignard, C.}, \bibinfo{author}{Fouque, P.-A.} \& \bibinfo{author}{Schrottenloher, A.}
+\newblock \bibinfo{title}{Reducing the number of qubits in quantum factoring}.
+\newblock In \bibinfo{editor}{Tauman~Kalai, Y.} \& \bibinfo{editor}{Kamara, S.~F.} (eds.) \emph{\bibinfo{booktitle}{Advances in Cryptology -- CRYPTO 2025}}, \bibinfo{pages}{384--415} (\bibinfo{publisher}{Springer Nature Switzerland}, \bibinfo{address}{Cham}, \bibinfo{year}{2025}).
+
+\bibitem{babbush2026quantum}
+\bibinfo{author}{Babbush, R.} \emph{et~al.}
+\newblock \bibinfo{title}{Securing elliptic curve cryptocurrencies against quantum vulnerabilities: Resource estimates and mitigations} (\bibinfo{year}{2026}).
+
+\bibitem{manetsch2025tweezer}
+\bibinfo{author}{Manetsch, H.~J.} \emph{et~al.}
+\newblock \bibinfo{title}{A tweezer array with 6,100 highly coherent atomic qubits}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{647}}, \bibinfo{pages}{60--67} (\bibinfo{year}{2025}).
+
+\bibitem{gyger2024continuous}
+\bibinfo{author}{Gyger, F.} \emph{et~al.}
+\newblock \bibinfo{title}{Continuous operation of large-scale atom arrays in optical lattices}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Res.}} \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{033104} (\bibinfo{year}{2024}).
+
+\bibitem{norcia2024iterative}
+\bibinfo{author}{Norcia, M.~A.} \emph{et~al.}
+\newblock \bibinfo{title}{Iterative assembly of ${}^{171}$$\mathrm{Yb}$ atom arrays with cavity-enhanced optical lattices}.
+\newblock \emph{\bibinfo{journal}{PRX Quantum}} \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{030316} (\bibinfo{year}{2024}).
+
+\bibitem{chiu2025continuous}
+\bibinfo{author}{Chiu, N.-C.} \emph{et~al.}
+\newblock \bibinfo{title}{Continuous operation of a coherent 3,000-qubit system}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{646}}, \bibinfo{pages}{1075--1080} (\bibinfo{year}{2025}).
+
+\bibitem{holman2026trapping}
+\bibinfo{author}{Holman, A.} \emph{et~al.}
+\newblock \bibinfo{title}{Trapping of single atoms in metasurface optical tweezer arrays}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{649}}, \bibinfo{pages}{859--865} (\bibinfo{year}{2026}).
+
+\bibitem{evered2023high}
+\bibinfo{author}{Evered, S.~J.} \emph{et~al.}
+\newblock \bibinfo{title}{{High-fidelity parallel entangling gates on a neutral-atom quantum computer}}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{622}}, \bibinfo{pages}{268--272} (\bibinfo{year}{2023}).
+
+\bibitem{ma2023high}
+\bibinfo{author}{Ma, S.} \emph{et~al.}
+\newblock \bibinfo{title}{{High-fidelity gates and mid-circuit erasure conversion in an atomic qubit}}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{622}}, \bibinfo{pages}{279--284} (\bibinfo{year}{2023}).
+
+\bibitem{lis2023midcircuit}
+\bibinfo{author}{Lis, J.~W.} \emph{et~al.}
+\newblock \bibinfo{title}{{Midcircuit Operations Using the omg Architecture in Neutral Atom Arrays}}.
+\newblock \emph{\bibinfo{journal}{Physical Review X}} \textbf{\bibinfo{volume}{13}} (\bibinfo{year}{2023}).
+
+\bibitem{tsai2025benchmarking}
+\bibinfo{author}{Tsai, R. B.-S.}, \bibinfo{author}{Sun, X.}, \bibinfo{author}{Shaw, A.~L.}, \bibinfo{author}{Finkelstein, R.} \& \bibinfo{author}{Endres, M.}
+\newblock \bibinfo{title}{{Benchmarking and Fidelity Response Theory of High-Fidelity Rydberg Entangling Gates}}.
+\newblock \emph{\bibinfo{journal}{PRX Quantum}} \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{010331} (\bibinfo{year}{2025}).
+
+\bibitem{FIPS203}
+\bibinfo{author}{{National Institute of Standards and Technology}}.
+\newblock \bibinfo{title}{Module-lattice-based key-encapsulation mechanism standard}.
+\newblock \bibinfo{type}{Tech. Rep.} \bibinfo{number}{Federal Information Processing Standards Publications (FIPS) 203}, \bibinfo{institution}{U.S. Department of Commerce}, \bibinfo{address}{Washington, D.C.} (\bibinfo{year}{2024}).
+
+\bibitem{FIPS204}
+\bibinfo{author}{{National Institute of Standards and Technology}}.
+\newblock \bibinfo{title}{Module-lattice-based digital signature standard}.
+\newblock \bibinfo{type}{Tech. Rep.} \bibinfo{number}{Federal Information Processing Standards Publications (FIPS) 204}, \bibinfo{institution}{U.S. Department of Commerce}, \bibinfo{address}{Washington, D.C.} (\bibinfo{year}{2024}).
+
+\bibitem{FIPS205}
+\bibinfo{author}{{National Institute of Standards and Technology}}.
+\newblock \bibinfo{title}{Stateless hash-based digital signature standard}.
+\newblock \bibinfo{type}{Tech. Rep.} \bibinfo{number}{Federal Information Processing Standards Publications (FIPS) 205}, \bibinfo{institution}{U.S. Department of Commerce}, \bibinfo{address}{Washington, D.C.} (\bibinfo{year}{2024}).
+
+\bibitem{Barredo2016}
+\bibinfo{author}{Barredo, D.}, \bibinfo{author}{{De L{\'{e}}s{\'{e}}leuc}, S.}, \bibinfo{author}{Lienhard, V.}, \bibinfo{author}{Lahaye, T.} \& \bibinfo{author}{Browaeys, A.}
+\newblock \bibinfo{title}{{An atom-by-atom assembler of defect-free arbitrary two-dimensional atomic arrays}}.
+\newblock \emph{\bibinfo{journal}{Science}} \textbf{\bibinfo{volume}{354}}, \bibinfo{pages}{1021--1023} (\bibinfo{year}{2016}).
+
+\bibitem{endres2016atom}
+\bibinfo{author}{Endres, M.} \emph{et~al.}
+\newblock \bibinfo{title}{{Atom-by-atom assembly of defect-free one-dimensional cold atom arrays}}.
+\newblock \emph{\bibinfo{journal}{Science}} \textbf{\bibinfo{volume}{354}}, \bibinfo{pages}{1024--1027} (\bibinfo{year}{2016}).
+
+\bibitem{ma2022universal}
+\bibinfo{author}{Ma, S.} \emph{et~al.}
+\newblock \bibinfo{title}{Universal gate operations on nuclear spin qubits in an optical tweezer array of $^{171}\mathrm{Yb}$ atoms}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. X}} \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{021028} (\bibinfo{year}{2022}).
+
+\bibitem{jenkins2022ytterbium}
+\bibinfo{author}{Jenkins, A.}, \bibinfo{author}{Lis, J.~W.}, \bibinfo{author}{Senoo, A.}, \bibinfo{author}{McGrew, W.~F.} \& \bibinfo{author}{Kaufman, A.~M.}
+\newblock \bibinfo{title}{Ytterbium nuclear-spin qubits in an optical tweezer array}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. X}} \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{021027} (\bibinfo{year}{2022}).
+
+\bibitem{finkelstein2024universal}
+\bibinfo{author}{Finkelstein, R.} \emph{et~al.}
+\newblock \bibinfo{title}{{Universal quantum operations and ancilla-based read-out for tweezer clocks}}.
+\newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{634}}, \bibinfo{pages}{321--327} (\bibinfo{year}{2024}).
+
+\bibitem{isenhower2010demonstration}
+\bibinfo{author}{Isenhower, L.} \emph{et~al.}
+\newblock \bibinfo{title}{{Demonstration of a Neutral Atom Controlled-NOT Quantum Gate}}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Lett.}} \textbf{\bibinfo{volume}{104}}, \bibinfo{pages}{010503} (\bibinfo{year}{2010}).
+
+\bibitem{Beugnon2007}
+\bibinfo{author}{Beugnon, J.} \emph{et~al.}
+\newblock \bibinfo{title}{{Two-dimensional transport and transfer of a single atomic qubit in optical tweezers}}.
+\newblock \emph{\bibinfo{journal}{Nature Physics}} \textbf{\bibinfo{volume}{3}}, \bibinfo{pages}{696--699} (\bibinfo{year}{2007}).
+
+\bibitem{Schlosser2011}
+\bibinfo{author}{Schlosser, M.}, \bibinfo{author}{Tichelmann, S.}, \bibinfo{author}{Kruse, J.} \& \bibinfo{author}{Birkl, G.}
+\newblock \bibinfo{title}{{Scalable architecture for quantum information processing with atoms in optical micro-structures}}.
+\newblock \emph{\bibinfo{journal}{Quantum Information Processing}} \textbf{\bibinfo{volume}{10}}, \bibinfo{pages}{907--924} (\bibinfo{year}{2011}).
+
+\bibitem{cain2024correlated}
+\bibinfo{author}{Cain, M.} \emph{et~al.}
+\newblock \bibinfo{title}{{Correlated Decoding of Logical Algorithms with Transversal Gates}}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Lett.}} \textbf{\bibinfo{volume}{133}}, \bibinfo{pages}{240602} (\bibinfo{year}{2024}).
+
+\bibitem{zhou2024algorithmic}
+\bibinfo{author}{Zhou, H.} \emph{et~al.}
+\newblock \bibinfo{title}{Algorithmic fault tolerance for fast quantum computing} (\bibinfo{year}{2024}).
+\newblock {arXiv:2406.17653 [quant-ph]}.
+
+\bibitem{zhang2025leveraging}
+\bibinfo{author}{Zhang, B.} \emph{et~al.}
+\newblock \bibinfo{title}{Leveraging erasure errors in logical qubits with metastable $^{171}$yb atoms} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2506.13724}.
+\newblock {arXiv:2506.13724 [quant-ph]}.
+
+\bibitem{cowtan2025fast}
+\bibinfo{author}{Cowtan, A.}, \bibinfo{author}{He, Z.}, \bibinfo{author}{Williamson, D.~J.} \& \bibinfo{author}{Yoder, T.~J.}
+\newblock \bibinfo{title}{Fast and fault-tolerant logical measurements: Auxiliary hypergraphs and transversal surgery} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2510.14895}.
+\newblock {arXiv:2510.14895 [quant-ph]}.
+
+\bibitem{li2025transversal}
+\bibinfo{author}{Li, C.}, \bibinfo{author}{Preskill, J.} \& \bibinfo{author}{Xu, Q.}
+\newblock \bibinfo{title}{Transversal dimension jump for product qldpc codes} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2510.07269}.
+\newblock {arXiv:2510.07269 [quant-ph]}.
+
+\bibitem{falconi2025microsecond}
+\bibinfo{author}{Muzi~Falconi, A.} \emph{et~al.}
+\newblock \bibinfo{title}{Microsecond-scale high-survival and number-resolved detection of ytterbium atom arrays}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Lett.}} \textbf{\bibinfo{volume}{135}}, \bibinfo{pages}{203402} (\bibinfo{year}{2025}).
+
+\bibitem{gidney2025factor}
+\bibinfo{author}{Gidney, C.}
+\newblock \bibinfo{title}{How to factor 2048 bit rsa integers with less than a million noisy qubits}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2505.15917}}  (\bibinfo{year}{2025}).
+
+\bibitem{breuckmann2021quantum}
+\bibinfo{author}{Breuckmann, N.~P.} \& \bibinfo{author}{Eberhardt, J.~N.}
+\newblock \bibinfo{title}{Quantum low-density parity-check codes}.
+\newblock \emph{\bibinfo{journal}{PRX Quantum}} \textbf{\bibinfo{volume}{2}}, \bibinfo{pages}{040101} (\bibinfo{year}{2021}).
+
+\bibitem{bravyi2010tradeoffs}
+\bibinfo{author}{Bravyi, S.}, \bibinfo{author}{Poulin, D.} \& \bibinfo{author}{Terhal, B.}
+\newblock \bibinfo{title}{{Tradeoffs for Reliable Quantum Information Storage in 2D Systems}}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Lett.}} \textbf{\bibinfo{volume}{104}}, \bibinfo{pages}{050503} (\bibinfo{year}{2010}).
+
+\bibitem{muller2025improved}
+\bibinfo{author}{M{\"u}ller, T.} \emph{et~al.}
+\newblock \bibinfo{title}{Improved belief propagation is sufficient for real-time decoding of quantum memory}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2506.01779}}  (\bibinfo{year}{2025}).
+
+\bibitem{williamson2024low}
+\bibinfo{author}{Williamson, D.~J.} \& \bibinfo{author}{Yoder, T.~J.}
+\newblock \bibinfo{title}{{Low-overhead fault-tolerant quantum computation by gauging logical operators}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2410.02213}}  (\bibinfo{year}{2024}).
+
+\bibitem{he2025extractors}
+\bibinfo{author}{He, Z.}, \bibinfo{author}{Cowtan, A.}, \bibinfo{author}{Williamson, D.~J.} \& \bibinfo{author}{Yoder, T.~J.}
+\newblock \bibinfo{title}{Extractors: Qldpc architectures for efficient pauli-based computation}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2503.10390}}  (\bibinfo{year}{2025}).
+
+\bibitem{malcolm2025computing}
+\bibinfo{author}{Malcolm, A.~J.} \emph{et~al.}
+\newblock \bibinfo{title}{Computing efficiently in qldpc codes}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2502.07150}}  (\bibinfo{year}{2025}).
+
+\bibitem{menon2025magic}
+\bibinfo{author}{Menon, V.} \emph{et~al.}
+\newblock \bibinfo{title}{Magic tricycles: Efficient magic state generation with finite block-length quantum ldpc codes} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2508.10714}.
+\newblock {arXiv:2508.10714 [quant-ph]}.
+
+\bibitem{xu2025batched}
+\bibinfo{author}{Xu, Q.} \emph{et~al.}
+\newblock \bibinfo{title}{Batched high-rate logical operations for quantum ldpc codes}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2510.06159}}  (\bibinfo{year}{2025}).
+
+\bibitem{panteleev2019degenerate}
+\bibinfo{author}{Panteleev, P.} \& \bibinfo{author}{Kalachev, G.}
+\newblock \bibinfo{title}{{Degenerate Quantum LDPC Codes With Good Finite Length Performance}}.
+\newblock \emph{\bibinfo{journal}{Quantum}} \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{585} (\bibinfo{year}{2019}).
+
+\bibitem{wu2022erasure}
+\bibinfo{author}{Wu, Y.}, \bibinfo{author}{Kolkowitz, S.}, \bibinfo{author}{Puri, S.} \& \bibinfo{author}{Thompson, J.~D.}
+\newblock \bibinfo{title}{{Erasure conversion for fault-tolerant quantum computing in alkaline earth Rydberg atom arrays}}.
+\newblock \emph{\bibinfo{journal}{Nat. Comm.}} \textbf{\bibinfo{volume}{13}}, \bibinfo{pages}{1--7} (\bibinfo{year}{2022}).
+
+\bibitem{sahay2023high}
+\bibinfo{author}{Sahay, K.}, \bibinfo{author}{Jin, J.}, \bibinfo{author}{Claes, J.}, \bibinfo{author}{Thompson, J.~D.} \& \bibinfo{author}{Puri, S.}
+\newblock \bibinfo{title}{{High threshold codes for neutral atom qubits with biased erasure errors}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2302.03063}}  (\bibinfo{year}{2023}).
+
+\bibitem{kubica2023erasure}
+\bibinfo{author}{Kubica, A.} \emph{et~al.}
+\newblock \bibinfo{title}{Erasure qubits: Overcoming the ${T}_{1}$ limit in superconducting circuits}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. X}} \textbf{\bibinfo{volume}{13}}, \bibinfo{pages}{041022} (\bibinfo{year}{2023}).
+
+\bibitem{yu2024processing}
+\bibinfo{author}{Yu, C.-C.} \emph{et~al.}
+\newblock \bibinfo{title}{{Processing and decoding Rydberg decay error with MBQC}} (\bibinfo{year}{2025}).
+\newblock {arXiv:2411.04664 [quant-ph]}.
+
+\bibitem{chang2024surface}
+\bibinfo{author}{Chang, K.} \emph{et~al.}
+\newblock \bibinfo{title}{{Surface Code with Imperfect Erasure Checks}} (\bibinfo{year}{2024}).
+\newblock {arXiv:2408.00842 [quant-ph]}.
+
+\bibitem{perrin2024quantum}
+\bibinfo{author}{Perrin, H.}, \bibinfo{author}{Jandura, S.} \& \bibinfo{author}{Pupillo, G.}
+\newblock \bibinfo{title}{{Quantum error correction resilient against atom loss}} (\bibinfo{year}{2025}).
+\newblock {arXiv:2412.07841 [quant-ph]}.
+
+\bibitem{baranes2025leveraging}
+\bibinfo{author}{Baranes, G.} \emph{et~al.}
+\newblock \bibinfo{title}{{Leveraging atom loss errors in fault tolerant quantum algorithms}} (\bibinfo{year}{2025}).
+\newblock {arXiv:2502.20558 [quant-ph]}.
+
+\bibitem{gu2025fault}
+\bibinfo{author}{Gu, S.}, \bibinfo{author}{Retzker, A.} \& \bibinfo{author}{Kubica, A.}
+\newblock \bibinfo{title}{Fault-tolerant quantum architectures based on erasure qubits}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Res.}} \textbf{\bibinfo{volume}{7}}, \bibinfo{pages}{013249} (\bibinfo{year}{2025}).
+
+\bibitem{senior2026scalable}
+\bibinfo{author}{Senior, A.~W.} \emph{et~al.}
+\newblock \bibinfo{title}{A scalable and real-time neural decoder for topological quantum codes} (\bibinfo{year}{2026}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2512.07737}.
+\newblock {arXiv:2512.07737 [quant-ph]}.
+
+\bibitem{maan2026decoding}
+\bibinfo{author}{Maan, A.~S.}, \bibinfo{author}{Garcia~Herrero, F.~M.}, \bibinfo{author}{Paler, A.} \& \bibinfo{author}{Savin, V.}
+\newblock \bibinfo{title}{Decoding correlated errors in quantum ldpc codes}.
+\newblock \emph{\bibinfo{journal}{Nature Communications}}  (\bibinfo{year}{2026}).
+
+\bibitem{ataides2025neural}
+\bibinfo{author}{Ataides, J. P.~B.}, \bibinfo{author}{Gu, A.}, \bibinfo{author}{Yelin, S.~F.} \& \bibinfo{author}{Lukin, M.~D.}
+\newblock \bibinfo{title}{Neural decoders for universal quantum algorithms} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2509.11370}.
+\newblock {arXiv:2509.11370 [quant-ph]}.
+
+\bibitem{bravyi2016trading}
+\bibinfo{author}{Bravyi, S.}, \bibinfo{author}{Smith, G.} \& \bibinfo{author}{Smolin, J.~A.}
+\newblock \bibinfo{title}{{Trading classical and quantum computational resources}}.
+\newblock \emph{\bibinfo{journal}{Physical Review X}} \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{021043} (\bibinfo{year}{2016}).
+
+\bibitem{Note1}
+\bibinfo{note}{A $\protect \overline {T}$ gate on the memory code can be implemented using a two-qubit $\protect \bar {Z}\protect \bar {Z}$ measurement between the memory and the surface code hosting the $\mathinner {|{\protect \overline {T}}\rangle }$ state~\cite {litinski2019game}.}
+
+\bibitem{jones2013low}
+\bibinfo{author}{Jones, C.}
+\newblock \bibinfo{title}{Low-overhead constructions for the fault-tolerant toffoli gate}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. A}} \textbf{\bibinfo{volume}{87}}, \bibinfo{pages}{022328} (\bibinfo{year}{2013}).
+
+\bibitem{matthew2013meet}
+\bibinfo{author}{Amy, M.}, \bibinfo{author}{Maslov, D.}, \bibinfo{author}{Mosca, M.} \& \bibinfo{author}{Roetteler, M.}
+\newblock \bibinfo{title}{A meet-in-the-middle algorithm for fast synthesis of depth-optimal quantum circuits}.
+\newblock \emph{\bibinfo{journal}{Trans. Comp.-Aided Des. Integ. Cir. Sys.}} \textbf{\bibinfo{volume}{32}}, \bibinfo{pages}{818–830} (\bibinfo{year}{2013}).
+
+\bibitem{gidney2018halving}
+\bibinfo{author}{Gidney, C.}
+\newblock \bibinfo{title}{{Halving the cost of quantum addition}}.
+\newblock \emph{\bibinfo{journal}{Quantum}} \textbf{\bibinfo{volume}{2}}, \bibinfo{pages}{74} (\bibinfo{year}{2018}).
+
+\bibitem{Note2}
+\bibinfo{note}{State-of-the-art, low-overhead constructions rely on randomized numerical subroutines that extensively estimate the fault distance of the protocol~\cite {cross2024improved, zheng2025high}, a procedure that becomes computationally prohibitive for large code blocks.}
+
+\bibitem{liang2025generalized}
+\bibinfo{author}{Liang, Z.}, \bibinfo{author}{Liu, K.}, \bibinfo{author}{Song, H.} \& \bibinfo{author}{Chen, Y.-A.}
+\newblock \bibinfo{title}{{Generalized toric codes on twisted tori for quantum error correction}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2503.03827}}  (\bibinfo{year}{2025}).
+
+\bibitem{litinski2019magic}
+\bibinfo{author}{Litinski, D.}
+\newblock \bibinfo{title}{{Magic State Distillation: Not as Costly as You Think}}.
+\newblock \emph{\bibinfo{journal}{Quantum}} \textbf{\bibinfo{volume}{3}}, \bibinfo{pages}{205} (\bibinfo{year}{2019}).
+
+\bibitem{sahay2025fold}
+\bibinfo{author}{Sahay, K.} \emph{et~al.}
+\newblock \bibinfo{title}{Fold-transversal surface code cultivation} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2509.05212}.
+\newblock {arXiv:2509.05212 [quant-ph]}.
+
+\bibitem{swaroop2024universal}
+\bibinfo{author}{Swaroop, E.}, \bibinfo{author}{Jochym-O'Connor, T.} \& \bibinfo{author}{Yoder, T.~J.}
+\newblock \bibinfo{title}{Universal adapters between quantum ldpc codes}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2410.03628}}  (\bibinfo{year}{2024}).
+
+\bibitem{zheng2026high}
+\bibinfo{author}{Zheng, H.}, \bibinfo{author}{Zheng, G.}, \bibinfo{author}{Jiang, L.} \& \bibinfo{author}{Xu, Q.}
+\newblock \bibinfo{title}{In preparation} (\bibinfo{year}{2026}).
+
+\bibitem{vedral1996quantum}
+\bibinfo{author}{Vedral, V.}, \bibinfo{author}{Barenco, A.} \& \bibinfo{author}{Ekert, A.}
+\newblock \bibinfo{title}{{Quantum networks for elementary arithmetic operations}}.
+\newblock \emph{\bibinfo{journal}{Physical Review A}} \textbf{\bibinfo{volume}{54}}, \bibinfo{pages}{147} (\bibinfo{year}{1996}).
+
+\bibitem{babbush2018encoding}
+\bibinfo{author}{Babbush, R.} \emph{et~al.}
+\newblock \bibinfo{title}{Encoding electronic spectra in quantum circuits with linear t complexity}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. X}} \textbf{\bibinfo{volume}{8}}, \bibinfo{pages}{041015} (\bibinfo{year}{2018}).
+
+\bibitem{proos2003shor}
+\bibinfo{author}{Proos, J.} \& \bibinfo{author}{Zalka, C.}
+\newblock \bibinfo{title}{Shor's discrete logarithm quantum algorithm for elliptic curves}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint quant-ph/0301141}}  (\bibinfo{year}{2003}).
+
+\bibitem{roetteler2017quantum}
+\bibinfo{author}{Roetteler, M.}, \bibinfo{author}{Naehrig, M.}, \bibinfo{author}{Svore, K.~M.} \& \bibinfo{author}{Lauter, K.}
+\newblock \bibinfo{title}{Quantum resource estimates for computing elliptic curve discrete logarithms}.
+\newblock In \emph{\bibinfo{booktitle}{International Conference on the Theory and Application of Cryptology and Information Security}}, \bibinfo{pages}{241--270} (\bibinfo{organization}{Springer}, \bibinfo{year}{2017}).
+
+\bibitem{haner2020improved}
+\bibinfo{author}{H{\"a}ner, T.}, \bibinfo{author}{Jaques, S.}, \bibinfo{author}{Naehrig, M.}, \bibinfo{author}{Roetteler, M.} \& \bibinfo{author}{Soeken, M.}
+\newblock \bibinfo{title}{Improved quantum circuits for elliptic curve discrete logarithms}.
+\newblock In \emph{\bibinfo{booktitle}{International conference on post-quantum cryptography}}, \bibinfo{pages}{425--444} (\bibinfo{organization}{Springer}, \bibinfo{year}{2020}).
+
+\bibitem{litinski2023compute}
+\bibinfo{author}{Litinski, D.}
+\newblock \bibinfo{title}{How to compute a 256-bit elliptic curve private key with only 50 million toffoli gates}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2306.08585}}  (\bibinfo{year}{2023}).
+
+\bibitem{gouzien2023performance}
+\bibinfo{author}{Gouzien, E.}, \bibinfo{author}{Ruiz, D.}, \bibinfo{author}{Le~R\'egent, F.-M.}, \bibinfo{author}{Guillaud, J.} \& \bibinfo{author}{Sangouard, N.}
+\newblock \bibinfo{title}{Performance analysis of a repetition cat code architecture: Computing 256-bit elliptic curve logarithm in 9 hours with 126 133 cat qubits}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Lett.}} \textbf{\bibinfo{volume}{131}}, \bibinfo{pages}{040602} (\bibinfo{year}{2023}).
+
+\bibitem{zhang2025time}
+\bibinfo{author}{Zhang, G.} \& \bibinfo{author}{Li, Y.}
+\newblock \bibinfo{title}{Time-efficient logical operations on quantum low-density parity check codes}.
+\newblock \emph{\bibinfo{journal}{Physical Review Letters}} \textbf{\bibinfo{volume}{134}}, \bibinfo{pages}{070602} (\bibinfo{year}{2025}).
+
+\bibitem{cowtan2025parallel}
+\bibinfo{author}{Cowtan, A.}, \bibinfo{author}{He, Z.}, \bibinfo{author}{Williamson, D.~J.} \& \bibinfo{author}{Yoder, T.~J.}
+\newblock \bibinfo{title}{Parallel logical measurements via quantum code surgery}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2503.05003}}  (\bibinfo{year}{2025}).
+
+\bibitem{draper2004logarithmic}
+\bibinfo{author}{Draper, T.~G.}, \bibinfo{author}{Kutin, S.~A.}, \bibinfo{author}{Rains, E.~M.} \& \bibinfo{author}{Svore, K.~M.}
+\newblock \bibinfo{title}{{A logarithmic-depth quantum carry-lookahead adder}}.
+\newblock \emph{\bibinfo{journal}{Quantum Inf. Comput.}} \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{351--369} (\bibinfo{year}{2004}).
+
+\bibitem{horsman2012surface}
+\bibinfo{author}{Horsman, C.}, \bibinfo{author}{Fowler, A.~G.}, \bibinfo{author}{Devitt, S.} \& \bibinfo{author}{Meter, R.~V.}
+\newblock \bibinfo{title}{{Surface code quantum computing by lattice surgery}}.
+\newblock \emph{\bibinfo{journal}{New Journal of Physics}} \textbf{\bibinfo{volume}{14}}, \bibinfo{pages}{123011} (\bibinfo{year}{2012}).
+
+\bibitem{caltech2026codeatlas}
+\bibinfo{author}{{Caltech}} \& \bibinfo{author}{{Oratomic}}.
+\newblock \bibinfo{title}{Atlas of atomic fault-tolerant quantum memory} (\bibinfo{year}{2026}).
+\newblock \bibinfo{note}{In preparation}.
+
+\bibitem{baspin2025fast}
+\bibinfo{author}{Baspin, N.}, \bibinfo{author}{Berent, L.} \& \bibinfo{author}{Cohen, L.~Z.}
+\newblock \bibinfo{title}{Fast surgery for quantum ldpc codes}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2510.04521}}  (\bibinfo{year}{2025}).
+
+\bibitem{chang2026constant}
+\bibinfo{author}{Chang, K.}, \bibinfo{author}{He, Z.}, \bibinfo{author}{Yoder, T.~J.}, \bibinfo{author}{Zhu, G.} \& \bibinfo{author}{Jochym-O'Connor, T.}
+\newblock \bibinfo{title}{Constant-time surgery on 2d hypergraph product codes with near-constant space overhead}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2603.02157}}  (\bibinfo{year}{2026}).
+
+\bibitem{tan2025single}
+\bibinfo{author}{Tan, S. J.~S.}, \bibinfo{author}{Hong, Y.}, \bibinfo{author}{Lin, T.-C.}, \bibinfo{author}{Gullans, M.~J.} \& \bibinfo{author}{Hsieh, M.-H.}
+\newblock \bibinfo{title}{Single-shot universality in quantum ldpc codes via code-switching} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2510.08552}.
+\newblock {arXiv:2510.08552 [quant-ph]}.
+
+\bibitem{golowich2025constant}
+\bibinfo{author}{Golowich, L.}, \bibinfo{author}{Chang, K.} \& \bibinfo{author}{Zhu, G.}
+\newblock \bibinfo{title}{Constant-overhead addressable gates via single-shot code switching}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2510.06760}}  (\bibinfo{year}{2025}).
+
+\bibitem{bombin2013gauge}
+\bibinfo{author}{Bomb{\'{i}}n, H.}
+\newblock \bibinfo{title}{{Gauge Color Codes: Optimal Transversal Gates and Gauge Fixing in Topological Stabilizer Codes}}.
+\newblock \emph{\bibinfo{journal}{New Journal of Physics}} \textbf{\bibinfo{volume}{17}} (\bibinfo{year}{2013}).
+
+\bibitem{brown2016fault}
+\bibinfo{author}{Brown, B.~J.}, \bibinfo{author}{Nickerson, N.~H.} \& \bibinfo{author}{Browne, D.~E.}
+\newblock \bibinfo{title}{Fault-tolerant error correction with the gauge color code}.
+\newblock \emph{\bibinfo{journal}{Nature Communications}} \textbf{\bibinfo{volume}{7}}, \bibinfo{pages}{12302} (\bibinfo{year}{2016}).
+
+\bibitem{jacob2026single}
+\bibinfo{author}{Jacob, A.}, \bibinfo{author}{McLauchlan, C.} \& \bibinfo{author}{Browne, D.~E.}
+\newblock \bibinfo{title}{Single-shot decoding and fault-tolerant gates with trivariate tricycle codes} (\bibinfo{year}{2026}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2508.08191}.
+\newblock {arXiv:2508.08191 [quant-ph]}.
+
+\bibitem{fowler2012bridge}
+\bibinfo{author}{Fowler, A.~G.} \& \bibinfo{author}{Devitt, S.~J.}
+\newblock \bibinfo{title}{{A bridge to lower overhead quantum computation}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:1209.0510}}  (\bibinfo{year}{2012}).
+
+\bibitem{fowler2012time}
+\bibinfo{author}{Fowler, A.~G.}
+\newblock \bibinfo{title}{{Time-optimal quantum computation}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:1210.4626}}  (\bibinfo{year}{2012}).
+
+\bibitem{xu2024fast}
+\bibinfo{author}{Xu, Q.} \emph{et~al.}
+\newblock \bibinfo{title}{{Fast and Parallelizable Logical Computation with Homological Product Codes}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2407.18490}}  (\bibinfo{year}{2024}).
+
+\bibitem{litinski2022active}
+\bibinfo{author}{Litinski, D.} \& \bibinfo{author}{Nickerson, N.}
+\newblock \bibinfo{title}{{Active volume: An architecture for efficient fault-tolerant quantum computers with limited non-local connections}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2211.15465}}  (\bibinfo{year}{2022}).
+
+\bibitem{litinski2019game}
+\bibinfo{author}{Litinski, D.}
+\newblock \bibinfo{title}{{A Game of Surface Codes: Large-Scale Quantum Computing with Lattice Surgery}}.
+\newblock \emph{\bibinfo{journal}{Quantum}} \textbf{\bibinfo{volume}{3}}, \bibinfo{pages}{128} (\bibinfo{year}{2019}).
+
+\bibitem{symons2025sequences}
+\bibinfo{author}{Symons, B.~C.}, \bibinfo{author}{Rajput, A.} \& \bibinfo{author}{Browne, D.~E.}
+\newblock \bibinfo{title}{Sequences of bivariate bicycle codes from covering graphs}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2511.13560}}  (\bibinfo{year}{2025}).
+
+\bibitem{smarandache2012quasi}
+\bibinfo{author}{Smarandache, R.} \& \bibinfo{author}{Vontobel, P.~O.}
+\newblock \bibinfo{title}{{Quasi-cyclic LDPC codes: Influence of proto-and Tanner-graph structure on minimum Hamming distance upper bounds}}.
+\newblock \emph{\bibinfo{journal}{IEEE Trans. Inf. Th.}} \textbf{\bibinfo{volume}{58}}, \bibinfo{pages}{585--607} (\bibinfo{year}{2012}).
+
+\bibitem{raveendran2025minimum}
+\bibinfo{author}{Raveendran, N.}, \bibinfo{author}{Declercq, D.} \& \bibinfo{author}{Vasi{\'c}, B.}
+\newblock \bibinfo{title}{On the minimum distances of finite-length lifted product quantum ldpc codes}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2503.07567}}  (\bibinfo{year}{2025}).
+
+\bibitem{roffe2020decoding}
+\bibinfo{author}{Roffe, J.}, \bibinfo{author}{White, D.~R.}, \bibinfo{author}{Burton, S.} \& \bibinfo{author}{Campbell, E.}
+\newblock \bibinfo{title}{Decoding across the quantum low-density parity-check code landscape}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Res.}} \textbf{\bibinfo{volume}{2}}, \bibinfo{pages}{043423} (\bibinfo{year}{2020}).
+
+\bibitem{ide2024fault}
+\bibinfo{author}{Ide, B.}, \bibinfo{author}{Gowda, M.~G.}, \bibinfo{author}{Nadkarni, P.~J.} \& \bibinfo{author}{Dauphinais, G.}
+\newblock \bibinfo{title}{{Fault-tolerant logical measurements via homological measurement}}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2410.02753}}  (\bibinfo{year}{2024}).
+
+\bibitem{webster2025explicit}
+\bibinfo{author}{Webster, P.}, \bibinfo{author}{Smith, S.~C.} \& \bibinfo{author}{Cohen, L.~Z.}
+\newblock \bibinfo{title}{Explicit construction of low-overhead gadgets for gates on quantum ldpc codes}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2511.15989}}  (\bibinfo{year}{2025}).
+
+\bibitem{gu2026qgpuparallellogicquantum}
+\bibinfo{author}{Gu, B.} \emph{et~al.}
+\newblock \bibinfo{title}{Qgpu: Parallel logic in quantum ldpc codes} (\bibinfo{year}{2026}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2603.05398}.
+\newblock {arXiv:2603.05398 [quant-ph]}.
+
+\bibitem{pryadko2023qdistrnd}
+\bibinfo{author}{Pryadko, L.~P.}, \bibinfo{author}{Shabashov, V.~A.} \& \bibinfo{author}{Kozin, V.~K.}
+\newblock \bibinfo{title}{Qdistrnd: A gap package for computing the distance of quantum error-correcting codes}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2308.15140}}  (\bibinfo{year}{2023}).
+
+\bibitem{huang2022homomorphic}
+\bibinfo{author}{Huang, S.}, \bibinfo{author}{Jochym-O'Connor, T.} \& \bibinfo{author}{Yoder, T.~J.}
+\newblock \bibinfo{title}{{Homomorphic Logical Measurements}}.
+\newblock \emph{\bibinfo{journal}{arXiv:2211.03625}}  (\bibinfo{year}{2022}).
+
+\bibitem{sayginel2025fault}
+\bibinfo{author}{Sayginel, H.}, \bibinfo{author}{Koutsioumpas, S.}, \bibinfo{author}{Webster, M.}, \bibinfo{author}{Rajput, A.} \& \bibinfo{author}{Browne, D.~E.}
+\newblock \bibinfo{title}{Fault-tolerant logical clifford gates from code automorphisms}.
+\newblock \emph{\bibinfo{journal}{PRX Quantum}} \textbf{\bibinfo{volume}{6}}, \bibinfo{pages}{030343} (\bibinfo{year}{2025}).
+
+\bibitem{bravyi2005universal}
+\bibinfo{author}{Bravyi, S.} \& \bibinfo{author}{Kitaev, A.}
+\newblock \bibinfo{title}{{Universal quantum computation with ideal Clifford gates and noisy ancillas}}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. A}} \textbf{\bibinfo{volume}{71}}, \bibinfo{pages}{022316} (\bibinfo{year}{2005}).
+
+\bibitem{zhang2025constant}
+\bibinfo{author}{Zhang, G.}, \bibinfo{author}{Zhu, Y.}, \bibinfo{author}{Yuan, X.} \& \bibinfo{author}{Li, Y.}
+\newblock \bibinfo{title}{Constant-overhead magic state injection into qldpc codes with error independence guarantees}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2505.06981}}  (\bibinfo{year}{2025}).
+
+\bibitem{Note3}
+\bibinfo{note}{Note that one could also teleport auto-corrected surface code $\mathinner {|{\protect \overline {T}}\rangle }$ states, which avoids the $\protect \overline {S}$ corrections, at the price of using more surface code patches~\cite {litinski2019magic}.}
+
+\bibitem{ismail2025transversal}
+\bibinfo{author}{Ismail, R.} \emph{et~al.}
+\newblock \bibinfo{title}{Transversal star architecture for megaquop-scale quantum simulation with neutral atoms}.
+\newblock \emph{\bibinfo{journal}{arXiv preprint arXiv:2509.18294}}  (\bibinfo{year}{2025}).
+
+\bibitem{vaknin2025efficient}
+\bibinfo{author}{Vaknin, Y.}, \bibinfo{author}{Jacoby, S.}, \bibinfo{author}{Grimsmo, A.} \& \bibinfo{author}{Retzker, A.}
+\newblock \bibinfo{title}{Efficient magic state cultivation on the surface code} (\bibinfo{year}{2025}).
+\newblock \urlprefix\url{https://arxiv.org/abs/2502.01743}.
+\newblock {arXiv:2502.01743 [quant-ph]}.
+
+\bibitem{gidney2021stim}
+\bibinfo{author}{Gidney, C.}
+\newblock \bibinfo{title}{Stim: a fast stabilizer circuit simulator}.
+\newblock \emph{\bibinfo{journal}{{Quantum}}} \textbf{\bibinfo{volume}{5}}, \bibinfo{pages}{497} (\bibinfo{year}{2021}).
+
+\bibitem{tremblay2022constant}
+\bibinfo{author}{Tremblay, M.~A.}, \bibinfo{author}{Delfosse, N.} \& \bibinfo{author}{Beverland, M.~E.}
+\newblock \bibinfo{title}{{Constant-Overhead Quantum Error Correction with Thin Planar Connectivity}}.
+\newblock \emph{\bibinfo{journal}{Physical Review Letters}} \textbf{\bibinfo{volume}{129}}, \bibinfo{pages}{050504} (\bibinfo{year}{2022}).
+
+\bibitem{viszlai2023matching}
+\bibinfo{author}{Viszlai, J.} \emph{et~al.}
+\newblock \bibinfo{title}{Matching generalized-bicycle codes to neutral atoms for low-overhead fault-tolerance}.
+\newblock In \emph{\bibinfo{booktitle}{2025 IEEE International Conference on Quantum Computing and Engineering (QCE)}}, vol.~\bibinfo{volume}{01}, \bibinfo{pages}{688--699} (\bibinfo{year}{2025}).
+
+\bibitem{kang2025quits}
+\bibinfo{author}{Kang, M.} \emph{et~al.}
+\newblock \bibinfo{title}{{QUITS}: {A} modular {Q}ldpc code circ{UIT} {S}imulator}.
+\newblock \emph{\bibinfo{journal}{{Quantum}}} \textbf{\bibinfo{volume}{9}}, \bibinfo{pages}{1931} (\bibinfo{year}{2025}).
+
+\bibitem{Roffe_LDPC_Python_tools_2022}
+\bibinfo{author}{Roffe, J.}
+\newblock \bibinfo{title}{{LDPC: Python tools for low density parity check codes}} (\bibinfo{year}{2022}).
+\newblock \urlprefix\url{https://pypi.org/project/ldpc/}.
+
+\bibitem{poulsen2017fault}
+\bibinfo{author}{Poulsen~Nautrup, H.}, \bibinfo{author}{Friis, N.} \& \bibinfo{author}{Briegel, H.~J.}
+\newblock \bibinfo{title}{Fault-tolerant interface between quantum memories and quantum processors}.
+\newblock \emph{\bibinfo{journal}{Nat. Comm.}} \textbf{\bibinfo{volume}{8}}, \bibinfo{pages}{1321} (\bibinfo{year}{2017}).
+
+\bibitem{zhu2024unified}
+\bibinfo{author}{Zhu, S.}, \bibinfo{author}{Sundaram, A.} \& \bibinfo{author}{Low, G.~H.}
+\newblock \bibinfo{title}{Unified architecture for quantum lookup tables}.
+\newblock \emph{\bibinfo{journal}{Phys. Rev. Res.}} \textbf{\bibinfo{volume}{7}}, \bibinfo{pages}{043230} (\bibinfo{year}{2025}).
+
+\end{thebibliography}
