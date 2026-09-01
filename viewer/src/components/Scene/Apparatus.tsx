@@ -141,29 +141,6 @@ function DataBuses({ zones }: { zones: ZoneConfig[] }) {
   );
 }
 
-/**
- * Laser delivery — white beams at very low opacity.
- */
-function LaserDelivery({ zones }: { zones: ZoneConfig[] }) {
-  return (
-    <group>
-      {zones.map((zone) => (
-        <group key={`laser-${zone.name}`}>
-          {/* Main beam — white, barely visible */}
-          <mesh position={[zone.center[0], 3, zone.center[2]]}>
-            <cylinderGeometry args={[0.005, 0.3, 4, 6, 1, true]} />
-            <meshBasicMaterial
-              color="#ffffff"
-              transparent
-              opacity={0.02}
-              side={THREE.DoubleSide}
-            />
-          </mesh>
-        </group>
-      ))}
-    </group>
-  );
-}
 
 /**
  * Zone markings on the substrate — corner marks in structural color.
@@ -225,7 +202,6 @@ export function Apparatus({ zones }: { zones: ZoneConfig[] }) {
       <Substrate />
       <VacuumChamber />
       <DataBuses zones={zones} />
-      <LaserDelivery zones={zones} />
       <ZoneMarkings zones={zones} />
     </group>
   );

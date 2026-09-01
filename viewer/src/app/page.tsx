@@ -117,7 +117,19 @@ export default function Home() {
         </div>
         <div className="pane-right" style={{ flex: 1, position: "relative" }}>
           {/* Watermark */}
-          <div className="watermark" style={{ position: "absolute", bottom: "var(--s7)", right: "var(--s6)", zIndex: 1 }}>
+          <div style={{
+            position: "absolute",
+            bottom: "var(--s7)",
+            left: "var(--s7)",
+            zIndex: 1,
+            fontFamily: "var(--font-display)",
+            fontSize: 72,
+            fontWeight: 200,
+            color: "#0F1218",
+            letterSpacing: "-0.02em",
+            userSelect: "none",
+            pointerEvents: "none",
+          }}>
             10,000
           </div>
           <ErrorBoundary fallback={

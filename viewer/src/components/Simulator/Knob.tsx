@@ -39,27 +39,32 @@ export function SliderKnob({
           {unit && <span className="text-[var(--text-quaternary)] ml-0.5">{unit}</span>}
         </span>
       </div>
-      <input
-        type="range"
-        aria-label={label}
-        aria-valuetext={displayValue + (unit ? ` ${unit}` : "")}
-        min={sliderMin}
-        max={sliderMax}
-        step={sliderStep}
-        value={sliderValue}
-        onChange={(e) => {
-          const raw = parseFloat(e.target.value);
-          onChange(logarithmic ? Math.pow(10, raw) : raw);
-        }}
-        className="w-full h-[3px] bg-[var(--border-default)] rounded-full appearance-none cursor-pointer
-          [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[14px]
-          [&::-webkit-slider-thumb]:h-[14px] [&::-webkit-slider-thumb]:rounded-full
-          [&::-webkit-slider-thumb]:bg-[var(--accent)]
-          [&::-webkit-slider-thumb]:shadow-[0_0_8px_rgba(99,102,241,0.3)]
-          [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing
-          [&::-webkit-slider-thumb]:transition-shadow
-          [&::-webkit-slider-thumb]:hover:shadow-[0_0_12px_rgba(99,102,241,0.5)]"
-      />
+      <div style={{ position: "relative", height: 20, display: "flex", alignItems: "center" }}>
+        <input
+          type="range"
+          aria-label={label}
+          aria-valuetext={displayValue + (unit ? ` ${unit}` : "")}
+          min={sliderMin}
+          max={sliderMax}
+          step={sliderStep}
+          value={sliderValue}
+          onChange={(e) => {
+            const raw = parseFloat(e.target.value);
+            onChange(logarithmic ? Math.pow(10, raw) : raw);
+          }}
+          style={{
+            width: "100%",
+            height: 3,
+            appearance: "none",
+            WebkitAppearance: "none",
+            background: `linear-gradient(to right, var(--text-tertiary) ${((sliderValue - sliderMin) / (sliderMax - sliderMin)) * 100}%, var(--border) ${((sliderValue - sliderMin) / (sliderMax - sliderMin)) * 100}%)`,
+            borderRadius: 2,
+            outline: "none",
+            cursor: "pointer",
+          }}
+          className="[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--text-primary)] [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing"
+        />
+      </div>
     </div>
   );
 }
@@ -82,18 +87,25 @@ export function ToggleKnob<T extends string>({
       {label && (
         <span className="text-[11px] text-[var(--text-tertiary)] block mb-1.5">{label}</span>
       )}
-      <div role="radiogroup" aria-label={label} className="flex gap-px bg-[var(--border-subtle)] rounded-[4px] p-px">
+      <div role="radiogroup" aria-label={label} style={{ display: "flex", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 3, padding: 1, gap: 1 }}>
         {options.map((opt) => (
           <button
             key={opt.value}
             role="radio"
             aria-checked={value === opt.value}
             onClick={() => onChange(opt.value)}
-            className={`flex-1 px-2.5 py-[5px] text-[11px] font-medium rounded-[3px] transition-all ${
-              value === opt.value
-                ? "bg-[var(--accent-muted)] text-[var(--accent)]"
-                : "bg-transparent text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]"
-            }`}
+            style={{
+              flex: 1,
+              padding: "5px 8px",
+              fontSize: "var(--fs-label)",
+              fontWeight: 500,
+              borderRadius: 2,
+              border: "none",
+              cursor: "pointer",
+              transition: "all 200ms",
+              background: value === opt.value ? "var(--bg-elevated)" : "transparent",
+              color: value === opt.value ? "var(--text-primary)" : "var(--text-tertiary)",
+            }}
           >
             {opt.label}
           </button>

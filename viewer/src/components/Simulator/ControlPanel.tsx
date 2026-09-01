@@ -17,7 +17,6 @@ import { ExportPanel } from "./ExportPanel";
 function Section({
   id,
   title,
-  color,
   badge,
   expanded,
   onToggle,
@@ -25,7 +24,6 @@ function Section({
 }: {
   id: string;
   title: string;
-  color?: string;
   badge?: string;
   expanded: boolean;
   onToggle: () => void;
@@ -37,9 +35,6 @@ function Section({
         onClick={onToggle}
         className="w-full flex items-center gap-2 px-5 py-3 hover:bg-[var(--bg-hover)] transition-colors text-left group"
       >
-        {color && (
-          <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: color, opacity: 0.7 }} />
-        )}
         <span className="text-[11px] text-[var(--text-tertiary)] group-hover:text-[var(--text-secondary)] tracking-wide uppercase flex-1 transition-colors">
           {title}
         </span>
@@ -68,19 +63,29 @@ function Section({
 
 function QuickStats() {
   const computed = useSimulator((s) => s.computed);
+
+  const fmtSup = (n: number): string => {
+    if (n === 0 || !isFinite(n) || isNaN(n)) return "\u2014";
+    const exp = Math.floor(Math.log10(Math.abs(n)));
+    const map: Record<string, string> = { "0":"\u2070","1":"\u00B9","2":"\u00B2","3":"\u00B3","4":"\u2074","5":"\u2075","6":"\u2076","7":"\u2077","8":"\u2078","9":"\u2079","-":"\u207B" };
+    const sup = String(exp).split("").map(c => map[c] || c).join("");
+    return `10${sup}`;
+  };
+
+  const stats = [
+    { label: "Qubits", value: computed.totalQubits >= 1e3 ? `${(computed.totalQubits / 1e3).toFixed(1)}k` : `${computed.totalQubits}` },
+    { label: "Block error", value: fmtSup(computed.blockErrorRate) },
+    { label: "Runtime", value: computed.runtimeDays >= 365 ? `${(computed.runtimeDays / 365).toFixed(1)} yr` : computed.runtimeDays >= 1 ? `${computed.runtimeDays.toFixed(0)} days` : `${(computed.runtimeDays * 24).toFixed(0)} hr` },
+  ];
+
   return (
-    <div className="grid grid-cols-4 gap-px bg-[var(--border-subtle)] mx-5 my-3 rounded-sm overflow-hidden">
-      {[
-        { label: "Qubits", value: computed.totalQubits >= 1e3 ? `${(computed.totalQubits / 1e3).toFixed(1)}k` : `${computed.totalQubits}`, color: "var(--zone-memory)" },
-        { label: "Error", value: computed.blockErrorRate > 0 ? `1e${Math.floor(Math.log10(computed.blockErrorRate))}` : "\u2014", color: "var(--zone-processor)" },
-        { label: "Runtime", value: computed.runtimeDays >= 365 ? `${(computed.runtimeDays / 365).toFixed(1)}yr` : computed.runtimeDays >= 1 ? `${computed.runtimeDays.toFixed(0)}d` : `${(computed.runtimeDays * 24).toFixed(0)}h`, color: "var(--zone-operation)" },
-        { label: "Status", value: computed.feasible ? "GO" : "FAIL", color: computed.feasible ? "var(--success)" : "var(--danger)" },
-      ].map((stat) => (
-        <div key={stat.label} className="bg-black p-2.5 text-center">
-          <div className="text-[14px] font-semibold mono count-animate" style={{ color: stat.color }}>
+    <div style={{ display: "flex", justifyContent: "space-between", padding: "var(--s4) var(--s5)", gap: "var(--s4)" }}>
+      {stats.map((stat) => (
+        <div key={stat.label} style={{ flex: 1 }}>
+          <div className="mono" style={{ fontSize: "var(--fs-body)", fontWeight: 600, color: "var(--text-primary)" }}>
             {stat.value}
           </div>
-          <div className="text-[9px] text-[var(--text-quaternary)] tracking-wide uppercase mt-0.5">
+          <div style={{ fontSize: "var(--fs-label)", color: "var(--text-tertiary)", marginTop: 2, textTransform: "uppercase", letterSpacing: "var(--tracking-label)" }}>
             {stat.label}
           </div>
         </div>
@@ -117,34 +122,37 @@ export function ControlPanel() {
 
   const waterfall = computed.timingWaterfall;
   const segments = [
-    { label: "Readout", value: waterfall.readout, color: "var(--zone-memory)" },
-    { label: "Transport", value: waterfall.transport, color: "var(--zone-processor)" },
-    { label: "Gates", value: waterfall.gates, color: "var(--zone-operation)" },
-    { label: "Decode", value: waterfall.decode, color: "var(--zone-resource)" },
+    { label: "Readout", value: waterfall.readout, color: "var(--text-primary)" },
+    { label: "Transport", value: waterfall.transport, color: "var(--text-secondary)" },
+    { label: "Gates", value: waterfall.gates, color: "var(--text-tertiary)" },
+    { label: "Decode", value: waterfall.decode, color: "var(--border)" },
   ];
 
   return (
     <div className="pb-8">
-      {/* Quick Stats */}
       <QuickStats />
 
-      {/* Accordion Sections */}
-      <Section id="presets" title="Presets" badge={`${presets.length}`} color="#6366f1" expanded={expanded === "presets"} onToggle={() => toggle("presets")}>
+      {/* ── Inputs ── */}
+      <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
+        Inputs
+      </div>
+      <Section id="presets" title="Presets" badge={`${presets.length}`} expanded={expanded === "presets"} onToggle={() => toggle("presets")}>
         <div className="space-y-1 max-h-52 overflow-y-auto pr-1">
           {presets.map((preset, i) => (
             <button
               key={i}
               onClick={() => applyPreset(preset)}
-              className="w-full text-left bg-[var(--bg-surface)] hover:bg-[var(--bg-hover)] border border-[var(--border-subtle)] hover:border-[rgba(99,102,241,0.15)] rounded-[4px] p-2.5 transition-all group"
+              className="w-full text-left p-2.5 rounded-[3px] transition-all group hover:brightness-110"
+              style={{ background: "var(--bg-elevated)" }}
             >
-              <div className="text-[11px] text-[var(--text-secondary)] group-hover:text-[var(--accent)] transition-colors font-medium">
+              <div className="text-[11px] text-[var(--text-secondary)] transition-colors font-medium">
                 {preset.name}
               </div>
               <div className="text-[10px] text-[var(--text-quaternary)] mt-0.5 line-clamp-1">
                 {preset.description}
               </div>
               {"whatToLookAt" in preset && (
-                <div className="text-[9px] text-[var(--accent)] opacity-0 group-hover:opacity-50 mt-1 line-clamp-2 transition-opacity">
+                <div className="text-[9px] text-[var(--text-quaternary)] opacity-0 group-hover:opacity-50 mt-1 line-clamp-2 transition-opacity">
                   {(preset as any).whatToLookAt}
                 </div>
               )}
@@ -153,14 +161,14 @@ export function ControlPanel() {
         </div>
       </Section>
 
-      <Section id="physics" title="Physical Parameters" color="#00d4ff" expanded={expanded === "physics"} onToggle={() => toggle("physics")}>
+      <Section id="physics" title="Physical Parameters" expanded={expanded === "physics"} onToggle={() => toggle("physics")}>
         <SliderKnob label="Physical Error Rate (p)" value={physicalErrorRate} min={0.0001} max={0.01} step={0.0001} logarithmic formatValue={(v) => `${(v * 100).toFixed(2)}%`} onChange={setPhysicalErrorRate} />
         <SliderKnob label="Cycle Time" value={cycleTime} min={0.001} max={10} step={0.001} unit="ms" logarithmic formatValue={(v) => v >= 1 ? `${v.toFixed(1)}` : `${(v * 1000).toFixed(0)} \u00B5s`} onChange={setCycleTime} />
         <ToggleKnob<TargetProblem> label="Target Problem" value={targetProblem} options={[{ value: "ecc-256", label: "ECC-256" }, { value: "rsa-2048", label: "RSA-2048" }]} onChange={setTargetProblem} />
         <ToggleKnob<ArchitectureType> label="Architecture" value={architectureType} options={[{ value: "space-efficient", label: "Space" }, { value: "balanced", label: "Balanced" }, { value: "time-efficient", label: "Time" }]} onChange={setArchitectureType} />
       </Section>
 
-      <Section id="codes" title="Code Architecture" color="#ff8a00" expanded={expanded === "codes"} onToggle={() => toggle("codes")}>
+      <Section id="codes" title="Code Architecture" expanded={expanded === "codes"} onToggle={() => toggle("codes")}>
         <ToggleKnob<MemoryCode> label="Memory Code" value={memoryCode} options={[{ value: "lp16", label: "lp\u2081\u2086" }, { value: "lp20", label: "lp\u2082\u2080" }, { value: "lp24", label: "lp\u2082\u2084" }]} onChange={setMemoryCode} />
         <ToggleKnob<ProcessorCode> label="Processor Code" value={processorCode} options={[{ value: "bb18", label: "bb\u2081\u2088" }, { value: "lp-proc", label: "lp\u2082\u2080 proc" }]} onChange={setProcessorCode} />
 
@@ -180,7 +188,11 @@ export function ControlPanel() {
         </div>
       </Section>
 
-      <Section id="construct" title="Live Code Construction" color="#6366f1" expanded={expanded === "construct"} onToggle={() => toggle("construct")}>
+      {/* ── Analysis ── */}
+      <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
+        Analysis
+      </div>
+      <Section id="construct" title="Live Code Construction" expanded={expanded === "construct"} onToggle={() => toggle("construct")}>
         <button
           onClick={computeLiveCode}
           disabled={liveCodeLoading}
@@ -200,7 +212,7 @@ export function ControlPanel() {
         )}
       </Section>
 
-      <Section id="timing" title="Timing Breakdown" color="#ff4488" expanded={expanded === "timing"} onToggle={() => toggle("timing")}>
+      <Section id="timing" title="Timing Breakdown" expanded={expanded === "timing"} onToggle={() => toggle("timing")}>
         <div className="flex h-3 rounded-sm overflow-hidden mb-2">
           {segments.map((seg) => (
             <div key={seg.label} style={{ width: `${(seg.value / cycleTime) * 100}%`, backgroundColor: seg.color, opacity: 0.5 }} />
@@ -208,31 +220,34 @@ export function ControlPanel() {
         </div>
         <div className="grid grid-cols-2 gap-1">
           {segments.map((seg) => (
-            <div key={seg.label} className="flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: seg.color }} />
-              <span className="text-[9px] text-[var(--text-quaternary)]">{seg.label}: <span className="mono">{(seg.value * 1000).toFixed(0)}\u00B5s</span></span>
+            <div key={seg.label} style={{ fontSize: "var(--fs-label)", color: "var(--text-tertiary)" }}>
+              {seg.label}: <span className="mono" style={{ color: "var(--text-secondary)" }}>{(seg.value * 1000).toFixed(0)}\u00B5s</span>
             </div>
           ))}
         </div>
       </Section>
 
-      <Section id="sweep" title="Parameter Sweep" color="#22c55e" expanded={expanded === "sweep"} onToggle={() => toggle("sweep")}>
+      <Section id="sweep" title="Parameter Sweep" expanded={expanded === "sweep"} onToggle={() => toggle("sweep")}>
         <ParameterSweep />
       </Section>
 
-      <Section id="compare" title="Comparison" color="#eab308" expanded={expanded === "compare"} onToggle={() => toggle("compare")}>
+      <Section id="compare" title="Comparison" expanded={expanded === "compare"} onToggle={() => toggle("compare")}>
         <ComparisonMode />
       </Section>
 
-      <Section id="sensitivity" title="Sensitivity" color="#6366f1" expanded={expanded === "sensitivity"} onToggle={() => toggle("sensitivity")}>
+      <Section id="sensitivity" title="Sensitivity" expanded={expanded === "sensitivity"} onToggle={() => toggle("sensitivity")}>
         <SensitivityPanel />
       </Section>
 
-      <Section id="mlx" title="MLX Compute" badge="GPU" color="#00ff88" expanded={expanded === "mlx"} onToggle={() => toggle("mlx")}>
+      {/* ── System ── */}
+      <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
+        System
+      </div>
+      <Section id="mlx" title="MLX Compute" badge="GPU" expanded={expanded === "mlx"} onToggle={() => toggle("mlx")}>
         <MLXPanel />
       </Section>
 
-      <Section id="export" title="Export" color="#ff8a00" expanded={expanded === "export"} onToggle={() => toggle("export")}>
+      <Section id="export" title="Export" expanded={expanded === "export"} onToggle={() => toggle("export")}>
         <ExportPanel />
       </Section>
     </div>

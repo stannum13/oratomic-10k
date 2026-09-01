@@ -62,7 +62,7 @@ export function TannerOverlay() {
 
   return (
     <lineSegments geometry={geometry}>
-      <lineBasicMaterial color="#818cf8" transparent opacity={0.2} />
+      <lineBasicMaterial color="#E8EAED" transparent opacity={0.08} />
     </lineSegments>
   );
 }
