@@ -112,7 +112,10 @@ export function ControlPanel() {
   const decoderInfo = getDecoder(decoderType).getStats();
   const presets = configsData.configs;
 
+  const pushHistory = useSimulator((s) => s.pushHistory);
+
   const applyPreset = (preset: typeof presets[0]) => {
+    pushHistory();
     setPhysicalErrorRate(preset.physicalErrorRate);
     setCycleTime(preset.cycleTime);
     setArchitectureType(preset.architectureType as ArchitectureType);
@@ -132,6 +135,40 @@ export function ControlPanel() {
   return (
     <div className="pb-8">
       <QuickStats />
+
+      {/* Pin button for comparison */}
+      <div style={{ padding: "0 var(--s5) var(--s3)", display: "flex", justifyContent: "flex-end" }}>
+        <button
+          onClick={() => {
+            const s = useSimulator.getState();
+            s.setPinnedConfig({
+              label: `${s.architectureType} / ${s.memoryCode}`,
+              computed: { ...s.computed },
+              params: {
+                physicalErrorRate: s.physicalErrorRate,
+                cycleTime: s.cycleTime,
+                architectureType: s.architectureType,
+                targetProblem: s.targetProblem,
+                memoryCode: s.memoryCode,
+                processorCode: s.processorCode,
+              },
+            });
+          }}
+          style={{
+            fontSize: "var(--fs-label)",
+            color: "var(--text-tertiary)",
+            background: "none",
+            border: `1px solid var(--border)`,
+            borderRadius: 3,
+            padding: "var(--s1) var(--s3)",
+            cursor: "pointer",
+            letterSpacing: "var(--tracking-label)",
+            textTransform: "uppercase",
+          }}
+        >
+          Pin for comparison
+        </button>
+      </div>
 
       <div style={{ padding: "0 var(--s5)" }}>
         <TimeScaleControl />

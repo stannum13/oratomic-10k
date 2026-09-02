@@ -53,6 +53,17 @@ interface SimulatorState {
   setMemoryCode: (v: MemoryCode) => void;
   setProcessorCode: (v: ProcessorCode) => void;
   setDecoderType: (v: string) => void;
+
+  paramHistory: Array<{
+    physicalErrorRate: number;
+    cycleTime: number;
+    architectureType: ArchitectureType;
+    targetProblem: TargetProblem;
+    memoryCode: MemoryCode;
+    processorCode: ProcessorCode;
+  }>;
+  pushHistory: () => void;
+  undoParams: () => void;
 }
 
 function recompute(state: {
@@ -62,6 +73,7 @@ function recompute(state: {
   targetProblem: TargetProblem;
   memoryCode: MemoryCode;
   processorCode: ProcessorCode;
+  decoderType: string;
 }): EngineComputeResult {
   return computeWithEngine(state);
 }
@@ -73,17 +85,18 @@ const defaults = {
   targetProblem: "ecc-256" as TargetProblem,
   memoryCode: "lp20" as MemoryCode,
   processorCode: "lp-proc" as ProcessorCode,
+  decoderType: "bp-lsd",
 };
 
-export const useSimulator = create<SimulatorState>((set) => ({
+export const useSimulator = create<SimulatorState>((set, get) => ({
   mode: "paper",
   activeSection: 0,
   timeScale: 0,
   ...defaults,
-  decoderType: "bp-lsd",
   computed: recompute(defaults),
   liveCode: null,
   liveCodeLoading: false,
+  paramHistory: [],
   pinnedConfig: null,
   setPinnedConfig: (pinnedConfig) => set({ pinnedConfig }),
 
@@ -126,7 +139,39 @@ export const useSimulator = create<SimulatorState>((set) => ({
       const next = { ...s, processorCode };
       return { processorCode, computed: recompute(next) };
     }),
-  setDecoderType: (decoderType) => set({ decoderType }),
+  setDecoderType: (decoderType) =>
+    set((s) => {
+      const next = { ...s, decoderType };
+      return { decoderType, computed: recompute(next) };
+    }),
+
+  pushHistory: () => {
+    const s = get();
+    set({
+      paramHistory: [
+        ...s.paramHistory.slice(-19),
+        {
+          physicalErrorRate: s.physicalErrorRate,
+          cycleTime: s.cycleTime,
+          architectureType: s.architectureType,
+          targetProblem: s.targetProblem,
+          memoryCode: s.memoryCode,
+          processorCode: s.processorCode,
+        },
+      ],
+    });
+  },
+  undoParams: () => {
+    const s = get();
+    if (s.paramHistory.length === 0) return;
+    const prev = s.paramHistory[s.paramHistory.length - 1];
+    const next = { ...s, ...prev };
+    set({
+      ...prev,
+      paramHistory: s.paramHistory.slice(0, -1),
+      computed: recompute(next),
+    });
+  },
 
   computeLiveCode: () => {
     const state = useSimulator.getState();

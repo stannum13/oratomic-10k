@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Oratomic 10k — Interactive Quantum Architecture Viewer"
+version: 1.0.0
+date-released: 2026-09-01
+url: "https://github.com/stannum13/oratomic-10k"
+repository-code: "https://github.com/stannum13/oratomic-10k"
+license: MIT
+authors:
+  - alias: stannum13
+abstract: >-
+  Interactive 3D viewer and architecture simulator for fault-tolerant
+  quantum computation with reconfigurable atomic qubits. Based on
+  "Shor's algorithm is possible with as few as 10,000 reconfigurable
+  atomic qubits" by Cain, Xu, King et al. (Oratomic/Caltech, 2025).
+keywords:
+  - quantum computing
+  - fault-tolerant
+  - qLDPC codes
+  - neutral atoms
+  - architecture simulation
+references:
+  - type: article
+    title: "Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits"
+    authors:
+      - family-names: Cain
+        given-names: Madelyn
+      - family-names: Xu
+        given-names: Qian
+      - family-names: King
+        given-names: Robbie
+      - family-names: Picard
+        given-names: Lewis R. B.
+      - family-names: Levine
+        given-names: Harry
+      - family-names: Endres
+        given-names: Manuel
+      - family-names: Preskill
+        given-names: John
+      - family-names: Huang
+        given-names: Hsin-Yuan
+      - family-names: Bluvstein
+        given-names: Dolev
+    year: 2025

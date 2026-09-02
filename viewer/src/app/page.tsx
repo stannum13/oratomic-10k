@@ -5,11 +5,14 @@ import dynamic from "next/dynamic";
 import { Header } from "@/components/Layout/Header";
 import { decodeConfig } from "@/lib/url-state";
 import { StatusBar } from "@/components/Layout/StatusBar";
+import { ComparisonStrip } from "@/components/Layout/ComparisonStrip";
 import { PaperSection } from "@/components/Paper/PaperSection";
 import { SectionTracker } from "@/components/Paper/SectionTracker";
 import { SeedMatrixDisplay } from "@/components/Paper/SeedMatrixDisplay";
 import { ControlPanel } from "@/components/Simulator/ControlPanel";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { EmissionLegend } from "@/components/Scene/EmissionLegend";
+import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
 import { useSimulator } from "@/store/simulator";
 import paperData from "../../public/data/paper-sections.json";
 
@@ -191,6 +194,7 @@ export default function Home() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh", background: "var(--bg)" }}>
+      <KeyboardShortcuts />
       <Header />
       <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
         <div className="pane-left" style={{ width: "38%", overflowY: "auto", flexShrink: 0 }}>
@@ -214,6 +218,7 @@ export default function Home() {
             10,000
           </div>
           <SceneInfo />
+          <EmissionLegend />
           <ErrorBoundary fallback={
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "var(--bg)" }}>
               <span style={{ color: "var(--text-tertiary)", fontSize: "var(--fs-label)" }}>3D viewport unavailable</span>
@@ -223,6 +228,7 @@ export default function Home() {
           </ErrorBoundary>
         </div>
       </div>
+      <ComparisonStrip />
       <StatusBar />
     </div>
   );

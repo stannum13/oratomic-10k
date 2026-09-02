@@ -2,7 +2,7 @@
 
 Interactive 3D viewer and architecture simulator for fault-tolerant quantum computation with 10,000 reconfigurable atomic qubits.
 
-![Screenshot](viewer/screenshot.png)
+<!-- ![Screenshot](viewer/screenshot.png) -->
 
 ## Quick Start
 

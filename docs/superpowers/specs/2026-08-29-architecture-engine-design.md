@@ -6,6 +6,24 @@ A symbolic parametric intermediate representation (IR) and constraint-driven syn
 
 The engine represents quantum architectures as symbolic expressions where registers, dimensions, error rates, code sizes, and hardware costs remain unevaluated until a concrete instantiation is requested. This enables architecture-family reasoning: instead of evaluating one design at a time, we manipulate algebraic relationships between parameters and discover optimal regions via constraint solving.
 
+## Implementation Status
+
+| Component | Status |
+|---|---|
+| Expression system (evaluate, simplify, differentiate) | Implemented |
+| Code family IR (LP/BB constructors) | Implemented |
+| Architecture IR (symbolic costs, constraints) | Implemented |
+| Instantiation and evaluation | Implemented |
+| Sweep and Pareto | Implemented |
+| Sensitivity analysis | Implemented |
+| Circuit hierarchy IR | Scaffolded (not connected to UI) |
+| Parity check matrix export | Implemented |
+| SMT/MILP constraint solvers | Not started -- requires Z3 integration |
+| Equality saturation rewrites | Not started -- requires e-graph library |
+| Inverse design | Not started -- depends on constraint solvers |
+| Active experiment selection | Not started -- research problem |
+| Stim/OpenQASM export | Not started |
+
 ## Architecture Stack
 
 ```

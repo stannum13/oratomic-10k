@@ -15,6 +15,7 @@ import {
   TOFFOLI_COUNTS,
   TIME_EFFICIENT_PRESETS,
 } from "./lookup-tables";
+import { getDecoder } from "./decoder";
 
 export interface EngineComputeResult extends ComputeResult {
   sensitivity: SensitivityResult[];
@@ -35,6 +36,7 @@ export function computeWithEngine(params: {
   targetProblem: TargetProblem;
   memoryCode: MemoryCode;
   processorCode: ProcessorCode;
+  decoderType?: string;
 }): EngineComputeResult {
   const { physicalErrorRate, cycleTime, architectureType, targetProblem, memoryCode, processorCode } = params;
 
@@ -78,6 +80,20 @@ export function computeWithEngine(params: {
     const blockErrorRate = fitA * Math.pow(physicalErrorRate, fitB);
     const toffoliBudget = blockErrorRate > 0 ? -Math.log(0.9) / (3 * blockErrorRate) : 0;
 
+    // Adjust waterfall for decoder latency
+    const decoder = getDecoder(params.decoderType || "bp-lsd");
+    const decoderStats = decoder.getStats();
+    const decoderFractionMs = decoderStats.decoderLatencyUs / 1000;
+    const decoderFraction = Math.min(0.8, decoderFractionMs / cycleTime);
+    const remaining = 1 - decoderFraction;
+
+    const waterfallAdjusted = {
+      readout: cycleTime * remaining * 0.45,
+      transport: cycleTime * remaining * 0.30,
+      gates: cycleTime * remaining * 0.25,
+      decode: cycleTime * decoderFraction,
+    };
+
     return {
       totalQubits: preset.qubits,
       qubitBreakdown: {
@@ -90,12 +106,7 @@ export function computeWithEngine(params: {
       toffoliCount,
       toffoliBudget,
       runtimeDays: preset.runtimeDays * (cycleTime / 1.0),
-      timingWaterfall: {
-        readout: cycleTime * 0.25,
-        transport: cycleTime * 0.15,
-        gates: cycleTime * 0.20,
-        decode: cycleTime * 0.40,
-      },
+      timingWaterfall: waterfallAdjusted,
       feasible: toffoliBudget >= toffoliCount,
       extrapolationWarning,
       codeParams,
@@ -135,6 +146,20 @@ export function computeWithEngine(params: {
     bottlenecks = bottleneckAnalysis(sensitivity);
   } catch { /* ok */ }
 
+  // Adjust waterfall for decoder latency
+  const decoder = getDecoder(params.decoderType || "bp-lsd");
+  const decoderStats = decoder.getStats();
+  const decoderFractionMs = decoderStats.decoderLatencyUs / 1000;
+  const decoderFraction = Math.min(0.8, decoderFractionMs / cycleTime);
+  const remaining = 1 - decoderFraction;
+
+  const waterfallAdjusted = {
+    readout: cycleTime * remaining * 0.45,
+    transport: cycleTime * remaining * (architectureType === "space-efficient" ? 0.35 : 0.30),
+    gates: cycleTime * remaining * 0.25,
+    decode: cycleTime * decoderFraction,
+  };
+
   return {
     totalQubits: result.totalQubits,
     qubitBreakdown: result.qubitBreakdown,
@@ -142,12 +167,7 @@ export function computeWithEngine(params: {
     toffoliCount: result.toffoliCount,
     toffoliBudget: result.toffoliBudget,
     runtimeDays: result.runtimeDays,
-    timingWaterfall: {
-      readout: cycleTime * (archType === "space-efficient" ? 0.30 : 0.30),
-      transport: cycleTime * (archType === "space-efficient" ? 0.35 : 0.25),
-      gates: cycleTime * (archType === "space-efficient" ? 0.10 : 0.15),
-      decode: cycleTime * (archType === "space-efficient" ? 0.25 : 0.30),
-    },
+    timingWaterfall: waterfallAdjusted,
     feasible: result.feasible,
     extrapolationWarning,
     codeParams,
