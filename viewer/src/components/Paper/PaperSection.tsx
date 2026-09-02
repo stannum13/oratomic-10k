@@ -9,12 +9,13 @@ interface PaperSectionProps {
   keyInsight: string;
   equation?: string;
   zones?: Array<{ name: string; role: string; color: string }>;
+  hint?: string;
   isActive: boolean;
   children?: React.ReactNode;
 }
 
 export function PaperSection({
-  title, subtitle, body, keyInsight, equation, zones, isActive, children,
+  title, subtitle, body, keyInsight, equation, zones, hint, isActive, children,
 }: PaperSectionProps) {
   return (
     <div style={{
@@ -79,6 +80,19 @@ export function PaperSection({
           {keyInsight}
         </p>
       </div>
+
+      {hint && isActive && (
+        <div style={{
+          marginTop: "var(--s4)",
+          padding: "var(--s3) var(--s4)",
+          background: "var(--bg-elevated)",
+          borderRadius: 3,
+          fontSize: "var(--fs-label)",
+          color: "var(--text-tertiary)",
+        }}>
+          {hint}
+        </div>
+      )}
 
       {children}
     </div>

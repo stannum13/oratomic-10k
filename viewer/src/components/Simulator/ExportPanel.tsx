@@ -5,10 +5,17 @@ import { useSimulator } from "@/store/simulator";
 export function ExportPanel() {
   const state = useSimulator();
 
+  const computed = state.computed;
+
   const exportJSON = () => {
     const data = {
-      version: "1.0",
-      timestamp: new Date().toISOString(),
+      _meta: {
+        tool: "Oratomic Architecture Viewer",
+        version: "1.0.0",
+        timestamp: new Date().toISOString(),
+        source: "https://github.com/stannum13/oratomic-10k",
+        paper: "Cain et al., 'Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits' (2025)",
+      },
       parameters: {
         physicalErrorRate: state.physicalErrorRate,
         cycleTime: state.cycleTime,
@@ -19,21 +26,23 @@ export function ExportPanel() {
         decoderType: state.decoderType,
       },
       results: {
-        totalQubits: state.computed.totalQubits,
-        qubitBreakdown: state.computed.qubitBreakdown,
-        blockErrorRate: state.computed.blockErrorRate,
-        toffoliCount: state.computed.toffoliCount,
-        toffoliBudget: state.computed.toffoliBudget,
-        runtimeDays: state.computed.runtimeDays,
-        feasible: state.computed.feasible,
+        totalQubits: computed.totalQubits,
+        qubitBreakdown: computed.qubitBreakdown,
+        blockErrorRate: computed.blockErrorRate,
+        toffoliCount: computed.toffoliCount,
+        toffoliBudget: computed.toffoliBudget,
+        runtimeDays: computed.runtimeDays,
+        feasible: computed.feasible,
       },
-      codeParams: state.computed.codeParams,
+      codeParams: computed.codeParams,
       assumptions: [
         "Depolarizing circuit-level noise model",
-        "Power-law error rate extrapolation from Oratomic paper fits",
+        "Power-law error rate extrapolation from paper's Monte Carlo fits",
+        `Block error: P_L = a × p^b with a=${computed.codeParams.n > 4000 ? "1.0" : "14.6"}, b=${computed.codeParams.d >= 24 ? 12 : computed.codeParams.d >= 20 ? 10 : 7.1}`,
         `Physical error rate p = ${state.physicalErrorRate}`,
         `Cycle time = ${state.cycleTime} ms`,
-        "Sequential Toffoli execution (space-efficient/balanced)",
+        `Feasibility threshold: 90% success probability`,
+        computed.feasible ? "Configuration is feasible" : "WARNING: Configuration is infeasible — Toffoli budget < Toffoli count",
       ],
     };
 
@@ -67,7 +76,13 @@ export function ExportPanel() {
       ["feasible", state.computed.feasible],
     ];
 
-    const csv = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const csv = [
+      `# Oratomic Architecture Viewer v1.0.0`,
+      `# Generated ${new Date().toISOString()}`,
+      `# Source: https://github.com/stannum13/oratomic-10k`,
+      headers.join(","),
+      ...rows.map(r => r.join(",")),
+    ].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");

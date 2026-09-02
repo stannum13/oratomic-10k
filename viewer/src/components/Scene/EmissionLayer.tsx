@@ -31,6 +31,10 @@ interface TransportEvent {
 export function EmissionLayer() {
   const mode = useSimulator((s) => s.mode);
   const breakdown = useSimulator((s) => s.computed.qubitBreakdown);
+  const physicalErrorRate = useSimulator((s) => s.physicalErrorRate);
+  const cycleTime = useSimulator((s) => s.cycleTime);
+  const architectureType = useSimulator((s) => s.architectureType);
+  const activeSection = useSimulator((s) => s.activeSection);
 
   const schedulerRef = useRef<Scheduler | null>(null);
   const eventsRef = useRef<SceneEvent[]>([]);
@@ -86,7 +90,7 @@ export function EmissionLayer() {
 
     // QEC metronome — one round every QEC_PERIOD_MS wall milliseconds
     roundTimer.current += delta * 1000;
-    const roundDur = QEC_PERIOD_MS;
+    const roundDur = QEC_PERIOD_MS * Math.max(0.1, cycleTime);
 
     // Smooth QEC phase for the breath animation
     setQecPhase((roundTimer.current % roundDur) / roundDur);
@@ -94,14 +98,19 @@ export function EmissionLayer() {
     if (roundTimer.current >= roundDur) {
       roundTimer.current -= roundDur;
       scheduler.tickRound();
+      // Time-efficient architecture: 2 distillation attempts per round
+      if (architectureType === "time-efficient") {
+        scheduler.tickRound();
+      }
 
       // Process accumulated events
       const events = eventsRef.current.splice(0);
       for (const event of events) {
         switch (event.type) {
-          case "qec-round":
+          case "qec-round": {
             // Flash ancilla atoms in all zones — brief 420nm pulse
-            for (let j = 0; j < 3; j++) {
+            const flashCount = Math.max(1, Math.round(physicalErrorRate * 1000));
+            for (let j = 0; j < flashCount; j++) {
               flashesRef.current.push({
                 position: randomInZone("memory"),
                 color: EMISSION_420,
@@ -110,7 +119,20 @@ export function EmissionLayer() {
                 intensity: 0.6,
               });
             }
+
+            // Syndrome detections — red flashes on "errored" atoms
+            const syndromeCount = Math.max(0, Math.round(physicalErrorRate * 500));
+            for (let j = 0; j < syndromeCount; j++) {
+              flashesRef.current.push({
+                position: randomInZone("memory"),
+                color: EMISSION_780,
+                startTime: elapsedRef.current + 0.1, // slight delay after ancilla pulse
+                duration: 0.15,
+                intensity: 0.4,
+              });
+            }
             break;
+          }
 
           case "distill-commit":
             // Bright flash in resource zone — success

@@ -11,6 +11,7 @@ import { ComparisonMode } from "./ComparisonMode";
 import { MLXPanel } from "./MLXPanel";
 import { SensitivityPanel } from "./SensitivityPanel";
 import { ExportPanel } from "./ExportPanel";
+import { TimeScaleControl } from "./TimeScale";
 
 // ─── Accordion Section ──────────────────────────────────
 
@@ -131,6 +132,10 @@ export function ControlPanel() {
   return (
     <div className="pb-8">
       <QuickStats />
+
+      <div style={{ padding: "0 var(--s5)" }}>
+        <TimeScaleControl />
+      </div>
 
       {/* ── Inputs ── */}
       <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>

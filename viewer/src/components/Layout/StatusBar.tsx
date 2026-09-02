@@ -34,10 +34,26 @@ export function StatusBar() {
   const computed = useSimulator((s) => s.computed);
 
   const items = [
-    { label: "qubits", value: formatNumber(computed.totalQubits) },
-    { label: "block error", value: fmtSci(computed.blockErrorRate) },
-    { label: "runtime", value: fmtRuntime(computed.runtimeDays) },
-    { label: "toffoli budget", value: fmtToffoli(computed.toffoliBudget) },
+    {
+      label: "qubits",
+      value: formatNumber(computed.totalQubits),
+      tooltip: `N = N_memory + N_processor + N_resource + N_operation = ${computed.qubitBreakdown.memory} + ${computed.qubitBreakdown.processor} + ${computed.qubitBreakdown.resource} + ${computed.qubitBreakdown.operation}`,
+    },
+    {
+      label: "block error",
+      value: fmtSci(computed.blockErrorRate),
+      tooltip: `P_L = a · p^b = ${computed.codeParams.n > 4000 ? "1.0" : "14.6"} × (p)^${computed.codeParams.d >= 24 ? 12 : computed.codeParams.d >= 20 ? 10 : 7.1}`,
+    },
+    {
+      label: "runtime",
+      value: fmtRuntime(computed.runtimeDays),
+      tooltip: `T = N_toffoli × τ_toff × t_cycle / 86400 days`,
+    },
+    {
+      label: "toffoli budget",
+      value: fmtToffoli(computed.toffoliBudget),
+      tooltip: `Budget = ln(0.9) / (τ_toff × ln(1 - P_L)) at 90% success`,
+    },
   ];
 
   return (
@@ -53,7 +69,7 @@ export function StatusBar() {
       {items.map((item, i) => (
         <div key={i} style={{ display: "flex", gap: "var(--s2)", alignItems: "baseline" }}>
           <span>{item.label}</span>
-          <span className="value">{item.value}</span>
+          <span className="value" title={item.tooltip}>{item.value}</span>
         </div>
       ))}
 

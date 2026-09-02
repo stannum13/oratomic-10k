@@ -12,6 +12,8 @@ import { SEED_MATRICES } from "@/lib/seed-matrices";
 interface SimulatorState {
   mode: "paper" | "simulate";
   activeSection: number;
+  timeScale: number;
+  setTimeScale: (v: number) => void;
   setMode: (mode: "paper" | "simulate") => void;
   setActiveSection: (section: number) => void;
 
@@ -76,6 +78,7 @@ const defaults = {
 export const useSimulator = create<SimulatorState>((set) => ({
   mode: "paper",
   activeSection: 0,
+  timeScale: 0,
   ...defaults,
   decoderType: "bp-lsd",
   computed: recompute(defaults),
@@ -85,7 +88,13 @@ export const useSimulator = create<SimulatorState>((set) => ({
   setPinnedConfig: (pinnedConfig) => set({ pinnedConfig }),
 
   setMode: (mode) => set({ mode }),
-  setActiveSection: (activeSection) => set({ activeSection }),
+  setTimeScale: (timeScale) => set({ timeScale }),
+  setActiveSection: (activeSection) => {
+    const scales: Record<number, number> = {
+      0: 0, 1: -3, 2: 0, 3: 0, 4: 2, 5: 9, 6: 0,
+    };
+    set({ activeSection, timeScale: scales[activeSection] ?? 0 });
+  },
 
   setPhysicalErrorRate: (physicalErrorRate) =>
     set((s) => {

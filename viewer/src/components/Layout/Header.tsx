@@ -67,6 +67,14 @@ export function Header() {
         <span style={{ fontSize: "var(--fs-body)", fontWeight: 300, color: "var(--text-tertiary)" }}>
           10k Architecture
         </span>
+        <span style={{
+          fontSize: "var(--fs-label)",
+          color: "var(--text-tertiary)",
+          marginLeft: "var(--s2)",
+          opacity: 0.5,
+        }}>
+          v1.0.0
+        </span>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>

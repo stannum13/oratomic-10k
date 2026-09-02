@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Header } from "@/components/Layout/Header";
 import { decodeConfig } from "@/lib/url-state";
@@ -25,6 +25,12 @@ const Viewport = dynamic(
 );
 
 const SECTION_LABELS = ["Overview", "Architecture", "Codes", "Surgery", "Magic", "Resources", "Simulator"];
+
+const SECTION_HINTS: Record<string, string> = {
+  architecture: "Switch to Simulate mode to adjust architecture parameters",
+  codes: "Click 'Construct LP Code' in Simulate mode to build the Tanner graph",
+  resources: "Try the preset configurations to explore different tradeoffs",
+};
 
 function SectionTabs() {
   const activeSection = useSimulator((s) => s.activeSection);
@@ -82,6 +88,7 @@ function LeftPane() {
                   equation={"equation" in section ? (section as Record<string, unknown>).equation as string : undefined}
                   zones={"zones" in section ? (section as Record<string, unknown>).zones as Array<{ name: string; role: string; color: string }> : undefined}
                   isActive={activeSection === i}
+                  hint={SECTION_HINTS[section.id]}
                 >
                   {section.id === "codes" && activeSection === i && <SeedMatrixDisplay />}
                 </PaperSection>
@@ -89,8 +96,82 @@ function LeftPane() {
             </SectionTracker>
           ))}
         </div>
+        {mode === "paper" && activeSection === 0 && (
+          <div style={{
+            position: "sticky",
+            bottom: 0,
+            display: "flex",
+            justifyContent: "center",
+            padding: "var(--s5)",
+            background: "linear-gradient(transparent, var(--bg-pane-left))",
+            pointerEvents: "none",
+          }}>
+            <div style={{
+              fontSize: "var(--fs-label)",
+              color: "var(--text-tertiary)",
+              letterSpacing: "var(--tracking-label)",
+              textTransform: "uppercase",
+              animation: "fade-up 2s ease infinite alternate",
+            }}>
+              scroll to explore
+            </div>
+          </div>
+        )}
       </div>
     </>
+  );
+}
+
+function SceneInfo() {
+  const [show, setShow] = useState(false);
+  const activeSection = useSimulator((s) => s.activeSection);
+  const mode = useSimulator((s) => s.mode);
+
+  const descriptions: Record<number, string> = {
+    0: "Four functional zones of a neutral-atom quantum processor: memory stores logical qubits, processor executes gates, operation zone performs syndrome measurements, resource zone generates magic states.",
+    1: "Reconfigurable atom arrays enable nonlocal connectivity for high-rate qLDPC codes. Each dot represents a physical qubit trapped in an optical tweezer.",
+    2: "The memory zone encodes logical qubits using lifted-product codes with ~30% encoding rate. The overlay shows stabilizer connectivity from the Tanner graph.",
+    3: "Logical qubits teleport from memory to processor for computation, then return. Watch for blue flashes during syndrome extraction rounds.",
+    4: "The resource zone distills magic states using 8T-to-CCZ protocols. Blue flashes indicate successful distillation; red indicates discarded attempts.",
+    5: "Architecture-level view showing total qubit and runtime requirements across different design tradeoffs.",
+    6: "Full simulator mode. Adjust parameters to explore the architecture design space.",
+  };
+
+  const desc = descriptions[activeSection] || descriptions[0];
+
+  return (
+    <div style={{ position: "absolute", top: "var(--s3)", right: "var(--s3)", zIndex: 2 }}>
+      <button
+        onClick={() => setShow(!show)}
+        style={{
+          width: 24, height: 24,
+          borderRadius: "50%",
+          background: show ? "var(--bg-elevated)" : "transparent",
+          border: `1px solid var(--border)`,
+          color: "var(--text-tertiary)",
+          fontSize: 12,
+          cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center",
+        }}
+      >
+        ?
+      </button>
+      {show && (
+        <div style={{
+          position: "absolute", top: 32, right: 0,
+          width: 280,
+          padding: "var(--s4)",
+          background: "var(--bg-elevated)",
+          border: `1px solid var(--border)`,
+          borderRadius: 3,
+          fontSize: "var(--fs-label)",
+          lineHeight: 1.6,
+          color: "var(--text-secondary)",
+        }}>
+          {mode === "simulate" ? descriptions[6] : desc}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -132,6 +213,7 @@ export default function Home() {
           }}>
             10,000
           </div>
+          <SceneInfo />
           <ErrorBoundary fallback={
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "var(--bg)" }}>
               <span style={{ color: "var(--text-tertiary)", fontSize: "var(--fs-label)" }}>3D viewport unavailable</span>
