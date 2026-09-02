@@ -68,14 +68,16 @@ function BPDecoderPanel() {
         <button
           onClick={handleDecode}
           disabled={loading || !connected || needsCode}
-          className="flex-1 py-1.5 bg-[#00d4ff]/10 hover:bg-[#00d4ff]/20 border border-[#00d4ff]/20 rounded-sm text-[10px] text-[#00d4ff] transition-all disabled:opacity-30"
+          className="flex-1 py-1.5 rounded-sm text-[10px] transition-all disabled:opacity-30"
+          style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
         >
           {loading ? "Decoding..." : "Run BP Decode"}
         </button>
         <button
           onClick={handleSweep}
           disabled={loading || !connected || needsCode}
-          className="flex-1 py-1.5 bg-[#6366f1]/10 hover:bg-[#6366f1]/20 border border-[#6366f1]/20 rounded-sm text-[10px] text-[#6366f1] transition-all disabled:opacity-30"
+          className="flex-1 py-1.5 rounded-sm text-[10px] transition-all disabled:opacity-30"
+          style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
         >
           {loading ? "Sweeping..." : "Error Rate Sweep"}
         </button>
@@ -89,7 +91,7 @@ function BPDecoderPanel() {
         <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-sm p-2 space-y-1">
           <div className="flex justify-between text-[10px]">
             <span className="text-[var(--text-tertiary)]">Status</span>
-            <span className={result.converged ? "text-[#22c55e]" : "text-[#ef4444]"}>
+            <span style={{ color: result.converged ? "var(--status-ok)" : "var(--status-fail)" }}>
               {result.converged ? "CONVERGED" : "FAILED"}
             </span>
           </div>
@@ -118,7 +120,7 @@ function BPDecoderPanel() {
                   className="w-full rounded-t-sm transition-all"
                   style={{
                     height: `${r.successRate * 100}%`,
-                    background: r.successRate > 0.9 ? "#22c55e" : r.successRate > 0.5 ? "#eab308" : "#ef4444",
+                    background: r.successRate > 0.9 ? "var(--status-ok)" : r.successRate > 0.5 ? "var(--status-stall)" : "var(--status-fail)",
                     opacity: 0.6,
                   }}
                 />
@@ -165,7 +167,8 @@ function NeuralDecoderPanel() {
       <button
         onClick={handleTrain}
         disabled={loading || !connected || !liveCode}
-        className="w-full py-1.5 bg-[#ff4488]/10 hover:bg-[#ff4488]/20 border border-[#ff4488]/20 rounded-sm text-[10px] text-[#ff4488] transition-all disabled:opacity-30"
+        className="w-full py-1.5 rounded-sm text-[10px] transition-all disabled:opacity-30"
+        style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
       >
         {loading ? "Training..." : "Train Neural Decoder (MLX)"}
       </button>
@@ -188,8 +191,8 @@ function NeuralDecoderPanel() {
               return (
                 <div
                   key={i}
-                  className="flex-1 bg-[#ff4488] rounded-t-sm transition-all"
-                  style={{ height: `${height}%`, opacity: 0.5 }}
+                  className="flex-1 rounded-t-sm transition-all"
+                  style={{ background: "var(--text-secondary)", height: `${height}%`, opacity: 0.5 }}
                 />
               );
             })}
@@ -239,7 +242,8 @@ function TensorNetworkPanel() {
       <button
         onClick={handleContract}
         disabled={loading || !connected || !liveCode}
-        className="w-full py-1.5 bg-[#ff8a00]/10 hover:bg-[#ff8a00]/20 border border-[#ff8a00]/20 rounded-sm text-[10px] text-[#ff8a00] transition-all disabled:opacity-30"
+        className="w-full py-1.5 rounded-sm text-[10px] transition-all disabled:opacity-30"
+        style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
       >
         {loading ? "Contracting..." : "TN Contract (Small Codes)"}
       </button>
@@ -262,7 +266,7 @@ function TensorNetworkPanel() {
       )}
 
       {result?.error && (
-        <p className="text-[9px] text-[#ef4444]">{result.error}</p>
+        <p className="text-[9px]" style={{ color: "var(--status-fail)" }}>{result.error}</p>
       )}
     </div>
   );
@@ -303,7 +307,8 @@ function CodeSearchPanel() {
       <button
         onClick={handleSearch}
         disabled={loading || !connected}
-        className="w-full py-1.5 bg-[#00ff88]/10 hover:bg-[#00ff88]/20 border border-[#00ff88]/20 rounded-sm text-[10px] text-[#00ff88] transition-all disabled:opacity-30"
+        className="w-full py-1.5 rounded-sm text-[10px] transition-all disabled:opacity-30"
+        style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
       >
         {loading ? "Searching..." : `Search Codes (${memoryCode} family)`}
       </button>
@@ -323,7 +328,7 @@ function CodeSearchPanel() {
                 <span className="text-[var(--text-tertiary)]">
                   rate {(code.rate * 100).toFixed(1)}%
                 </span>
-                <span className="text-[#00ff88]/60">
+                <span className="text-[var(--text-tertiary)]">
                   fit {code.fitness.toFixed(3)}
                 </span>
               </div>
@@ -341,10 +346,10 @@ export function MLXPanel() {
   const [expanded, setExpanded] = useState<string | null>("bp");
 
   const sections = [
-    { id: "bp", label: "BP Decoder", color: "#00d4ff", component: BPDecoderPanel },
-    { id: "neural", label: "Neural Decoder", color: "#ff4488", component: NeuralDecoderPanel },
-    { id: "tn", label: "Tensor Network", color: "#ff8a00", component: TensorNetworkPanel },
-    { id: "search", label: "Code Search", color: "#00ff88", component: CodeSearchPanel },
+    { id: "bp", label: "BP Decoder", component: BPDecoderPanel },
+    { id: "neural", label: "Neural Decoder", component: NeuralDecoderPanel },
+    { id: "tn", label: "Tensor Network", component: TensorNetworkPanel },
+    { id: "search", label: "Code Search", component: CodeSearchPanel },
   ];
 
   return (
@@ -353,7 +358,7 @@ export function MLXPanel() {
         <h3 className="text-[10px] text-[var(--text-quaternary)] uppercase tracking-[0.2em]">
           MLX Compute
         </h3>
-        <span className={`text-[9px] ${connected ? "text-[#22c55e]" : "text-[var(--text-quaternary)]"}`}>
+        <span className="text-[9px]" style={{ color: connected ? "var(--status-ok)" : "var(--text-quaternary)" }}>
           {connected ? "connected" : "disconnected"}
         </span>
       </div>
@@ -363,20 +368,20 @@ export function MLXPanel() {
           <p className="text-[10px] text-[var(--text-tertiary)] leading-relaxed">
             Start the MLX backend to enable GPU-accelerated decoding, neural training, and code search:
           </p>
-          <code className="block mt-2 text-[10px] text-[#6366f1] bg-[var(--bg-surface)] p-2 rounded-sm">
+          <code className="block mt-2 text-[10px] text-[var(--text-secondary)] bg-[var(--bg-surface)] p-2 rounded-sm">
             cd mlx-backend && ./run.sh
           </code>
         </div>
       )}
 
       <div className="space-y-1">
-        {sections.map(({ id, label, color, component: Component }) => (
+        {sections.map(({ id, label, component: Component }) => (
           <div key={id} className="border border-[var(--border-subtle)] rounded-sm overflow-hidden">
             <button
               onClick={() => setExpanded(expanded === id ? null : id)}
               className="w-full flex items-center gap-2 px-2.5 py-1.5 hover:bg-[var(--bg-surface)] transition-colors"
             >
-              <div className="w-1 h-1 rounded-full" style={{ backgroundColor: color, opacity: 0.6 }} />
+              <div className="w-1 h-1 rounded-full" style={{ backgroundColor: "var(--text-tertiary)", opacity: 0.6 }} />
               <span className="text-[10px] text-[var(--text-secondary)] tracking-wider uppercase flex-1 text-left">
                 {label}
               </span>

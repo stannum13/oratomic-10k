@@ -68,21 +68,21 @@ export function TeleportationArcs({ activeSection }: { activeSection: number }) 
       <GateArcs
         from={[-7, 0.5, 0]}
         to={[2, 0.5, 3]}
-        color="#4fc3f7"
+        color="#E8EAED"
         active={showArcs}
       />
       {/* Processor -> Memory return */}
       <GateArcs
         from={[2, 0.5, 3]}
         to={[-7, 0.5, 0]}
-        color="#ffa726"
+        color="#E8EAED"
         active={showArcs}
       />
       {/* Resource -> Processor magic state injection */}
       <GateArcs
         from={[9, 0.5, 0]}
         to={[2, 0.5, 3]}
-        color="#f06292"
+        color="#E8EAED"
         active={activeSection === 4}
       />
     </group>

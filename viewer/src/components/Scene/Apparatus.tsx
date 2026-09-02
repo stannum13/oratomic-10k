@@ -49,7 +49,7 @@ function VacuumChamber() {
       <mesh position={[1, 2, 0]}>
         <boxGeometry args={[25, 5, 13]} />
         <meshPhysicalMaterial
-          color="#1a2a3a"
+          color="#111418"
           metalness={0.1}
           roughness={0.1}
           transparent

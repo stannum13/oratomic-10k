@@ -42,7 +42,7 @@ export function CodeParams({ n, k, d }: { n: number; k: number; d: number }) {
   return (
     <Math
       tex={`[\\![${n.toLocaleString()},\\, ${k.toLocaleString()},\\, \\leq ${d}]\\!]`}
-      className="text-[#6366f1]"
+      className=""
     />
   );
 }

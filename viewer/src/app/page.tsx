@@ -208,7 +208,7 @@ export default function Home() {
             left: "var(--s7)",
             zIndex: 1,
             fontFamily: "var(--font-display)",
-            fontSize: 72,
+            fontSize: "72px",
             fontWeight: 200,
             color: "#0F1218",
             letterSpacing: "-0.02em",
