@@ -12,6 +12,7 @@ import { MLXPanel } from "./MLXPanel";
 import { SensitivityPanel } from "./SensitivityPanel";
 import { ExportPanel } from "./ExportPanel";
 import { TimeScaleControl } from "./TimeScale";
+import { CircuitViewer } from "./CircuitViewer";
 
 // ─── Accordion Section ──────────────────────────────────
 
@@ -267,6 +268,10 @@ export function ControlPanel() {
             </div>
           ))}
         </div>
+      </Section>
+
+      <Section id="circuit" title="Circuit Structure" expanded={expanded === "circuit"} onToggle={() => toggle("circuit")}>
+        <CircuitViewer />
       </Section>
 
       <Section id="sweep" title="Parameter Sweep" expanded={expanded === "sweep"} onToggle={() => toggle("sweep")}>

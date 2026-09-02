@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import { useSimulator } from "@/store/simulator";
-import { Scheduler, TIMING, QEC_PERIOD_MS, type SceneEvent, type MagicBuffer } from "@/lib/motion";
+import { Scheduler, TIMING, QEC_PERIOD_MS, type SceneEvent, type MagicBuffer, layerVisibility, Layer } from "@/lib/motion";
 import { getZoneConfigs } from "./ZoneLayout";
 
 // Emission colors from the design brief
@@ -35,6 +35,7 @@ export function EmissionLayer() {
   const cycleTime = useSimulator((s) => s.cycleTime);
   const architectureType = useSimulator((s) => s.architectureType);
   const activeSection = useSimulator((s) => s.activeSection);
+  const timeScale = useSimulator((s) => s.timeScale);
 
   const schedulerRef = useRef<Scheduler | null>(null);
   const eventsRef = useRef<SceneEvent[]>([]);
@@ -89,8 +90,13 @@ export function EmissionLayer() {
     const scheduler = schedulerRef.current;
 
     // QEC metronome — one round every QEC_PERIOD_MS wall milliseconds
+    // Time telescope: scale the QEC round based on log rate
+    // At cycle scale (0), 1 QEC round = QEC_PERIOD_MS * cycleTime wall ms
+    // At higher scales, rounds happen faster
     roundTimer.current += delta * 1000;
-    const roundDur = QEC_PERIOD_MS * Math.max(0.1, cycleTime);
+    const baseRoundDur = QEC_PERIOD_MS * Math.max(0.1, cycleTime);
+    const timeScaleFactor = Math.pow(10, -timeScale); // higher timeScale = faster
+    const roundDur = Math.max(50, baseRoundDur * timeScaleFactor); // min 50ms to stay visible
 
     // Smooth QEC phase for the breath animation
     setQecPhase((roundTimer.current % roundDur) / roundDur);
@@ -207,6 +213,10 @@ export function EmissionLayer() {
 
   if (mode !== "simulate") return null;
 
+  const codeVis = layerVisibility(Layer.CODE, timeScale);
+  const magicVis = layerVisibility(Layer.MAGIC, timeScale);
+  const atomicVis = layerVisibility(Layer.ATOMIC, timeScale);
+
   const memoryCenterTuple = getZoneCenter("memory");
   const resourceCenter = getZoneCenter("resource");
 
@@ -220,13 +230,16 @@ export function EmissionLayer() {
         const intensity = t < 0.2 ? t / 0.2 : Math.exp(-3 * (t - 0.2));
         if (intensity < 0.01) return null;
 
+        // In the flash render, add alpha based on whether it's atomic or code layer
+        const layerAlpha = flash.color === EMISSION_780 ? atomicVis.alpha : codeVis.alpha;
+
         return (
           <mesh key={`flash-${i}`} position={flash.position}>
             <sphereGeometry args={[0.08 * intensity * flash.intensity, 8, 6]} />
             <meshBasicMaterial
               color={flash.color}
               transparent
-              opacity={intensity * 0.8}
+              opacity={intensity * 0.8 * layerAlpha}
               toneMapped={false}
             />
           </mesh>
@@ -260,7 +273,7 @@ export function EmissionLayer() {
         <meshBasicMaterial
           color={EMISSION_420}
           transparent
-          opacity={Math.sin(qecPhase * Math.PI) * 0.015 * (schedulerState === "stalled" ? 0 : 1)}
+          opacity={Math.sin(qecPhase * Math.PI) * 0.015 * (schedulerState === "stalled" ? 0 : 1) * codeVis.alpha}
           toneMapped={false}
           side={THREE.BackSide}
         />

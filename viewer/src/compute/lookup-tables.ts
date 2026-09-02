@@ -27,7 +27,14 @@ export const TAU_TOFF_MULTIPLIERS: Record<string, Record<string, number>> = {
 
 export const TOFFOLI_COUNTS: Record<string, number> = {
   "rsa-2048": 2.7e9,
-  "ecc-256": 1.35e9,
+  "ecc-256": 9.0e7,  // Compilation (2) from Babbush 2026 — paper's headline
+};
+
+// Add the alternative for reference
+export const TOFFOLI_COUNTS_ALT: Record<string, { count: number; label: string }> = {
+  "ecc-256-compilation1": { count: 1.35e9, label: "ECC-256 high-qubit compilation" },
+  "ecc-256-compilation2": { count: 9.0e7, label: "ECC-256 low-qubit compilation (paper default)" },
+  "rsa-2048-gidney": { count: 2.7e9, label: "RSA-2048 (Gidney 2025)" },
 };
 
 export const ERROR_FIT_COEFFICIENTS: Record<string, { a: number; b: number }> = {

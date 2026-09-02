@@ -6,7 +6,7 @@ describe("architecture instantiation", () => {
   const defaultBindings = {
     p: 0.001,
     cycleTime: 1.0,
-    toffoliCount: 1.35e9,
+    toffoliCount: 9.0e7,  // compilation (2) — paper's headline
     tauToffMul: 19,
   };
 
@@ -51,18 +51,16 @@ describe("architecture instantiation", () => {
 });
 
 describe("paper validation", () => {
-  test("balanced ECC-256 runtime roughly matches paper (~264 days)", () => {
+  test("balanced ECC-256 runtime matches paper (~264 days)", () => {
     const arch = ORATOMIC_ARCHITECTURES["balanced-lp20"];
     const result = instantiate(arch, {
       p: 0.001,
       cycleTime: 1.0,
-      toffoliCount: 1.35e9,
-      tauToffMul: 19,  // balanced ECC
+      toffoliCount: 9.0e7,  // compilation (2)
+      tauToffMul: 19,
     });
-    // Symbolic engine uses tauToff = tauToffMul * (2d/3) which gives ~3958 days.
-    // Paper's 264 days uses a different tau_toff decomposition.
-    // Verify the engine produces a consistent, positive runtime in the right order of magnitude.
-    expect(result.runtimeDays).toBeGreaterThan(100);
-    expect(result.runtimeDays).toBeLessThan(10000);
+    // Paper says ~264 days for balanced ECC-256 with compilation (2)
+    expect(result.runtimeDays).toBeGreaterThan(150);
+    expect(result.runtimeDays).toBeLessThan(400);
   });
 });
