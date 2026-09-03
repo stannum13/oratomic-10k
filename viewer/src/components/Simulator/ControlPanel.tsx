@@ -13,6 +13,9 @@ import { SensitivityPanel } from "./SensitivityPanel";
 import { ExportPanel } from "./ExportPanel";
 import { TimeScaleControl } from "./TimeScale";
 import { CircuitViewer } from "./CircuitViewer";
+import { PLATFORM_PRESETS } from "@/compute/lookup-tables";
+import { BacklogMeter } from "./BacklogMeter";
+import { PlatformComparison } from "./PlatformComparison";
 
 // ─── Accordion Section ──────────────────────────────────
 
@@ -102,6 +105,7 @@ export function ControlPanel() {
   const {
     physicalErrorRate, cycleTime, architectureType, targetProblem,
     memoryCode, processorCode, decoderType,
+    hardwarePlatform, setHardwarePlatform,
     setPhysicalErrorRate, setCycleTime, setArchitectureType, setTargetProblem,
     setMemoryCode, setProcessorCode, setDecoderType,
     computed, computeLiveCode, liveCode, liveCodeLoading,
@@ -173,12 +177,47 @@ export function ControlPanel() {
 
       <div style={{ padding: "0 var(--s5)" }}>
         <TimeScaleControl />
+        <BacklogMeter />
       </div>
 
       {/* ── Inputs ── */}
       <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
         Inputs
       </div>
+      <Section id="platform" title="Hardware Platform" expanded={expanded === "platform"} onToggle={() => toggle("platform")}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--s2)" }}>
+          {Object.entries(PLATFORM_PRESETS).map(([key, preset]) => (
+            <button
+              key={key}
+              onClick={() => setHardwarePlatform(key)}
+              style={{
+                textAlign: "left",
+                padding: "var(--s3) var(--s4)",
+                background: hardwarePlatform === key ? "var(--bg-elevated)" : "transparent",
+                border: hardwarePlatform === key ? "1px solid var(--border)" : "1px solid transparent",
+                borderRadius: 3,
+                cursor: "pointer",
+                transition: "all 200ms",
+              }}
+            >
+              <div style={{
+                fontSize: "var(--fs-label)",
+                fontWeight: 500,
+                color: hardwarePlatform === key ? "var(--text-primary)" : "var(--text-secondary)",
+              }}>
+                {preset.label}
+              </div>
+              <div style={{
+                fontSize: 9,
+                color: "var(--text-tertiary)",
+                marginTop: 2,
+              }}>
+                {preset.codeType} · p={preset.defaultErrorRate} · {preset.maxQubitsDemo.toLocaleString()} qubits demonstrated
+              </div>
+            </button>
+          ))}
+        </div>
+      </Section>
       <Section id="presets" title="Presets" badge={`${presets.length}`} expanded={expanded === "presets"} onToggle={() => toggle("presets")}>
         <div className="space-y-1 max-h-52 overflow-y-auto pr-1">
           {presets.map((preset, i) => (
@@ -280,6 +319,10 @@ export function ControlPanel() {
 
       <Section id="compare" title="Comparison" expanded={expanded === "compare"} onToggle={() => toggle("compare")}>
         <ComparisonMode />
+      </Section>
+
+      <Section id="platforms" title="Platform Comparison" expanded={expanded === "platforms"} onToggle={() => toggle("platforms")}>
+        <PlatformComparison />
       </Section>
 
       <Section id="sensitivity" title="Sensitivity" expanded={expanded === "sensitivity"} onToggle={() => toggle("sensitivity")}>

@@ -59,3 +59,73 @@ export const CODE_DETAILS: Record<string, { n: number; k: number; d: number; rat
 };
 
 export const EXTRAPOLATION_VALID_RANGE = { min: 0.0005, max: 0.002 };
+
+export const PLATFORM_PRESETS: Record<string, {
+  label: string;
+  description: string;
+  platform: string;
+  defaultErrorRate: number;
+  defaultCycleTime: number; // ms
+  decoderLatencyUs: number;
+  gateTimeUs: number;
+  transportTimeUs: number;
+  readoutTimeUs: number;
+  maxQubitsDemo: number; // demonstrated in lab
+  codeType: string;
+}> = {
+  "oratomic-neutral-atom": {
+    label: "Oratomic Neutral Atom",
+    description: "Reconfigurable atom arrays with qLDPC codes. Nonlocal connectivity via optical tweezers enables high-rate encoding.",
+    platform: "neutral-atom",
+    defaultErrorRate: 0.001,
+    defaultCycleTime: 1.0,
+    decoderLatencyUs: 10000, // BP-LSD
+    gateTimeUs: 0.2,
+    transportTimeUs: 200,
+    readoutTimeUs: 1000,
+    maxQubitsDemo: 6100,
+    codeType: "qLDPC (lifted product)",
+  },
+  "ionq-walking-cat": {
+    label: "IonQ Walking Cat",
+    description: "Trapped-ion architecture with subsystem codes. MegaQuOp-scale decoding demonstrated on Apple M4 Max with <0.3% overhead at p=0.01%.",
+    platform: "trapped-ion",
+    defaultErrorRate: 0.0001,
+    defaultCycleTime: 0.1,
+    decoderLatencyUs: 50, // demonstrated on M4 Max
+    gateTimeUs: 10,
+    transportTimeUs: 50,
+    readoutTimeUs: 100,
+    maxQubitsDemo: 36,
+    codeType: "Subsystem / walking cat",
+  },
+  "google-surface-code": {
+    label: "Google Surface Code",
+    description: "Superconducting qubits with planar surface codes. Fixed grid connectivity. Willow processor demonstrated below-threshold operation.",
+    platform: "superconducting",
+    defaultErrorRate: 0.003,
+    defaultCycleTime: 0.001,
+    decoderLatencyUs: 1, // FPGA / ASIC
+    gateTimeUs: 0.03,
+    transportTimeUs: 0, // no transport
+    readoutTimeUs: 0.5,
+    maxQubitsDemo: 105,
+    codeType: "Surface code (planar)",
+  },
+};
+
+// Qubit estimates for different platforms at RSA-2048 and ECC-256
+export const PLATFORM_RESOURCE_ESTIMATES: Record<string, Record<string, { qubits: number; runtimeDays: number }>> = {
+  "oratomic-neutral-atom": {
+    "ecc-256": { qubits: 9739, runtimeDays: 264 },
+    "rsa-2048": { qubits: 13255, runtimeDays: 3958 },
+  },
+  "ionq-walking-cat": {
+    "ecc-256": { qubits: 50000, runtimeDays: 30 }, // estimated
+    "rsa-2048": { qubits: 200000, runtimeDays: 365 }, // estimated
+  },
+  "google-surface-code": {
+    "ecc-256": { qubits: 500000, runtimeDays: 0.01 }, // Babbush 2026 at 1µs cycle
+    "rsa-2048": { qubits: 4000000, runtimeDays: 7 }, // Gidney 2025
+  },
+};

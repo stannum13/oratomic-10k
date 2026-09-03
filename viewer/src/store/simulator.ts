@@ -8,6 +8,7 @@ import type {
 } from "@/compute/interface";
 import { computeWithEngine, type EngineComputeResult } from "@/compute/engine-compute";
 import { SEED_MATRICES } from "@/lib/seed-matrices";
+import { PLATFORM_PRESETS } from "@/compute/lookup-tables";
 
 interface SimulatorState {
   mode: "paper" | "simulate";
@@ -25,6 +26,9 @@ interface SimulatorState {
   memoryCode: MemoryCode;
   processorCode: ProcessorCode;
   decoderType: string;
+
+  hardwarePlatform: string;
+  setHardwarePlatform: (v: string) => void;
 
   computed: EngineComputeResult;
 
@@ -96,6 +100,7 @@ export const useSimulator = create<SimulatorState>((set, get) => ({
   activeSection: 0,
   timeScale: 0,
   ...defaults,
+  hardwarePlatform: "oratomic-neutral-atom",
   computed: recompute(defaults),
   liveCode: null,
   liveCodeLoading: false,
@@ -151,6 +156,18 @@ export const useSimulator = create<SimulatorState>((set, get) => ({
     set((s) => {
       const next = { ...s, decoderType };
       return { decoderType, computed: recompute(next) };
+    }),
+  setHardwarePlatform: (hardwarePlatform) =>
+    set((s) => {
+      const preset = PLATFORM_PRESETS[hardwarePlatform];
+      if (!preset) return { hardwarePlatform };
+      const next = {
+        ...s,
+        hardwarePlatform,
+        physicalErrorRate: preset.defaultErrorRate,
+        cycleTime: preset.defaultCycleTime,
+      };
+      return { hardwarePlatform, physicalErrorRate: preset.defaultErrorRate, cycleTime: preset.defaultCycleTime, computed: recompute(next) };
     }),
 
   pushHistory: () => {

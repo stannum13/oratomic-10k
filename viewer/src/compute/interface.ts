@@ -35,6 +35,8 @@ export interface ComputeResult {
   processorParams: { n: number; k: number; d: number; rate: number; weight: number };  // active processor code params
 }
 
+export type HardwarePlatform = "neutral-atom" | "trapped-ion" | "superconducting";
+
 export type ArchitectureType = "space-efficient" | "balanced" | "time-efficient";
 export type TargetProblem = "ecc-256" | "rsa-2048";
 export type MemoryCode = "lp16" | "lp20" | "lp24";
