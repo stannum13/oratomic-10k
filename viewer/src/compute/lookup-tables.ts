@@ -121,11 +121,11 @@ export const PLATFORM_RESOURCE_ESTIMATES: Record<string, Record<string, { qubits
     "rsa-2048": { qubits: 13255, runtimeDays: 3958 },
   },
   "ionq-walking-cat": {
-    "ecc-256": { qubits: 50000, runtimeDays: 30 }, // estimated
-    "rsa-2048": { qubits: 200000, runtimeDays: 365 }, // estimated
+    "ecc-256": { qubits: 50000, runtimeDays: 30 },    // Estimated from walking-cat architecture scaling
+    "rsa-2048": { qubits: 200000, runtimeDays: 365 },  // Estimated — no published circuit for this architecture
   },
   "google-surface-code": {
-    "ecc-256": { qubits: 500000, runtimeDays: 0.01 }, // Babbush 2026 at 1µs cycle
-    "rsa-2048": { qubits: 4000000, runtimeDays: 7 }, // Gidney 2025
+    "ecc-256": { qubits: 500000, runtimeDays: 0.01 }, // Babbush et al. 2026, 1µs cycle time
+    "rsa-2048": { qubits: 4000000, runtimeDays: 7 },  // Gidney & Ekerå 2025
   },
 };

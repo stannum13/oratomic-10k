@@ -1,6 +1,8 @@
 "use client";
 
 import { Math } from "@/components/ui/Math";
+import { InfoMarker } from "@/components/ui/InfoMarker";
+import { GLOSSARY } from "@/lib/glossary";
 
 interface PaperSectionProps {
   title: string;
@@ -40,14 +42,7 @@ export function PaperSection({
         </p>
       )}
 
-      <p style={{
-        fontSize: "var(--fs-body)",
-        color: "var(--text-secondary)",
-        lineHeight: "var(--lh-body)",
-        marginBottom: "var(--s5)",
-      }}>
-        {body}
-      </p>
+      <AnnotatedText text={body} />
 
       {equation && (
         <div style={{
@@ -96,6 +91,62 @@ export function PaperSection({
 
       {children}
     </div>
+  );
+}
+
+function AnnotatedText({ text }: { text: string }) {
+  // Find glossary terms in the text and wrap them with info markers
+  const terms = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length); // longest first
+  const parts: (string | { term: string; match: string })[] = [];
+  let remaining = text;
+  const usedTerms = new Set<string>();
+
+  while (remaining.length > 0) {
+    let earliestIdx = remaining.length;
+    let earliestTerm = "";
+    let earliestMatch = "";
+
+    for (const term of terms) {
+      if (usedTerms.has(term)) continue;
+      const lowerTerm = term.toLowerCase();
+      const idx = remaining.toLowerCase().indexOf(lowerTerm);
+      if (idx !== -1 && idx < earliestIdx) {
+        earliestIdx = idx;
+        earliestTerm = term;
+        earliestMatch = remaining.substring(idx, idx + term.length);
+      }
+    }
+
+    if (earliestTerm) {
+      if (earliestIdx > 0) {
+        parts.push(remaining.substring(0, earliestIdx));
+      }
+      parts.push({ term: earliestTerm, match: earliestMatch });
+      usedTerms.add(earliestTerm);
+      remaining = remaining.substring(earliestIdx + earliestTerm.length);
+    } else {
+      parts.push(remaining);
+      break;
+    }
+  }
+
+  return (
+    <p style={{
+      fontSize: "var(--fs-body)",
+      color: "var(--text-secondary)",
+      lineHeight: "var(--lh-body)",
+      marginBottom: "var(--s5)",
+    }}>
+      {parts.map((part, i) => {
+        if (typeof part === "string") return <span key={i}>{part}</span>;
+        return (
+          <span key={i}>
+            {part.match}
+            <InfoMarker term={part.term} definition={GLOSSARY[part.term]} />
+          </span>
+        );
+      })}
+    </p>
   );
 }
 

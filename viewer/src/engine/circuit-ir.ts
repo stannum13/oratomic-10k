@@ -173,7 +173,8 @@ export function shorRSA(): CircuitNode {
  */
 export function shorECC(): CircuitNode {
   const bits = lit(256);
-  const totalToffoli = lit(1.35e9);
+  // Compilation (2) from Babbush 2026 — lower Toffoli count, the paper's headline
+  const totalToffoli = lit(9.0e7);
 
   return {
     name: "Shor ECC-256 (Babbush 2026)",

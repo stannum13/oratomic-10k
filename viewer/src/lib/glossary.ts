@@ -1,0 +1,16 @@
+export const GLOSSARY: Record<string, string> = {
+  "qLDPC": "Quantum Low-Density Parity Check codes. Error-correcting codes where each stabilizer check acts on a bounded number of qubits, enabling efficient decoding.",
+  "Toffoli": "A three-qubit quantum gate (controlled-controlled-NOT). The fundamental non-Clifford gate used in arithmetic circuits. Shor's algorithm is dominated by Toffoli count.",
+  "surface code": "A topological quantum error-correcting code that uses a 2D grid of qubits. Simple to implement but has low encoding rate (~1 logical qubit per ~1000 physical qubits).",
+  "lifted product": "A code construction that takes two classical codes over a polynomial ring and combines them into a quantum code with high encoding rate. The 'lift' refers to replacing binary entries with circulant matrices.",
+  "syndrome": "The measurement outcome from checking stabilizer operators. Reveals information about which errors occurred without collapsing the encoded quantum state.",
+  "magic state": "A special quantum state (like |T⟩ or |CCZ⟩) needed to implement non-Clifford gates. Must be distilled from noisy states, making it a key resource bottleneck.",
+  "code distance": "The minimum number of physical errors that can cause a logical error. Higher distance means better error suppression but requires more physical qubits.",
+  "encoding rate": "The ratio k/n of logical qubits to physical qubits. Surface codes achieve ~0.1%. The LP codes here achieve ~30%.",
+  "PPM": "Pauli Product Measurement. A fault-tolerant operation that measures the product of Pauli operators across multiple qubits. The basic instruction for code surgery.",
+  "code surgery": "A technique for performing logical gates on qLDPC codes by temporarily merging the data code with an ancilla system. Generalizes lattice surgery from surface codes.",
+  "block error rate": "The probability that any logical qubit in a code block experiences an error during one round of syndrome extraction. Scales as a·p^(d/2).",
+  "reconfigurable atoms": "Neutral atoms trapped in optical tweezers that can be physically moved during computation. Enables nonlocal connectivity needed for qLDPC codes.",
+  "cultivation": "A technique for preparing high-fidelity magic states using a small surface code patch with postselection. Cheaper than traditional distillation.",
+  "Rydberg": "A highly excited atomic state used for entangling neutral-atom qubits. Rydberg excitation creates strong interactions between nearby atoms for gate operations.",
+};

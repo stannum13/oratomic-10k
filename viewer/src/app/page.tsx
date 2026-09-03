@@ -8,6 +8,7 @@ import { StatusBar } from "@/components/Layout/StatusBar";
 import { ComparisonStrip } from "@/components/Layout/ComparisonStrip";
 import { PaperSection } from "@/components/Paper/PaperSection";
 import { SectionTracker } from "@/components/Paper/SectionTracker";
+import { Walkthrough } from "@/components/Paper/Walkthrough";
 import { SeedMatrixDisplay } from "@/components/Paper/SeedMatrixDisplay";
 import { ControlPanel } from "@/components/Simulator/ControlPanel";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
@@ -58,6 +59,10 @@ function SectionTabs() {
           onClick={() => {
             const el = document.querySelector(`[data-section="${i}"]`);
             el?.scrollIntoView({ behavior: "smooth", block: "start" });
+            // If clicking Simulator tab, switch to simulate mode
+            if (i === 6) {
+              useSimulator.getState().setMode("simulate");
+            }
           }}
         >
           {name}
@@ -77,6 +82,7 @@ function LeftPane() {
 
   return (
     <>
+      <Walkthrough />
       <SectionTabs />
       <div style={{ padding: `var(--s7) var(--s6)` }}>
         <div className="article">
