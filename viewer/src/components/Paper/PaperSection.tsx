@@ -3,6 +3,7 @@
 import { Math } from "@/components/ui/Math";
 import { InfoMarker } from "@/components/ui/InfoMarker";
 import { GLOSSARY } from "@/lib/glossary";
+import { useSimulator } from "@/store/simulator";
 
 interface PaperSectionProps {
   title: string;
@@ -77,16 +78,37 @@ export function PaperSection({
       </div>
 
       {hint && isActive && (
-        <div style={{
-          marginTop: "var(--s4)",
-          padding: "var(--s3) var(--s4)",
-          background: "var(--bg-elevated)",
-          borderRadius: 3,
-          fontSize: "var(--fs-label)",
-          color: "var(--text-tertiary)",
-        }}>
-          {hint}
-        </div>
+        <button
+          onClick={() => {
+            if (hint.includes("Simulate")) {
+              useSimulator.getState().setMode("simulate");
+            } else if (hint.includes("Construct")) {
+              useSimulator.getState().setMode("simulate");
+              useSimulator.getState().computeLiveCode();
+            } else if (hint.includes("preset")) {
+              useSimulator.getState().setMode("simulate");
+            }
+          }}
+          style={{
+            display: "block",
+            width: "100%",
+            textAlign: "left",
+            marginTop: "var(--s4)",
+            padding: "var(--s3) var(--s4)",
+            background: "var(--bg-elevated)",
+            border: "none",
+            borderRadius: 3,
+            fontSize: "var(--fs-label)",
+            color: "var(--text-tertiary)",
+            cursor: "pointer",
+            fontFamily: "inherit",
+            transition: "color 200ms",
+          }}
+          onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--text-secondary)"; }}
+          onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-tertiary)"; }}
+        >
+          {"\u2192"} {hint}
+        </button>
       )}
 
       {children}
@@ -140,10 +162,7 @@ function AnnotatedText({ text }: { text: string }) {
       {parts.map((part, i) => {
         if (typeof part === "string") return <span key={i}>{part}</span>;
         return (
-          <span key={i}>
-            {part.match}
-            <InfoMarker term={part.term} definition={GLOSSARY[part.term]} />
-          </span>
+          <InfoMarker key={i} term={part.term} definition={GLOSSARY[part.term]} match={part.match} />
         );
       })}
     </p>

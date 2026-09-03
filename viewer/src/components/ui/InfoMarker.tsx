@@ -1,51 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface InfoMarkerProps {
   term: string;
   definition: string;
-  children?: React.ReactNode;
+  match: string;
 }
 
-export function InfoMarker({ term, definition }: InfoMarkerProps) {
+export function InfoMarker({ term, definition, match }: InfoMarkerProps) {
   const [show, setShow] = useState(false);
+  const [position, setPosition] = useState<"above" | "below">("above");
+  const triggerRef = useRef<HTMLSpanElement>(null);
+
+  // Detect if tooltip would clip above — if so, show below
+  useEffect(() => {
+    if (show && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      if (rect.top < 260) {
+        setPosition("below");
+      } else {
+        setPosition("above");
+      }
+    }
+  }, [show]);
 
   return (
-    <span style={{ position: "relative", display: "inline" }}>
-      <button
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
-        onClick={() => setShow(!show)}
+    <span
+      ref={triggerRef}
+      style={{ position: "relative", display: "inline" }}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      <span
         style={{
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: 14,
-          height: 14,
-          borderRadius: "50%",
-          background: "var(--bg-elevated)",
-          border: "1px solid var(--border)",
-          color: "var(--text-tertiary)",
-          fontSize: 8,
+          borderBottom: "1px dotted var(--text-tertiary)",
           cursor: "help",
-          verticalAlign: "super",
-          marginLeft: 2,
-          padding: 0,
-          lineHeight: 1,
-          fontFamily: "var(--font-body)",
+          transition: "border-color 200ms",
         }}
-        aria-label={`Info: ${term}`}
+        onMouseEnter={(e) => { (e.target as HTMLElement).style.borderBottomColor = "var(--text-secondary)"; }}
+        onMouseLeave={(e) => { (e.target as HTMLElement).style.borderBottomColor = "var(--text-tertiary)"; }}
       >
-        i
-      </button>
+        {match}
+      </span>
       {show && (
         <span style={{
           position: "absolute",
-          bottom: "calc(100% + 4px)",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: 240,
+          [position === "above" ? "bottom" : "top"]: "calc(100% + 6px)",
+          left: 0,
+          width: 260,
           padding: "var(--s3)",
           background: "var(--bg-elevated)",
           border: "1px solid var(--border)",
@@ -54,10 +57,9 @@ export function InfoMarker({ term, definition }: InfoMarkerProps) {
           lineHeight: 1.5,
           color: "var(--text-secondary)",
           zIndex: 50,
-          pointerEvents: "none",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
         }}>
-          <strong style={{ color: "var(--text-primary)", display: "block", marginBottom: 4 }}>
+          <strong style={{ color: "var(--text-primary)", display: "block", marginBottom: 3, fontSize: "var(--fs-label)" }}>
             {term}
           </strong>
           {definition}

@@ -24,10 +24,10 @@ function fmtRuntime(d: number): string {
 
 function fmtToffoli(n: number): string {
   if (!isFinite(n) || isNaN(n) || n === 0) return "\u2014";
-  const exp = Math.floor(Math.log10(Math.abs(n)));
+  if (n < 0) return "\u2014";
+  const exp = Math.floor(Math.log10(n));
   const mantissa = n / Math.pow(10, exp);
-  if (exp >= 9) return `${mantissa.toFixed(1)} \u00D7 10${superscript(exp)}`;
-  return formatNumber(n);
+  return `${mantissa.toFixed(1)} \u00D7 10${superscript(exp)}`;
 }
 
 export function StatusBar() {

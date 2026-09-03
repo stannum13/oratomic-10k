@@ -1,7 +1,26 @@
 "use client";
 
 import { useSimulator } from "@/store/simulator";
-import { formatNumber, formatSci, formatDays } from "@/lib/format";
+import { formatNumber, formatDays } from "@/lib/format";
+
+function superscript(n: number): string {
+  const map: Record<string, string> = { "0": "\u2070", "1": "\u00B9", "2": "\u00B2", "3": "\u00B3", "4": "\u2074", "5": "\u2075", "6": "\u2076", "7": "\u2077", "8": "\u2078", "9": "\u2079", "-": "\u207B" };
+  return String(n).split("").map(c => map[c] || c).join("");
+}
+
+function fmtSci(n: number): string {
+  if (n === 0 || !isFinite(n) || isNaN(n)) return "\u2014";
+  const exp = Math.floor(Math.log10(Math.abs(n)));
+  const sup = superscript(exp);
+  return `10${sup}`;
+}
+
+function fmtToffoli(n: number): string {
+  if (!isFinite(n) || isNaN(n) || n === 0 || n < 0) return "\u2014";
+  const exp = Math.floor(Math.log10(n));
+  const mantissa = n / Math.pow(10, exp);
+  return `${mantissa.toFixed(1)} \u00D7 10${superscript(exp)}`;
+}
 
 function DeltaIndicator({ current, pinned, inverse }: { current: number; pinned: number; inverse?: boolean }) {
   if (!isFinite(current) || !isFinite(pinned) || pinned === 0) return null;
@@ -71,8 +90,8 @@ export function ComparisonMode() {
               </tr>
               <tr className="border-b border-[var(--border-subtle)]">
                 <td className="text-[var(--text-secondary)] p-2">Error Rate</td>
-                <td className="text-right text-[var(--text-primary)] p-2">{formatSci(pinned.computed.blockErrorRate)}</td>
-                <td className="text-right text-[var(--text-primary)] p-2">{formatSci(state.computed.blockErrorRate)}</td>
+                <td className="text-right text-[var(--text-primary)] p-2">{fmtSci(pinned.computed.blockErrorRate)}</td>
+                <td className="text-right text-[var(--text-primary)] p-2">{fmtSci(state.computed.blockErrorRate)}</td>
                 <td className="text-right p-2">
                   <DeltaIndicator current={state.computed.blockErrorRate} pinned={pinned.computed.blockErrorRate} />
                 </td>
@@ -87,8 +106,8 @@ export function ComparisonMode() {
               </tr>
               <tr className="border-b border-[var(--border-subtle)]">
                 <td className="text-[var(--text-secondary)] p-2">Toffoli Budget</td>
-                <td className="text-right text-[var(--text-primary)] p-2">{formatNumber(pinned.computed.toffoliBudget)}</td>
-                <td className="text-right text-[var(--text-primary)] p-2">{formatNumber(state.computed.toffoliBudget)}</td>
+                <td className="text-right text-[var(--text-primary)] p-2">{fmtToffoli(pinned.computed.toffoliBudget)}</td>
+                <td className="text-right text-[var(--text-primary)] p-2">{fmtToffoli(state.computed.toffoliBudget)}</td>
                 <td className="text-right p-2">
                   <DeltaIndicator current={state.computed.toffoliBudget} pinned={pinned.computed.toffoliBudget} inverse />
                 </td>

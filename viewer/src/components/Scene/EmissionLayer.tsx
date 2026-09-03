@@ -96,10 +96,13 @@ export function EmissionLayer() {
     roundTimer.current += delta * 1000;
     const baseRoundDur = QEC_PERIOD_MS * Math.max(0.1, cycleTime);
     const timeScaleFactor = Math.pow(10, -timeScale); // higher timeScale = faster
-    const roundDur = Math.max(50, baseRoundDur * timeScaleFactor); // min 50ms to stay visible
+    const rawRoundDur = baseRoundDur * timeScaleFactor;
+    const roundDur = Math.max(50, isNaN(rawRoundDur) ? 50 : rawRoundDur); // min 50ms to stay visible
 
     // Smooth QEC phase for the breath animation
-    setQecPhase((roundTimer.current % roundDur) / roundDur);
+    const rawPhase = (roundTimer.current % roundDur) / roundDur;
+    const safePhase = isNaN(rawPhase) ? 0 : rawPhase;
+    setQecPhase(safePhase);
 
     if (roundTimer.current >= roundDur) {
       roundTimer.current -= roundDur;
@@ -199,10 +202,13 @@ export function EmissionLayer() {
       }
     }
 
-    // Clean up expired flashes
+    // Clean up expired flashes and cap at 50 entries
     flashesRef.current = flashesRef.current.filter(
       f => elapsedRef.current - f.startTime < f.duration * 1.5
     );
+    if (flashesRef.current.length > 50) {
+      flashesRef.current = flashesRef.current.slice(-50);
+    }
 
     // Update transport progress
     transportsRef.current = transportsRef.current.filter(t => {
@@ -224,11 +230,13 @@ export function EmissionLayer() {
     <group>
       {/* Flash particles — emission-colored spheres that bloom */}
       {flashesRef.current.map((flash, i) => {
+        // Guard against NaN positions
+        if (!isFinite(flash.position[0]) || !isFinite(flash.position[1]) || !isFinite(flash.position[2])) return null;
         const age = elapsedRef.current - flash.startTime;
         const t = age / flash.duration;
         // Hard attack, exponential decay
         const intensity = t < 0.2 ? t / 0.2 : Math.exp(-3 * (t - 0.2));
-        if (intensity < 0.01) return null;
+        if (!isFinite(intensity) || intensity < 0.01) return null;
 
         // In the flash render, add alpha based on whether it's atomic or code layer
         const layerAlpha = flash.color === EMISSION_780 ? atomicVis.alpha : codeVis.alpha;
@@ -269,12 +277,13 @@ export function EmissionLayer() {
 
       {/* QEC metronome — subtle pulse on memory zone */}
       <mesh position={memoryCenterTuple}>
-        <sphereGeometry args={[3, 16, 16]} />
+        <sphereGeometry args={[2, 16, 16]} />
         <meshBasicMaterial
           color={EMISSION_420}
           transparent
-          opacity={Math.sin(qecPhase * Math.PI) * 0.015 * (schedulerState === "stalled" ? 0 : 1) * codeVis.alpha}
+          opacity={Math.sin((isNaN(qecPhase) ? 0 : qecPhase) * Math.PI) * 0.015 * (schedulerState === "stalled" ? 0 : 1) * codeVis.alpha}
           toneMapped={false}
+          depthWrite={false}
           side={THREE.BackSide}
         />
       </mesh>
