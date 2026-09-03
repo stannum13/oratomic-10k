@@ -3,6 +3,7 @@ import type {
   ArchitectureType,
   LiveCodeResult,
   MemoryCode,
+  NoiseModel,
   ProcessorCode,
   TargetProblem,
 } from "@/compute/interface";
@@ -26,6 +27,9 @@ interface SimulatorState {
   memoryCode: MemoryCode;
   processorCode: ProcessorCode;
   decoderType: string;
+
+  noiseModel: NoiseModel;
+  setNoiseModel: (v: NoiseModel) => void;
 
   hardwarePlatform: string;
   setHardwarePlatform: (v: string) => void;
@@ -81,6 +85,7 @@ function recompute(state: {
   memoryCode: MemoryCode;
   processorCode: ProcessorCode;
   decoderType: string;
+  noiseModel?: NoiseModel;
 }): EngineComputeResult {
   return computeWithEngine(state);
 }
@@ -93,6 +98,7 @@ const defaults = {
   memoryCode: "lp20" as MemoryCode,
   processorCode: "lp-proc" as ProcessorCode,
   decoderType: "bp-lsd",
+  noiseModel: "depolarizing" as NoiseModel,
 };
 
 export const useSimulator = create<SimulatorState>((set, get) => ({
@@ -156,6 +162,11 @@ export const useSimulator = create<SimulatorState>((set, get) => ({
     set((s) => {
       const next = { ...s, decoderType };
       return { decoderType, computed: recompute(next) };
+    }),
+  setNoiseModel: (noiseModel) =>
+    set((s) => {
+      const next = { ...s, noiseModel };
+      return { noiseModel, computed: recompute(next) };
     }),
   setHardwarePlatform: (hardwarePlatform) =>
     set((s) => {

@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { useSimulator } from "@/store/simulator";
 import { SliderKnob, ToggleKnob } from "./Knob";
-import type { ArchitectureType, MemoryCode, ProcessorCode, TargetProblem } from "@/compute/interface";
+import type { ArchitectureType, MemoryCode, NoiseModel, ProcessorCode, TargetProblem } from "@/compute/interface";
 import configsData from "../../../public/data/example-configs.json";
 import { getDecoder } from "@/compute/decoder";
 import { ParameterSweep } from "./ParameterSweep";
@@ -16,6 +16,8 @@ import { CircuitViewer } from "./CircuitViewer";
 import { PLATFORM_PRESETS } from "@/compute/lookup-tables";
 import { BacklogMeter } from "./BacklogMeter";
 import { PlatformComparison } from "./PlatformComparison";
+import { ParetoPlot } from "./ParetoPlot";
+import { CustomCodeEntry } from "./CustomCodeEntry";
 
 // ─── Accordion Section ──────────────────────────────────
 
@@ -105,6 +107,7 @@ export function ControlPanel() {
   const {
     physicalErrorRate, cycleTime, architectureType, targetProblem,
     memoryCode, processorCode, decoderType,
+    noiseModel, setNoiseModel,
     hardwarePlatform, setHardwarePlatform,
     setPhysicalErrorRate, setCycleTime, setArchitectureType, setTargetProblem,
     setMemoryCode, setProcessorCode, setDecoderType,
@@ -248,6 +251,7 @@ export function ControlPanel() {
         <SliderKnob label="Cycle Time" value={cycleTime} min={0.001} max={10} step={0.001} unit="ms" logarithmic formatValue={(v) => v >= 1 ? `${v.toFixed(1)}` : `${(v * 1000).toFixed(0)} \u00B5s`} onChange={setCycleTime} />
         <ToggleKnob<TargetProblem> label="Target Problem" value={targetProblem} options={[{ value: "ecc-256", label: "ECC-256" }, { value: "rsa-2048", label: "RSA-2048" }]} onChange={setTargetProblem} />
         <ToggleKnob<ArchitectureType> label="Architecture" value={architectureType} options={[{ value: "space-efficient", label: "Space" }, { value: "balanced", label: "Balanced" }, { value: "time-efficient", label: "Time" }]} onChange={setArchitectureType} />
+        <ToggleKnob<NoiseModel> label="Noise model" value={noiseModel} options={[{ value: "depolarizing", label: "Depol." }, { value: "biased-z", label: "Biased Z" }, { value: "circuit-level", label: "Circuit" }]} onChange={setNoiseModel} />
       </Section>
 
       <Section id="codes" title="Code Architecture" expanded={expanded === "codes"} onToggle={() => toggle("codes")}>
@@ -292,6 +296,9 @@ export function ControlPanel() {
             <span className="text-[var(--text-quaternary)]">Compute</span><span className="text-[var(--success)] mono">{liveCode.computeTimeMs.toFixed(0)}ms</span>
           </div>
         )}
+        <div style={{ marginTop: "var(--s4)", borderTop: "1px solid var(--border)", paddingTop: "var(--s3)" }}>
+          <CustomCodeEntry />
+        </div>
       </Section>
 
       <Section id="timing" title="Timing Breakdown" expanded={expanded === "timing"} onToggle={() => toggle("timing")}>
@@ -323,6 +330,10 @@ export function ControlPanel() {
 
       <Section id="platforms" title="Platform Comparison" expanded={expanded === "platforms"} onToggle={() => toggle("platforms")}>
         <PlatformComparison />
+      </Section>
+
+      <Section id="pareto" title="Pareto Frontier" expanded={expanded === "pareto"} onToggle={() => toggle("pareto")}>
+        <ParetoPlot />
       </Section>
 
       <Section id="sensitivity" title="Sensitivity" expanded={expanded === "sensitivity"} onToggle={() => toggle("sensitivity")}>

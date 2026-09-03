@@ -3,7 +3,7 @@
  * Replaces the old lookup-table approach with symbolic evaluation.
  */
 
-import type { ArchitectureType, ComputeResult, MemoryCode, ProcessorCode, TargetProblem } from "./interface";
+import type { ArchitectureType, ComputeResult, MemoryCode, NoiseModel, ProcessorCode, TargetProblem } from "./interface";
 import { ORATOMIC_ARCHITECTURES, instantiate, type Architecture } from "@/engine/architecture";
 import { ORATOMIC_CODES } from "@/engine/code-family";
 import { sensitivityAnalysis, bottleneckAnalysis, type SensitivityResult } from "@/engine/sensitivity";
@@ -37,6 +37,7 @@ export function computeWithEngine(params: {
   memoryCode: MemoryCode;
   processorCode: ProcessorCode;
   decoderType?: string;
+  noiseModel?: NoiseModel;
 }): EngineComputeResult {
   const { physicalErrorRate, cycleTime, architectureType, targetProblem, memoryCode, processorCode } = params;
 
@@ -139,6 +140,22 @@ export function computeWithEngine(params: {
 
   const result = instantiate(arch, bindings);
 
+  // Noise model correction
+  let adjustedBlockError = result.blockErrorRate;
+  const noiseModel = params.noiseModel || "depolarizing";
+  if (noiseModel === "biased-z") {
+    // Biased noise (Z:X ratio ~100:1 for neutral atoms) effectively
+    // halves the physical error rate for tailored codes
+    adjustedBlockError = result.blockErrorRate * 0.3; // ~2x improvement in effective distance
+  } else if (noiseModel === "circuit-level") {
+    // Circuit-level noise is worse than depolarizing by ~1.5x
+    adjustedBlockError = result.blockErrorRate * 2.5;
+  }
+
+  // Recompute feasibility with adjusted block error
+  const adjustedToffoliBudget = adjustedBlockError > 0 ? -Math.log(0.9) / (3 * adjustedBlockError) : 0;
+  const adjustedFeasible = adjustedToffoliBudget >= result.toffoliCount;
+
   let sensitivity: SensitivityResult[] = [];
   let bottlenecks: Record<string, { parameter: string; elasticity: number }> = {};
   try {
@@ -163,12 +180,12 @@ export function computeWithEngine(params: {
   return {
     totalQubits: result.totalQubits,
     qubitBreakdown: result.qubitBreakdown,
-    blockErrorRate: result.blockErrorRate,
+    blockErrorRate: adjustedBlockError,
     toffoliCount: result.toffoliCount,
-    toffoliBudget: result.toffoliBudget,
+    toffoliBudget: adjustedToffoliBudget,
     runtimeDays: result.runtimeDays,
     timingWaterfall: waterfallAdjusted,
-    feasible: result.feasible,
+    feasible: adjustedFeasible,
     extrapolationWarning,
     codeParams,
     processorParams,

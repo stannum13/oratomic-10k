@@ -54,6 +54,20 @@ export function AtomCloud({ zone }: { zone: ZoneConfig }) {
       dummy.updateMatrix();
       meshRef.current.setMatrixAt(i, dummy.matrix);
     }
+
+    // Atom loss and reload
+    const lossChance = IDLE.lossRatePerAtomPerSec * delta;
+    if (Math.random() < lossChance * batchSize) {
+      // "Lose" a random atom by scaling it to 0
+      const lostIdx = offset + Math.floor(Math.random() * Math.min(batchSize, zone.count - offset));
+      if (lostIdx < zone.count) {
+        dummy.position.set(positions[lostIdx * 3], positions[lostIdx * 3 + 1], positions[lostIdx * 3 + 2]);
+        dummy.scale.setScalar(0.001); // effectively invisible
+        dummy.updateMatrix();
+        meshRef.current.setMatrixAt(lostIdx, dummy.matrix);
+      }
+    }
+
     meshRef.current.instanceMatrix.needsUpdate = true;
   });
 

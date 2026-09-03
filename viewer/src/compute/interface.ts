@@ -41,6 +41,7 @@ export type ArchitectureType = "space-efficient" | "balanced" | "time-efficient"
 export type TargetProblem = "ecc-256" | "rsa-2048";
 export type MemoryCode = "lp16" | "lp20" | "lp24";
 export type ProcessorCode = "bb18" | "lp-proc";
+export type NoiseModel = "depolarizing" | "biased-z" | "circuit-level";
 
 export interface LiveCodeResult {
   n: number;
