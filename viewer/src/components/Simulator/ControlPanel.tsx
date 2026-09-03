@@ -21,6 +21,8 @@ import { CustomCodeEntry } from "./CustomCodeEntry";
 import { SyndromeReplay } from "./SyndromeReplay";
 import { DistanceSweep } from "./DistanceSweep";
 import { SessionRecorder } from "./SessionRecorder";
+import { ForwardPass } from "./ForwardPass";
+import { HardwareInset } from "./HardwareInset";
 
 // ─── Accordion Section ──────────────────────────────────
 
@@ -224,6 +226,9 @@ export function ControlPanel() {
           ))}
         </div>
       </Section>
+      <Section id="hardware" title="Hardware Modality" expanded={expanded === "hardware"} onToggle={() => toggle("hardware")}>
+        <HardwareInset />
+      </Section>
       <Section id="presets" title="Presets" badge={`${presets.length}`} expanded={expanded === "presets"} onToggle={() => toggle("presets")}>
         <div className="space-y-1 max-h-52 overflow-y-auto pr-1">
           {presets.map((preset, i) => (
@@ -325,6 +330,10 @@ export function ControlPanel() {
 
       <Section id="syndrome" title="Syndrome Replay" expanded={expanded === "syndrome"} onToggle={() => toggle("syndrome")}>
         <SyndromeReplay />
+      </Section>
+
+      <Section id="forward-pass" title="Forward Pass" expanded={expanded === "forward-pass"} onToggle={() => toggle("forward-pass")}>
+        <ForwardPass />
       </Section>
 
       <Section id="sweep" title="Parameter Sweep" expanded={expanded === "sweep"} onToggle={() => toggle("sweep")}>
