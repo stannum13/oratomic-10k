@@ -18,6 +18,9 @@ import { BacklogMeter } from "./BacklogMeter";
 import { PlatformComparison } from "./PlatformComparison";
 import { ParetoPlot } from "./ParetoPlot";
 import { CustomCodeEntry } from "./CustomCodeEntry";
+import { SyndromeReplay } from "./SyndromeReplay";
+import { DistanceSweep } from "./DistanceSweep";
+import { SessionRecorder } from "./SessionRecorder";
 
 // ─── Accordion Section ──────────────────────────────────
 
@@ -320,6 +323,10 @@ export function ControlPanel() {
         <CircuitViewer />
       </Section>
 
+      <Section id="syndrome" title="Syndrome Replay" expanded={expanded === "syndrome"} onToggle={() => toggle("syndrome")}>
+        <SyndromeReplay />
+      </Section>
+
       <Section id="sweep" title="Parameter Sweep" expanded={expanded === "sweep"} onToggle={() => toggle("sweep")}>
         <ParameterSweep />
       </Section>
@@ -336,6 +343,10 @@ export function ControlPanel() {
         <ParetoPlot />
       </Section>
 
+      <Section id="distance" title="Distance Sweep" expanded={expanded === "distance"} onToggle={() => toggle("distance")}>
+        <DistanceSweep />
+      </Section>
+
       <Section id="sensitivity" title="Sensitivity" expanded={expanded === "sensitivity"} onToggle={() => toggle("sensitivity")}>
         <SensitivityPanel />
       </Section>
@@ -346,6 +357,10 @@ export function ControlPanel() {
       </div>
       <Section id="mlx" title="MLX Compute" badge="GPU" expanded={expanded === "mlx"} onToggle={() => toggle("mlx")}>
         <MLXPanel />
+      </Section>
+
+      <Section id="session" title="Session Recording" expanded={expanded === "session"} onToggle={() => toggle("session")}>
+        <SessionRecorder />
       </Section>
 
       <Section id="export" title="Export" expanded={expanded === "export"} onToggle={() => toggle("export")}>
