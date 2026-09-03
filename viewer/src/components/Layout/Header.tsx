@@ -5,6 +5,30 @@ import { useSimulator } from "@/store/simulator";
 import { encodeConfig } from "@/lib/url-state";
 import { mlxBridge } from "@/compute/mlx-bridge";
 
+function ThemeToggle() {
+  const theme = useSimulator((s) => s.theme);
+  const setTheme = useSimulator((s) => s.setTheme);
+
+  return (
+    <button
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      style={{
+        width: 28, height: 28,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        background: "none",
+        border: `1px solid var(--border)`,
+        borderRadius: 3,
+        cursor: "pointer",
+        color: "var(--text-tertiary)",
+        fontSize: 14,
+      }}
+      title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+    >
+      {theme === "dark" ? "\u2600" : "\u263E"}
+    </button>
+  );
+}
+
 function MLXIndicator() {
   const [connected, setConnected] = useState(false);
   useEffect(() => {
@@ -98,6 +122,7 @@ export function Header() {
           ))}
         </div>
 
+        <ThemeToggle />
         <MLXIndicator />
 
         <button

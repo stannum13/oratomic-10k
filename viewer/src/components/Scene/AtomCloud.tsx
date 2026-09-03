@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { generateAtomPositions, type ZoneConfig } from "./ZoneLayout";
 import { IDLE } from "@/lib/motion";
+import { useSimulator } from "@/store/simulator";
 
 export function AtomCloud({ zone }: { zone: ZoneConfig }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
@@ -16,7 +17,12 @@ export function AtomCloud({ zone }: { zone: ZoneConfig }) {
   );
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
-  const color = useMemo(() => new THREE.Color(zone.color), [zone.color]);
+  const theme = useSimulator((s) => s.theme);
+  const effectiveColor = useMemo(
+    () => new THREE.Color(theme === "light" ? "#2A2A2A" : zone.color),
+    [zone.color, theme]
+  );
+  const color = effectiveColor;
   const baseScale = 0.03 * zone.dotScale;
 
   useEffect(() => {

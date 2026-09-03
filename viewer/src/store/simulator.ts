@@ -54,6 +54,9 @@ interface SimulatorState {
   setProcessorCode: (v: ProcessorCode) => void;
   setDecoderType: (v: string) => void;
 
+  theme: "dark" | "light";
+  setTheme: (theme: "dark" | "light") => void;
+
   paramHistory: Array<{
     physicalErrorRate: number;
     cycleTime: number;
@@ -96,6 +99,11 @@ export const useSimulator = create<SimulatorState>((set, get) => ({
   computed: recompute(defaults),
   liveCode: null,
   liveCodeLoading: false,
+  theme: "dark",
+  setTheme: (theme) => {
+    document.documentElement.setAttribute("data-theme", theme);
+    set({ theme });
+  },
   paramHistory: [],
   pinnedConfig: null,
   setPinnedConfig: (pinnedConfig) => set({ pinnedConfig }),

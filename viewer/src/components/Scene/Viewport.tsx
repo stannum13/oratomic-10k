@@ -45,6 +45,8 @@ function Scene() {
   const breakdown = useSimulator((s) => s.computed.qubitBreakdown);
   const mode = useSimulator((s) => s.mode);
   const activeSection = useSimulator((s) => s.activeSection);
+  const theme = useSimulator((s) => s.theme);
+  const bgColor = theme === "light" ? "#FAFAFA" : "#08090C";
   const zones = getZoneConfigs(breakdown);
   const showLabels = activeSection >= 1 || mode === "simulate";
 
@@ -59,7 +61,7 @@ function Scene() {
       <directionalLight position={[5, 20, 10]} intensity={0.35} color="#ffffff" />
       <directionalLight position={[-8, 10, -5]} intensity={0.15} color="#ffffff" />
 
-      <fog attach="fog" args={["#08090C", 20, 50]} />
+      <fog attach="fog" args={[bgColor, 20, 50]} />
 
       <Apparatus zones={zones} />
 
@@ -95,6 +97,9 @@ function Scene() {
 }
 
 export function Viewport() {
+  const theme = useSimulator((s) => s.theme);
+  const bgColor = theme === "light" ? "#FAFAFA" : "#08090C";
+
   return (
     <Canvas
       camera={{ position: [0, 10, 22], fov: 45, near: 0.1, far: 100 }}
@@ -104,7 +109,7 @@ export function Viewport() {
         toneMapping: THREE.ACESFilmicToneMapping,
         toneMappingExposure: 1.0,
       }}
-      style={{ background: "#08090C" }}
+      style={{ background: bgColor }}
       dpr={[1, 2]}
     >
       <Scene />
