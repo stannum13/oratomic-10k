@@ -13,7 +13,7 @@ interface SyndromeStep {
   correctionMask?: number[];
 }
 
-function generateRound(n: number, k: number, p: number): SyndromeStep[] {
+function generateRound(n: number, k: number, p: number, weight: number): SyndromeStep[] {
   const numChecksX = Math.floor((n - k) / 2);
   const numChecksZ = Math.floor((n - k) / 2);
 
@@ -42,7 +42,7 @@ function generateRound(n: number, k: number, p: number): SyndromeStep[] {
     {
       id: 1,
       label: "X-stabilizer entanglement",
-      description: `CNOT gates between X-ancillae and data qubits. ${numChecksX} stabilizers, weight ${Math.min(10, Math.ceil(n / numChecksX))}.`,
+      description: `CNOT gates between X-ancillae and data qubits. ${numChecksX} stabilizers, weight ${weight}.`,
       activeQubits: "ancilla-x",
       action: "entangle",
     },
@@ -90,19 +90,20 @@ function generateRound(n: number, k: number, p: number): SyndromeStep[] {
 export function SyndromeReplay() {
   const n = useSimulator((s) => s.computed.codeParams.n);
   const k = useSimulator((s) => s.computed.codeParams.k);
+  const weight = useSimulator((s) => s.computed.codeParams.weight);
   const p = useSimulator((s) => s.physicalErrorRate);
 
-  const [steps, setSteps] = useState<SyndromeStep[]>(() => generateRound(n, k, p));
+  const [steps, setSteps] = useState<SyndromeStep[]>(() => generateRound(n, k, p, weight));
   const [currentStep, setCurrentStep] = useState(0);
   const [playing, setPlaying] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   // Regenerate on param change
   useEffect(() => {
-    setSteps(generateRound(n, k, p));
+    setSteps(generateRound(n, k, p, weight));
     setCurrentStep(0);
     setPlaying(false);
-  }, [n, k, p]);
+  }, [n, k, p, weight]);
 
   // Auto-advance when playing
   useEffect(() => {
@@ -170,7 +171,7 @@ export function SyndromeReplay() {
           ▶
         </button>
         <button
-          onClick={() => { setSteps(generateRound(n, k, p)); setCurrentStep(0); }}
+          onClick={() => { setSteps(generateRound(n, k, p, weight)); setCurrentStep(0); }}
           style={{ background: "none", border: "none", color: "var(--text-tertiary)", cursor: "pointer", fontSize: 11, padding: 2, marginLeft: "auto", fontFamily: "var(--font-mono)" }}
           title="New random round"
         >

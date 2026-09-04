@@ -57,7 +57,7 @@ class BPDecoder:
         else:
             return np.mod(h @ error, 2).astype(np.float32)
 
-    def _bp_decode(self, h, syndrome, config):
+    def _bp_decode(self, h, syndrome, config, physical_error_rate=0.001):
         """
         Run min-sum belief propagation.
 
@@ -65,23 +65,26 @@ class BPDecoder:
         check nodes (stabilizers) along the Tanner graph edges.
         """
         if HAS_MLX:
-            return self._bp_decode_mlx(h, syndrome, config)
+            return self._bp_decode_mlx(h, syndrome, config, physical_error_rate)
         else:
-            return self._bp_decode_numpy(h, syndrome, config)
+            return self._bp_decode_numpy(h, syndrome, config, physical_error_rate)
 
-    def _bp_decode_mlx(self, h, syndrome, config):
+    def _bp_decode_mlx(self, h, syndrome, config, physical_error_rate=0.001):
         """MLX-accelerated BP."""
         num_checks, num_vars = h.shape
         alpha = config.scaling_factor
 
-        # Initialize messages
-        # Channel LLRs: uniform prior (no channel info for now)
-        channel_llr = mx.zeros((num_vars,))
+        # Channel LLR: log((1-p)/p) for depolarizing channel
+        p_channel = physical_error_rate if physical_error_rate > 0 else 0.001
+        channel_llr = mx.full((num_vars,), float(np.log((1 - p_channel) / p_channel)))
 
         # Variable-to-check messages
         v2c = mx.zeros((num_checks, num_vars))
         # Check-to-variable messages
         c2v = mx.zeros((num_checks, num_vars))
+
+        # Initialize check parity from syndrome (done once before the loop)
+        check_parity = mx.where(syndrome > 0.5, -mx.ones_like(syndrome), mx.ones_like(syndrome))
 
         converged = False
         iterations = 0
@@ -102,16 +105,20 @@ class BPDecoder:
             all_sign_product = mx.prod(mx.where(h > 0, signs, mx.ones_like(signs)), axis=1, keepdims=True)
             sign_excl = all_sign_product * signs  # self-exclusion via division
 
-            # Min of abs values (excluding self) — approximate with 2nd smallest
-            # Sort abs values per row, take smallest
+            # Min of abs values (excluding self) via first/second minimum
             masked_abs = mx.where(h > 0, abs_v2c, mx.full_like(abs_v2c, 1e10))
-            min_vals = mx.min(masked_abs, axis=1, keepdims=True)
+            sorted_abs = mx.sort(masked_abs, axis=1)
+            min1 = sorted_abs[:, 0:1]  # smallest
+            min2 = sorted_abs[:, 1:2]  # second smallest
 
-            c2v = h * alpha * sign_excl * min_vals
+            # For each position j: use min2 if j is the argmin, else use min1
+            is_argmin = (masked_abs <= min1 + 1e-10)
+            min_excl_self = mx.where(is_argmin, min2, min1)
 
-            # Adjust for syndrome: flip sign for unsatisfied checks
-            syndrome_sign = mx.where(syndrome > 0.5, -mx.ones((num_checks, 1)), mx.ones((num_checks, 1)))
-            c2v = c2v * syndrome_sign
+            c2v = h * alpha * sign_excl * min_excl_self
+
+            # Syndrome enters as check parity: flip c2v sign for checks with syndrome=1
+            c2v = c2v * check_parity[:, None]
 
             # Hard decision
             total_llr = channel_llr + mx.sum(c2v * h, axis=0)
@@ -127,14 +134,19 @@ class BPDecoder:
         mx.eval(hard_decision)  # force computation
         return hard_decision, converged, iterations
 
-    def _bp_decode_numpy(self, h, syndrome, config):
+    def _bp_decode_numpy(self, h, syndrome, config, physical_error_rate=0.001):
         """NumPy fallback BP."""
         num_checks, num_vars = h.shape
         alpha = config.scaling_factor
 
-        channel_llr = np.zeros(num_vars, dtype=np.float32)
+        # Channel LLR: log((1-p)/p) for depolarizing channel
+        p_channel = physical_error_rate if physical_error_rate > 0 else 0.001
+        channel_llr = np.full(num_vars, np.log((1 - p_channel) / p_channel), dtype=np.float32)
         v2c = np.zeros((num_checks, num_vars), dtype=np.float32)
         c2v = np.zeros((num_checks, num_vars), dtype=np.float32)
+
+        # Initialize check parity from syndrome (done once before the loop)
+        check_parity = np.where(syndrome > 0.5, -1.0, 1.0).reshape(-1, 1)
 
         converged = False
         iterations = 0
@@ -153,13 +165,20 @@ class BPDecoder:
             all_sign_product = np.prod(np.where(h > 0, signs, 1.0), axis=1, keepdims=True)
             sign_excl = all_sign_product * signs
 
+            # Min of abs values (excluding self) via first/second minimum
             masked_abs = np.where(h > 0, abs_v2c, 1e10)
-            min_vals = np.min(masked_abs, axis=1, keepdims=True)
+            sorted_abs = np.sort(masked_abs, axis=1)
+            min1 = sorted_abs[:, 0:1]  # smallest
+            min2 = sorted_abs[:, 1:2]  # second smallest
 
-            c2v = h * alpha * sign_excl * min_vals
+            # For each position j: use min2 if j is the argmin, else use min1
+            is_argmin = (masked_abs <= min1 + 1e-10)
+            min_excl_self = np.where(is_argmin, min2, min1)
 
-            syndrome_sign = np.where(syndrome > 0.5, -1.0, 1.0).reshape(-1, 1)
-            c2v = c2v * syndrome_sign
+            c2v = h * alpha * sign_excl * min_excl_self
+
+            # Syndrome enters as check parity: flip c2v sign for checks with syndrome=1
+            c2v = c2v * check_parity
 
             # Hard decision
             total_llr = channel_llr + np.sum(c2v * h, axis=0)
@@ -196,7 +215,7 @@ class BPDecoder:
         syndrome = self._compute_syndrome(h, error)
 
         # Run BP
-        correction, converged, iterations = self._bp_decode(h, syndrome, config)
+        correction, converged, iterations = self._bp_decode(h, syndrome, config, physical_error_rate)
 
         elapsed = time.time() - start
 
@@ -238,7 +257,7 @@ class BPDecoder:
             for _ in range(trials_per_rate):
                 error = self._generate_random_error(num_data, p)
                 syndrome = self._compute_syndrome(h, error)
-                _, converged, iters = self._bp_decode(h, syndrome, config)
+                _, converged, iters = self._bp_decode(h, syndrome, config, p)
                 if converged:
                     successes += 1
                 total_iterations += iters

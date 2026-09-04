@@ -46,7 +46,7 @@ export interface Decoder {
  * the structure of iterative message passing on Tanner graphs.
  */
 export class SimpleBPDecoder implements Decoder {
-  name = "BP (simplified)";
+  name = "Random bit-flip (demo)";
   private iterations: number[] = [];
   private convergedCount = 0;
   private totalRuns = 0;
@@ -101,7 +101,7 @@ export class SimpleBPDecoder implements Decoder {
     const avgTime = this.totalRuns > 0 ? 0.1 : 0; // rough estimate
     return {
       name: this.name,
-      description: "Simplified bit-flip decoder for demonstration. Not suitable for production use.",
+      description: "Random bit-flip decoder for UI demonstration only. Not a real decoder — does not use belief propagation or the code's parity check structure.",
       avgIterations: avgIter,
       convergenceRate: this.totalRuns > 0 ? this.convergedCount / this.totalRuns : 0,
       avgTimeMs: avgTime,

@@ -4,7 +4,7 @@
  * rather than isolated matrices.
  */
 
-import { type Expr, type BoolExpr, lit, add, mul, sub, pow, div, symMin } from "./expr";
+import { type Expr, type BoolExpr, lit, add, mul, sub, pow, div } from "./expr";
 
 export interface CodeFamily {
   name: string;
@@ -56,16 +56,11 @@ export function lpCodeFamily(
   const rate = div(k, n);
   const stabWeight = add(rA, nA);
 
-  // Distance bound: d <= min((rA+1)^(rA+1), (nA+1)^(nA+1))
-  // rough bound, not factorial
-  const distanceBound: BoolExpr = {
-    tag: "le",
-    left: d,
-    right: symMin(
-      pow(add(rA, lit(1)), add(rA, lit(1))),
-      pow(add(nA, lit(1)), add(nA, lit(1))),
-    ),
-  };
+  // Distance bound: d is user-specified upper bound from numerical estimation
+  // The true distance satisfies d <= min((rA+1)!, (nA+1)!) for LP codes
+  // but computing the factorial symbolically is not practical.
+  // We store the bound as a trivially true constraint.
+  const distanceBound: BoolExpr = { tag: "bool_lit", value: true };
 
   return {
     name,

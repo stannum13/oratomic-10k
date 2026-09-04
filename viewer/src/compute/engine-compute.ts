@@ -140,15 +140,19 @@ export function computeWithEngine(params: {
 
   const result = instantiate(arch, bindings);
 
-  // Noise model correction
+  // Noise model correction — APPROXIMATE heuristics, not rigorous
+  // biased-z: Z:X ratio ~100:1 in neutral atoms reduces effective
+  // error rate for codes with tailored X/Z-check structure.
+  // Factor 0.3 is a rough estimate; actual advantage depends on
+  // code structure, bias ratio, and decoder awareness.
+  // circuit-level: adds measurement errors, idle errors, and
+  // time-correlated noise not captured by the depolarizing model.
+  // Factor 2.5 is conservative; actual overhead varies by code.
   let adjustedBlockError = result.blockErrorRate;
   const noiseModel = params.noiseModel || "depolarizing";
   if (noiseModel === "biased-z") {
-    // Biased noise (Z:X ratio ~100:1 for neutral atoms) effectively
-    // halves the physical error rate for tailored codes
-    adjustedBlockError = result.blockErrorRate * 0.3; // ~2x improvement in effective distance
+    adjustedBlockError = result.blockErrorRate * 0.3;
   } else if (noiseModel === "circuit-level") {
-    // Circuit-level noise is worse than depolarizing by ~1.5x
     adjustedBlockError = result.blockErrorRate * 2.5;
   }
 

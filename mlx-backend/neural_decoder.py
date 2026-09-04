@@ -92,7 +92,10 @@ class NeuralDecoder:
 
                 def loss_fn(model):
                     pred = model(batch_syn)
-                    return mx.mean((pred - batch_err) ** 2)
+                    # Binary cross-entropy loss (not MSE)
+                    pred_clamp = mx.clip(pred, 1e-7, 1 - 1e-7)
+                    bce = -(batch_err * mx.log(pred_clamp) + (1 - batch_err) * mx.log(1 - pred_clamp))
+                    return mx.mean(bce)
 
                 loss, grads = mx.value_and_grad(loss_fn)(self.model)
                 optimizer.update(self.model, grads)
