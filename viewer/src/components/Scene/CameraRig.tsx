@@ -24,7 +24,7 @@ export function getCameraRigCallbacks() {
  * - In simulate mode: fully user-controlled via OrbitControls
  * - Hero section: slow auto-orbit using IDLE.cameraTheta from motion.ts
  */
-export function CameraRig() {
+export function CameraRig({ mobile = false, resetSignal = 0 }: { mobile?: boolean; resetSignal?: number }) {
   const { camera } = useThree();
   const targetPos = useRef(new THREE.Vector3(0, 10, 22));
   const targetLookAt = useRef(new THREE.Vector3(1, 0, 0));
@@ -33,6 +33,16 @@ export function CameraRig() {
   const idleTimer = useRef(0);
   const activeSection = useSimulator((s) => s.activeSection);
   const mode = useSimulator((s) => s.mode);
+
+  useEffect(() => {
+    const position: [number, number, number] = mobile ? [1, 14, 18] : [1, 10, 17];
+    camera.position.set(...position);
+    camera.lookAt(1, 0, 0);
+    targetPos.current.set(...position);
+    targetLookAt.current.set(1, 0, 0);
+    userInteracting.current = false;
+    idleTimer.current = 0;
+  }, [camera, mobile, resetSignal]);
 
   // Expose interaction state for OrbitControls callbacks
   const onInteractionStart = useCallback(() => {

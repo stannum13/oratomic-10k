@@ -291,8 +291,8 @@ export function EmissionLayer() {
       </mesh>
 
       {/* Buffer gauge — persistent visual */}
-      <Html position={[resourceCenter[0] + 3, 2, resourceCenter[2]]} center>
-        <div style={{
+      <Html position={[resourceCenter[0] + 1, 2, resourceCenter[2]]} center>
+        <div className="buffer-gauge" style={{
           pointerEvents: "none",
           userSelect: "none",
           display: "flex",

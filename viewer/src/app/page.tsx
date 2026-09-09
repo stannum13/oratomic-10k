@@ -13,10 +13,10 @@ import { Walkthrough } from "@/components/Paper/Walkthrough";
 import { SeedMatrixDisplay } from "@/components/Paper/SeedMatrixDisplay";
 import { ControlPanel } from "@/components/Simulator/ControlPanel";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
-import { EmissionLegend } from "@/components/Scene/EmissionLegend";
 import { QpuSystemView } from "@/components/Scene/QpuSystemView";
 import { MobileSimulator } from "@/components/Simulator/MobileSimulator";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useElementVisibility } from "@/hooks/useElementVisibility";
 import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
 import { useSimulator } from "@/store/simulator";
 import paperData from "../../public/data/paper-sections.json";
@@ -193,14 +193,20 @@ function SceneInfo() {
 }
 
 function QpuCanvas({ mobile, reducedMotion = false }: { mobile: boolean; reducedMotion?: boolean }) {
+  const [resetSignal, setResetSignal] = useState(0);
+  const [canvasRef, visible] = useElementVisibility<HTMLDivElement>();
+
   return (
-    <div className={mobile ? "mobile-qpu-canvas" : "desktop-qpu-canvas"}>
+    <div ref={canvasRef} className={mobile ? "mobile-qpu-canvas" : "desktop-qpu-canvas"}>
       <SceneInfo />
+      <button type="button" className="reset-camera" onClick={() => setResetSignal((value) => value + 1)}>Reset view</button>
       <div className="scene-navigation-hint" aria-label="3D scene controls">
         {mobile ? "One finger rotates · Pinch zooms" : "Drag to rotate · Scroll to zoom · Right-drag to pan"}
       </div>
       <ErrorBoundary fallback={<div className="viewport-paused">3D viewport unavailable. Allocation and PHY explanations remain available.</div>}>
-        <Viewport mobile={mobile} enableEffects={!mobile && !reducedMotion} />
+        <div className="qpu-canvas-interaction">
+          <Viewport mobile={mobile} active={!mobile || visible} resetSignal={resetSignal} enableEffects={!mobile && !reducedMotion} />
+        </div>
       </ErrorBoundary>
     </div>
   );
@@ -264,7 +270,6 @@ export default function Home() {
           </div>
           <div className="visualization-body">
           {sceneView === "qpu" ? <>
-            <EmissionLegend />
             <QpuCanvas mobile={false} reducedMotion={prefersReducedMotion} />
           </> : <QpuSystemView />}
           </div>

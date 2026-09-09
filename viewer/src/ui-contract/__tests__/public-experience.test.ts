@@ -177,4 +177,17 @@ describe("public simulator experience", () => {
     expect(viewport).toContain("[1, 1.5]");
     expect(viewport).toContain("enableEffects");
   });
+
+  it("constrains mobile camera interaction and removes misleading overlays", () => {
+    const page = read("src/app/page.tsx");
+    const viewport = read("src/components/Scene/Viewport.tsx");
+    const visibility = read("src/hooks/useElementVisibility.ts");
+
+    expect(page).toContain("Reset view");
+    expect(page).not.toContain("<EmissionLegend");
+    expect(viewport).toContain("enablePan={!mobile}");
+    expect(viewport).toContain('frameloop={active ? "always" : "never"}');
+    expect(viewport).toContain("slice(0, 2)");
+    expect(visibility).toContain("IntersectionObserver");
+  });
 });

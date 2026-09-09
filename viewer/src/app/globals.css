@@ -462,6 +462,34 @@ html, body {
   text-align: center;
 }
 
+.desktop-qpu-canvas,
+.mobile-qpu-canvas {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.qpu-canvas-interaction { position: absolute; inset: 0; }
+.reset-camera {
+  position: absolute;
+  top: var(--s3);
+  left: var(--s3);
+  z-index: 4;
+  min-height: 44px;
+  padding: 0 var(--s3);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: color-mix(in oklab, var(--surface-l1) 94%, transparent);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.buffer-gauge {
+  max-width: min(150px, calc(100vw - 32px));
+  overflow: hidden;
+}
+
 .visualization-header {
   position: relative;
   z-index: 6;
@@ -1264,8 +1292,10 @@ select {
   }
   .mobile-visualization > .scene-view-switcher button { flex: 1; min-height: 48px; font-size: 14px; }
   .mobile-visualization__body { min-width: 0; }
-  .mobile-qpu-canvas { position: relative; aspect-ratio: 4 / 3; margin: var(--s4); overflow: hidden; background: var(--surface-l0); }
-  .mobile-qpu-canvas canvas { touch-action: pan-y pinch-zoom; }
+  .mobile-qpu-canvas { position: relative; width: 100%; height: auto; aspect-ratio: 4 / 3; overflow: hidden; background: var(--surface-l0); }
+  .mobile-qpu-canvas .qpu-canvas-interaction { inset: 0 var(--s4); }
+  .mobile-qpu-canvas canvas { touch-action: none; }
+  .mobile-qpu-canvas .reset-camera { left: var(--s5); }
 
   .mobile-explainer { margin: 0 var(--s3) var(--s7); border: 1px solid var(--border); background: var(--surface-l1); }
   .mobile-explainer > details > summary { display: flex; min-height: 52px; align-items: center; padding: var(--s3) var(--s4); cursor: pointer; font-size: 16px; font-weight: 600; }

@@ -35,7 +35,7 @@ function ZoneLabel({ name, center, count, gridSize, spacing }: {
   );
 }
 
-function Scene({ enableEffects }: { enableEffects: boolean }) {
+function Scene({ enableEffects, mobile, resetSignal }: { enableEffects: boolean; mobile: boolean; resetSignal: number }) {
   const breakdown = useSimulator((s) => s.computed.qubitBreakdown);
   const mode = useSimulator((s) => s.mode);
   const activeSection = useSimulator((s) => s.activeSection);
@@ -48,6 +48,9 @@ function Scene({ enableEffects }: { enableEffects: boolean }) {
     memory: breakdown.memory, processor: breakdown.processor,
     operation: breakdown.operation, resource: breakdown.resource,
   };
+  const labeledZones = mobile
+    ? [...zones].sort((a, b) => breakdownMap[b.name] - breakdownMap[a.name]).slice(0, 2)
+    : zones;
 
   return (
     <>
@@ -63,7 +66,7 @@ function Scene({ enableEffects }: { enableEffects: boolean }) {
         <AtomCloud key={zone.name} zone={zone} />
       ))}
 
-      {showLabels && zones.map((zone) => (
+      {showLabels && labeledZones.map((zone) => (
         <ZoneLabel
           key={`label-${zone.name}`}
           name={zone.name}
@@ -78,9 +81,11 @@ function Scene({ enableEffects }: { enableEffects: boolean }) {
       <TannerOverlay />
       <EmissionLayer />
 
-      <CameraRig />
+      <CameraRig mobile={mobile} resetSignal={resetSignal} />
       <OrbitControls
         enableDamping dampingFactor={0.05}
+        enablePan={!mobile}
+        target={[1, 0, 0]}
         minDistance={3} maxDistance={40} maxPolarAngle={Math.PI * 0.48}
         onStart={() => getCameraRigCallbacks().onStart?.()}
         onEnd={() => getCameraRigCallbacks().onEnd?.()}
@@ -90,13 +95,13 @@ function Scene({ enableEffects }: { enableEffects: boolean }) {
   );
 }
 
-export function Viewport({ mobile = false, enableEffects = true }: { mobile?: boolean; enableEffects?: boolean }) {
+export function Viewport({ mobile = false, enableEffects = true, active = true, resetSignal = 0 }: { mobile?: boolean; enableEffects?: boolean; active?: boolean; resetSignal?: number }) {
   const theme = useSimulator((s) => s.theme);
   const bgColor = theme === "light" ? "#FAFAFA" : "#08090C";
 
   return (
     <Canvas
-      camera={{ position: [0, 10, 22], fov: 45, near: 0.1, far: 100 }}
+      camera={{ position: mobile ? [1, 14, 18] : [1, 10, 17], fov: mobile ? 42 : 40, near: 0.1, far: 100 }}
       gl={{
         antialias: !mobile, alpha: false,
         powerPreference: "high-performance",
@@ -105,8 +110,9 @@ export function Viewport({ mobile = false, enableEffects = true }: { mobile?: bo
       }}
       style={{ background: bgColor }}
       dpr={mobile ? [1, 1.5] : [1, 2]}
+      frameloop={active ? "always" : "never"}
     >
-      <Scene enableEffects={enableEffects} />
+      <Scene enableEffects={enableEffects} mobile={mobile} resetSignal={resetSignal} />
     </Canvas>
   );
 }
