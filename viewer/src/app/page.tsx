@@ -234,6 +234,9 @@ export default function Home() {
           </div>
           <SceneInfo />
           <EmissionLegend />
+          <div className="scene-navigation-hint" aria-label="3D scene controls">
+            Drag to rotate · Scroll to zoom · Right-drag to pan
+          </div>
           <ErrorBoundary fallback={
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "var(--bg)" }}>
               <span style={{ color: "var(--text-tertiary)", fontSize: "var(--fs-label)" }}>3D viewport unavailable</span>

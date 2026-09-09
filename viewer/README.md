@@ -6,6 +6,8 @@ Interactive 3D viewer and simulator for the paper **"Shor's algorithm is possibl
 
 For a quick review, open **Simulate**, change the physical error rate or architecture, and watch qubit count, block error, runtime, feasibility, and the 3D allocation update. Open **Methodology & Sources** for the boundary between paper-derived values, fitted projections, model assumptions, and illustrative estimates.
 
+The public viewer is browser-native and does not require a platform-specific local backend, providing the same controls on Windows, Linux, and macOS.
+
 ## What This Is
 
 A scroll-driven paper reader that progressively builds into a fully configurable architecture simulator. Designed for researchers exploring fault-tolerant quantum computing with high-rate qLDPC codes on neutral-atom platforms.
@@ -41,6 +43,7 @@ Open [http://localhost:3000](http://localhost:3000).
 ```bash
 npm run build    # static export to out/
 npm run build:pages # static export with the /oratomic-10k base path
+npm run build:site  # static export for shivanknigam.com/oratomic/
 npx serve out    # test locally
 ```
 
@@ -78,13 +81,14 @@ All numerical values are extracted from the paper's LaTeX source:
 - Comparison mode (pin and diff configurations)
 - Decoder simulation slots (BP-LSD, BP, FNO) with preview badge
 - Sensitivity analysis panel
-- MLX GPU compute integration (BP decode, neural training, tensor network, code search)
+- Platform-neutral public simulator with no local acceleration service required
 - Export panel (JSON, CSV, parity check matrices)
 - Symbolic compute engine with expression IR
 
 ### Future
 - WASM module (Rust) for live LP code construction from seed matrices
 - Constraint solvers for automated architecture optimization
+- Capability-based acceleration providers after cross-platform correctness and parity validation
 
 ## Tech Stack
 

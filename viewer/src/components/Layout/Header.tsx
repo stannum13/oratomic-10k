@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSimulator } from "@/store/simulator";
 import { encodeConfig } from "@/lib/url-state";
-import { mlxBridge } from "@/compute/mlx-bridge";
 
 function ThemeToggle() {
   const theme = useSimulator((s) => s.theme);
@@ -25,35 +24,6 @@ function ThemeToggle() {
       title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
       {theme === "dark" ? "\u2600" : "\u263E"}
-    </button>
-  );
-}
-
-function MLXIndicator() {
-  const [connected, setConnected] = useState(() => mlxBridge.isConnected());
-  useEffect(() => {
-    const unsub = mlxBridge.onConnectionChange(setConnected);
-    return () => { unsub(); };
-  }, []);
-
-  return (
-    <button
-      onClick={() => connected ? mlxBridge.disconnect() : mlxBridge.connect()}
-      style={{
-        display: "flex", alignItems: "center", gap: "var(--s2)",
-        padding: `var(--s1) var(--s3)`,
-        background: "none", border: `1px solid var(--border)`,
-        borderRadius: 3, cursor: "pointer",
-        fontSize: "var(--fs-label)", color: "var(--text-tertiary)",
-        letterSpacing: "var(--tracking-label)", textTransform: "uppercase",
-      }}
-    >
-      <div style={{
-        width: 6, height: 6, borderRadius: "50%",
-        background: connected ? "var(--status-ok)" : "var(--border)",
-        boxShadow: connected ? "0 0 6px rgba(74,222,128,0.4)" : "none",
-      }} />
-      MLX
     </button>
   );
 }
@@ -126,7 +96,6 @@ export function Header() {
         </div>
 
         <ThemeToggle />
-        <MLXIndicator />
 
         <button
           onClick={handleShare}

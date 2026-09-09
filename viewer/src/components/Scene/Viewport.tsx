@@ -23,17 +23,11 @@ function ZoneLabel({ name, center, count, gridSize, spacing }: {
       center={false}
       style={{ pointerEvents: "none" }}
     >
-      <div style={{ whiteSpace: "nowrap", userSelect: "none" }}>
-        <span className="mono" style={{
-          fontSize: "var(--fs-mono-sm)", color: "var(--text-tertiary)",
-          letterSpacing: "var(--tracking-label)", textTransform: "uppercase",
-        }}>
+      <div className="zone-label">
+        <span className="zone-label__name">
           {name}
         </span>
-        <span className="mono" style={{
-          fontSize: "var(--fs-mono-sm)", color: "var(--text-tertiary)",
-          marginLeft: "var(--s2)", opacity: 0.5,
-        }}>
+        <span className="zone-label__count">
           {count.toLocaleString()}
         </span>
       </div>
@@ -57,13 +51,13 @@ function Scene() {
 
   return (
     <>
-      <ambientLight intensity={0.12} />
-      <directionalLight position={[5, 20, 10]} intensity={0.35} color="#ffffff" />
-      <directionalLight position={[-8, 10, -5]} intensity={0.15} color="#ffffff" />
+      <ambientLight intensity={0.28} />
+      <directionalLight position={[5, 20, 10]} intensity={0.55} color="#ffffff" />
+      <directionalLight position={[-8, 10, -5]} intensity={0.25} color="#ffffff" />
 
       <fog attach="fog" args={[bgColor, 20, 50]} />
 
-      <Apparatus zones={zones} />
+      <Apparatus zones={zones} theme={theme} />
 
       {zones.map((zone) => (
         <AtomCloud key={zone.name} zone={zone} />

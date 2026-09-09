@@ -8,7 +8,6 @@ import configsData from "../../../public/data/example-configs.json";
 import { getDecoder } from "@/compute/decoder";
 import { ParameterSweep } from "./ParameterSweep";
 import { ComparisonMode } from "./ComparisonMode";
-import { MLXPanel } from "./MLXPanel";
 import { SensitivityPanel } from "./SensitivityPanel";
 import { ExportPanel } from "./ExportPanel";
 import { TimeScaleControl } from "./TimeScale";
@@ -40,29 +39,38 @@ function Section({
   onToggle: () => void;
   children: ReactNode;
 }) {
+  const sectionSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  const triggerId = `control-${sectionSlug}`;
+  const panelId = `${triggerId}-panel`;
+
   return (
-    <div className="border-b border-[var(--border-subtle)]">
+    <div className="control-section" data-expanded={expanded}>
       <button
+        type="button"
+        id={triggerId}
         onClick={onToggle}
-        className="w-full flex items-center gap-2 px-5 py-3 hover:bg-[var(--bg-hover)] transition-colors text-left group"
+        className="control-section__trigger"
+        aria-expanded={expanded}
+        aria-controls={panelId}
       >
-        <span className="text-[11px] text-[var(--text-tertiary)] group-hover:text-[var(--text-secondary)] tracking-wide uppercase flex-1 transition-colors">
+        <span className="control-section__title">
           {title}
         </span>
         {badge && (
-          <span className="text-[9px] px-1.5 py-0.5 rounded-[3px] bg-[var(--bg-surface)] text-[var(--text-quaternary)]">
+          <span className="control-section__badge">
             {badge}
           </span>
         )}
         <svg
-          className={`w-3 h-3 text-[var(--text-quaternary)] transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+          className="control-section__chevron"
+          aria-hidden="true"
           fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
       {expanded && (
-        <div className="px-5 pb-4 pt-1">
+        <div className="control-section__panel" id={panelId} role="region" aria-labelledby={triggerId}>
           {children}
         </div>
       )}
@@ -146,6 +154,17 @@ export function ControlPanel() {
 
   return (
     <div className="pb-8">
+      <section className="simulator-guide" aria-labelledby="simulator-guide-title">
+        <div className="simulator-guide__eyebrow">Interactive simulator</div>
+        <h1 id="simulator-guide-title">Tune the architecture</h1>
+        <p>Every parameter updates the headline results and 3D qubit allocation live.</p>
+        <div className="simulator-guide__steps" aria-label="Simulator workflow">
+          <span>1 · Choose</span>
+          <span>2 · Tune</span>
+          <span>3 · Observe</span>
+          <span>4 · Compare</span>
+        </div>
+      </section>
       <QuickStats />
 
       {/* Pin button for comparison */}
@@ -366,10 +385,6 @@ export function ControlPanel() {
       <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
         System
       </div>
-      <Section title="MLX Compute" badge="GPU" expanded={expanded === "mlx"} onToggle={() => toggle("mlx")}>
-        <MLXPanel />
-      </Section>
-
       <Section title="Session Recording" expanded={expanded === "session"} onToggle={() => toggle("session")}>
         <SessionRecorder />
       </Section>

@@ -26,7 +26,7 @@ npm run dev
 - Parameter sweep and sensitivity analysis
 - Side-by-side configuration comparison with delta indicators
 - Shareable URLs encoding full simulator state
-- MLX GPU backend bridge for accelerated decoding (optional)
+- Cross-platform browser-native simulation with no local backend required
 - Export simulation results as JSON or CSV
 
 ## Tech Stack
@@ -45,7 +45,7 @@ viewer/                   # Interactive Next.js + Three.js app
   src/
     app/                  # Next.js app router pages + global styles
     components/           # UI components (Scene, Simulator, Paper, Layout)
-    compute/              # Engine, code construction, decoders, MLX bridge
+    compute/              # Engine, code construction, and decoders
     store/                # Zustand state management
     lib/                  # Constants, lookup tables, formatting utilities
   public/data/            # Paper sections, example configs

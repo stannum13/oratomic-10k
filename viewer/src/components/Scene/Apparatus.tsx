@@ -4,22 +4,25 @@ import { useMemo } from "react";
 import * as THREE from "three";
 import type { ZoneConfig } from "./ZoneLayout";
 
+type SceneTheme = "light" | "dark";
+
 /**
  * Substrate chip — the physical base the atoms sit on.
  * A single dark platform spanning all zones, matching --bg.
  */
-function Substrate() {
+function Substrate({ theme }: { theme: SceneTheme }) {
+  const isLight = theme === "light";
   return (
     <group>
       {/* Main substrate platform */}
       <mesh position={[1, -0.12, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[24, 12]} />
         <meshPhysicalMaterial
-          color="#08090C"
-          metalness={0.8}
-          roughness={0.3}
+          color={isLight ? "#E6E9EE" : "#111720"}
+          metalness={0.55}
+          roughness={0.4}
           transparent
-          opacity={0.9}
+          opacity={0.96}
         />
       </mesh>
 
@@ -32,7 +35,7 @@ function Substrate() {
       ].map((edge, i) => (
         <mesh key={i} position={edge.pos}>
           <boxGeometry args={edge.size} />
-          <meshBasicMaterial color="#ffffff" transparent opacity={0.08} />
+          <meshBasicMaterial color={isLight ? "#4F5968" : "#AAB3C1"} transparent opacity={0.38} />
         </mesh>
       ))}
     </group>
@@ -42,18 +45,19 @@ function Substrate() {
 /**
  * Vacuum chamber — transparent enclosure around the QPU.
  */
-function VacuumChamber() {
+function VacuumChamber({ theme }: { theme: SceneTheme }) {
+  const isLight = theme === "light";
   return (
     <group>
       {/* Glass dome / enclosure */}
       <mesh position={[1, 2, 0]}>
         <boxGeometry args={[25, 5, 13]} />
         <meshPhysicalMaterial
-          color="#111418"
+          color={isLight ? "#D9DEE7" : "#253040"}
           metalness={0.1}
           roughness={0.1}
           transparent
-          opacity={0.03}
+          opacity={0.07}
           side={THREE.BackSide}
           transmission={0.95}
           thickness={0.5}
@@ -69,7 +73,7 @@ function VacuumChamber() {
       ].map((pos, i) => (
         <mesh key={i} position={pos as [number, number, number]}>
           <boxGeometry args={[0.08, 5, 0.08]} />
-          <meshPhysicalMaterial color="#333333" metalness={0.9} roughness={0.2} />
+          <meshPhysicalMaterial color={isLight ? "#667080" : "#758092"} metalness={0.8} roughness={0.25} />
         </mesh>
       ))}
 
@@ -82,7 +86,7 @@ function VacuumChamber() {
       ].map((edge, i) => (
         <mesh key={i} position={edge.pos}>
           <boxGeometry args={edge.size} />
-          <meshPhysicalMaterial color="#333333" metalness={0.9} roughness={0.2} />
+          <meshPhysicalMaterial color={isLight ? "#667080" : "#758092"} metalness={0.8} roughness={0.25} />
         </mesh>
       ))}
     </group>
@@ -92,7 +96,7 @@ function VacuumChamber() {
 /**
  * Inter-zone data buses — structural lines (not emissive).
  */
-function DataBuses({ zones }: { zones: ZoneConfig[] }) {
+function DataBuses({ zones, theme }: { zones: ZoneConfig[]; theme: SceneTheme }) {
   const buses = useMemo(() => {
     const memory = zones.find(z => z.name === "memory");
     const processor = zones.find(z => z.name === "processor");
@@ -122,13 +126,13 @@ function DataBuses({ zones }: { zones: ZoneConfig[] }) {
       const curvePoints = curve.getPoints(30);
       const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
       const material = new THREE.LineBasicMaterial({
-        color: new THREE.Color("#1A1D24"),
+        color: new THREE.Color(theme === "light" ? "#59616E" : "#7D8797"),
         transparent: true,
-        opacity: 0.12,
+        opacity: 0.36,
       });
       return new THREE.Line(geometry, material);
     });
-  }, [buses]);
+  }, [buses, theme]);
 
   if (buses.length === 0) return null;
 
@@ -145,12 +149,12 @@ function DataBuses({ zones }: { zones: ZoneConfig[] }) {
 /**
  * Zone markings on the substrate — corner marks in structural color.
  */
-function ZoneMarkings({ zones }: { zones: ZoneConfig[] }) {
+function ZoneMarkings({ zones, theme }: { zones: ZoneConfig[]; theme: SceneTheme }) {
   const cornerObjects = useMemo(() => {
     return zones.map((zone) => {
       const w = zone.gridSize[0] * zone.spacing;
       const h = zone.gridSize[1] * zone.spacing;
-      const color = new THREE.Color("#1A1D24");
+      const color = new THREE.Color(theme === "light" ? "#4C5562" : "#A8AFBA");
 
       const hw = w / 2;
       const hh = h / 2;
@@ -176,14 +180,14 @@ function ZoneMarkings({ zones }: { zones: ZoneConfig[] }) {
         const mat = new THREE.LineBasicMaterial({
           color,
           transparent: true,
-          opacity: 0.25,
+          opacity: 0.42,
         });
         return new THREE.Line(geom, mat);
       });
 
       return { name: zone.name, lines: lineObjects };
     });
-  }, [zones]);
+  }, [zones, theme]);
 
   return (
     <group>
@@ -196,13 +200,13 @@ function ZoneMarkings({ zones }: { zones: ZoneConfig[] }) {
   );
 }
 
-export function Apparatus({ zones }: { zones: ZoneConfig[] }) {
+export function Apparatus({ zones, theme }: { zones: ZoneConfig[]; theme: SceneTheme }) {
   return (
     <group>
-      <Substrate />
-      <VacuumChamber />
-      <DataBuses zones={zones} />
-      <ZoneMarkings zones={zones} />
+      <Substrate theme={theme} />
+      <VacuumChamber theme={theme} />
+      <DataBuses zones={zones} theme={theme} />
+      <ZoneMarkings zones={zones} theme={theme} />
     </group>
   );
 }
