@@ -73,4 +73,27 @@ describe("public simulator experience", () => {
 
     expect(page).not.toContain("{/* Watermark */}");
   });
+
+  it("offers synchronized QPU and physical-control views", () => {
+    const page = read("src/app/page.tsx");
+    const system = read("src/components/Scene/QpuSystemView.tsx");
+
+    expect(page).toContain("QPU architecture");
+    expect(page).toContain("PHY + feedback");
+    expect(system).toContain("Signal loop");
+    expect(system).toContain("Noise pathways");
+    expect(system).toContain("Bottlenecks");
+    expect(system).toContain("Classical map");
+    expect(system).toContain("Explain this state");
+    expect(system).toContain("Diagnostic abstraction");
+  });
+
+  it("uses definition-first, safely sourced terminology", () => {
+    const term = read("src/components/ui/Term.tsx");
+
+    expect(term).toContain("<details");
+    expect(term).toContain("<summary");
+    expect(term).toContain('target="_blank"');
+    expect(term).toContain('rel="noreferrer"');
+  });
 });

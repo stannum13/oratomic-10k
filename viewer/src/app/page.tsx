@@ -14,6 +14,7 @@ import { SeedMatrixDisplay } from "@/components/Paper/SeedMatrixDisplay";
 import { ControlPanel } from "@/components/Simulator/ControlPanel";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { EmissionLegend } from "@/components/Scene/EmissionLegend";
+import { QpuSystemView } from "@/components/Scene/QpuSystemView";
 import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
 import { useSimulator } from "@/store/simulator";
 import paperData from "../../public/data/paper-sections.json";
@@ -189,6 +190,7 @@ function SceneInfo() {
 
 export default function Home() {
   const [mobilePane, setMobilePane] = useState<"controls" | "scene">("controls");
+  const [sceneView, setSceneView] = useState<"qpu" | "system">("qpu");
 
   useEffect(() => {
     const config = decodeConfig(window.location.search);
@@ -209,25 +211,31 @@ export default function Home() {
       <Header />
       <div className="mobile-view-toggle" role="group" aria-label="Mobile workspace view">
         <button type="button" aria-pressed={mobilePane === "controls"} onClick={() => setMobilePane("controls")}>Controls</button>
-        <button type="button" aria-pressed={mobilePane === "scene"} onClick={() => setMobilePane("scene")}>3D scene</button>
+        <button type="button" aria-pressed={mobilePane === "scene"} onClick={() => setMobilePane("scene")}>QPU</button>
       </div>
       <div className="workspace" data-mobile-view={mobilePane} style={{ display: "flex", flex: 1, minHeight: 0 }}>
         <div className="pane-left" style={{ width: "38%", overflowY: "auto", flexShrink: 0 }}>
           <LeftPane />
         </div>
         <div className="pane-right" style={{ flex: 1, position: "relative" }}>
-          <SceneInfo />
-          <EmissionLegend />
-          <div className="scene-navigation-hint" aria-label="3D scene controls">
-            Drag to rotate · Scroll to zoom · Right-drag to pan
+          <div className="scene-view-switcher" role="group" aria-label="QPU explanatory view">
+            <button type="button" aria-pressed={sceneView === "qpu"} onClick={() => setSceneView("qpu")}>QPU architecture</button>
+            <button type="button" aria-pressed={sceneView === "system"} onClick={() => setSceneView("system")}>PHY + feedback</button>
           </div>
-          <ErrorBoundary fallback={
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "var(--bg)" }}>
-              <span style={{ color: "var(--text-tertiary)", fontSize: "var(--fs-label)" }}>3D viewport unavailable</span>
+          {sceneView === "qpu" ? <>
+            <SceneInfo />
+            <EmissionLegend />
+            <div className="scene-navigation-hint" aria-label="3D scene controls">
+              Drag to rotate · Scroll to zoom · Right-drag to pan
             </div>
-          }>
-            <Viewport />
-          </ErrorBoundary>
+            <ErrorBoundary fallback={
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "var(--bg)" }}>
+                <span style={{ color: "var(--text-tertiary)", fontSize: "var(--fs-label)" }}>3D viewport unavailable</span>
+              </div>
+            }>
+              <Viewport />
+            </ErrorBoundary>
+          </> : <QpuSystemView />}
         </div>
       </div>
       <ComparisonStrip />
