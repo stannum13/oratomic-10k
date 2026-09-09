@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -12,7 +12,6 @@ interface GateArcsProps {
 }
 
 export function GateArcs({ from, to, color, active }: GateArcsProps) {
-  const lineRef = useRef<THREE.Line>(null);
   const progress = useRef(0);
 
   const curve = useMemo(() => {
@@ -30,9 +29,18 @@ export function GateArcs({ from, to, color, active }: GateArcsProps) {
 
   const fullPoints = useMemo(() => curve.getPoints(50), [curve]);
   const arcColor = useMemo(() => new THREE.Color(color), [color]);
+  const line = useMemo(() => new THREE.Line(
+    new THREE.BufferGeometry(),
+    new THREE.LineBasicMaterial({ color: arcColor, transparent: true, opacity: 0.6 }),
+  ), [arcColor]);
+
+  useEffect(() => () => {
+    line.geometry.dispose();
+    line.material.dispose();
+  }, [line]);
 
   useFrame((_, delta) => {
-    if (!active || !lineRef.current) return;
+    if (!active) return;
     progress.current = (progress.current + delta * 0.5) % 1;
 
     const count = Math.floor(progress.current * 50);
@@ -43,7 +51,7 @@ export function GateArcs({ from, to, color, active }: GateArcsProps) {
       positions[i * 3 + 2] = fullPoints[i].z;
     }
 
-    const geom = lineRef.current.geometry as THREE.BufferGeometry;
+    const geom = line.geometry;
     geom.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     geom.setDrawRange(0, count);
   });
@@ -51,10 +59,7 @@ export function GateArcs({ from, to, color, active }: GateArcsProps) {
   if (!active) return null;
 
   return (
-    <line ref={lineRef as any}>
-      <bufferGeometry />
-      <lineBasicMaterial color={arcColor} transparent opacity={0.6} linewidth={1} />
-    </line>
+    <primitive object={line} />
   );
 }
 

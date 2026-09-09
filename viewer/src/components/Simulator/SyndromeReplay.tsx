@@ -87,23 +87,11 @@ function generateRound(n: number, k: number, p: number, weight: number): Syndrom
   ];
 }
 
-export function SyndromeReplay() {
-  const n = useSimulator((s) => s.computed.codeParams.n);
-  const k = useSimulator((s) => s.computed.codeParams.k);
-  const weight = useSimulator((s) => s.computed.codeParams.weight);
-  const p = useSimulator((s) => s.physicalErrorRate);
-
+function SyndromeReplayRound({ n, k, p, weight }: { n: number; k: number; p: number; weight: number }) {
   const [steps, setSteps] = useState<SyndromeStep[]>(() => generateRound(n, k, p, weight));
   const [currentStep, setCurrentStep] = useState(0);
   const [playing, setPlaying] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
-
-  // Regenerate on param change
-  useEffect(() => {
-    setSteps(generateRound(n, k, p, weight));
-    setCurrentStep(0);
-    setPlaying(false);
-  }, [n, k, p, weight]);
 
   // Auto-advance when playing
   useEffect(() => {
@@ -296,4 +284,13 @@ export function SyndromeReplay() {
       </div>
     </div>
   );
+}
+
+export function SyndromeReplay() {
+  const n = useSimulator((s) => s.computed.codeParams.n);
+  const k = useSimulator((s) => s.computed.codeParams.k);
+  const weight = useSimulator((s) => s.computed.codeParams.weight);
+  const p = useSimulator((s) => s.physicalErrorRate);
+
+  return <SyndromeReplayRound key={`${n}-${k}-${p}-${weight}`} n={n} k={k} p={p} weight={weight} />;
 }

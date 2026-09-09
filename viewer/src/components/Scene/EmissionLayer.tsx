@@ -34,13 +34,14 @@ export function EmissionLayer() {
   const physicalErrorRate = useSimulator((s) => s.physicalErrorRate);
   const cycleTime = useSimulator((s) => s.cycleTime);
   const architectureType = useSimulator((s) => s.architectureType);
-  const activeSection = useSimulator((s) => s.activeSection);
   const timeScale = useSimulator((s) => s.timeScale);
 
   const schedulerRef = useRef<Scheduler | null>(null);
   const eventsRef = useRef<SceneEvent[]>([]);
   const flashesRef = useRef<FlashEvent[]>([]);
   const transportsRef = useRef<TransportEvent[]>([]);
+  const [visuals, setVisuals] = useState<{ flashes: FlashEvent[]; transports: TransportEvent[] }>({ flashes: [], transports: [] });
+  const [renderTime, setRenderTime] = useState(0);
   const [buffer, setBuffer] = useState<MagicBuffer>({ count: 3, capacity: 8 });
   const [schedulerState, setSchedulerState] = useState<"running" | "stalled">("running");
   const [qecPhase, setQecPhase] = useState(0);
@@ -215,12 +216,13 @@ export function EmissionLayer() {
       t.progress = (elapsedRef.current - t.startTime) / t.duration;
       return t.progress < 1.2;
     });
+    setVisuals({ flashes: [...flashesRef.current], transports: [...transportsRef.current] });
+    setRenderTime(elapsedRef.current);
   });
 
   if (mode !== "simulate") return null;
 
   const codeVis = layerVisibility(Layer.CODE, timeScale);
-  const magicVis = layerVisibility(Layer.MAGIC, timeScale);
   const atomicVis = layerVisibility(Layer.ATOMIC, timeScale);
 
   const memoryCenterTuple = getZoneCenter("memory");
@@ -229,10 +231,10 @@ export function EmissionLayer() {
   return (
     <group>
       {/* Flash particles — emission-colored spheres that bloom */}
-      {flashesRef.current.map((flash, i) => {
+      {visuals.flashes.map((flash, i) => {
         // Guard against NaN positions
         if (!isFinite(flash.position[0]) || !isFinite(flash.position[1]) || !isFinite(flash.position[2])) return null;
-        const age = elapsedRef.current - flash.startTime;
+        const age = renderTime - flash.startTime;
         const t = age / flash.duration;
         // Hard attack, exponential decay
         const intensity = t < 0.2 ? t / 0.2 : Math.exp(-3 * (t - 0.2));
@@ -255,7 +257,7 @@ export function EmissionLayer() {
       })}
 
       {/* Transport particles — moving between zones */}
-      {transportsRef.current.map((transport, i) => {
+      {visuals.transports.map((transport, i) => {
         if (transport.progress < 0 || transport.progress > 1) return null;
         const p = transport.progress;
         const x = transport.from[0] + (transport.to[0] - transport.from[0]) * p;

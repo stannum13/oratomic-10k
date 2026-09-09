@@ -1,6 +1,5 @@
 import { describe, test, expect } from "vitest";
 import { ORATOMIC_ARCHITECTURES, instantiate } from "../architecture";
-import { TOFFOLI_COUNTS, TAU_TOFF_MULTIPLIERS } from "../../compute/lookup-tables";
 
 describe("architecture instantiation", () => {
   const defaultBindings = {

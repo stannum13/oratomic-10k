@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useSimulator } from "@/store/simulator";
 
 export function CustomCodeEntry() {
-  const computeLiveCode = useSimulator((s) => s.computeLiveCode);
   const liveCodeLoading = useSimulator((s) => s.liveCodeLoading);
 
   const [ringOrder, setRingOrder] = useState("45");

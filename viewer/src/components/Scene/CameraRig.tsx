@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useSimulator } from "@/store/simulator";
@@ -45,9 +45,14 @@ export function CameraRig() {
     idleTimer.current = 0;
   }, []);
 
-  // Store callbacks in module scope so Viewport can access them
-  _onInteractionStart = onInteractionStart;
-  _onInteractionEnd = onInteractionEnd;
+  useEffect(() => {
+    _onInteractionStart = onInteractionStart;
+    _onInteractionEnd = onInteractionEnd;
+    return () => {
+      _onInteractionStart = null;
+      _onInteractionEnd = null;
+    };
+  }, [onInteractionEnd, onInteractionStart]);
 
   useFrame((_, delta) => {
     // When user is interacting, don't fight the controls

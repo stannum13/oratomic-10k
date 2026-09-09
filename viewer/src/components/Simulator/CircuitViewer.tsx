@@ -3,10 +3,10 @@
 import { useMemo } from "react";
 import { useSimulator } from "@/store/simulator";
 import { getCircuit, type CircuitNode } from "@/engine/circuit-ir";
-import { evaluate, type Bindings } from "@/engine/expr";
+import { evaluate, type Bindings, type Expr } from "@/engine/expr";
 import { formatNumber } from "@/lib/format";
 
-function evalExpr(expr: any, bindings: Bindings): number {
+function evalExpr(expr: Expr, bindings: Bindings): number {
   try {
     return evaluate(expr, bindings);
   } catch {

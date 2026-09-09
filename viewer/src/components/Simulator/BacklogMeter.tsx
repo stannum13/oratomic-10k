@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useSimulator } from "@/store/simulator";
 import { PLATFORM_PRESETS } from "@/compute/lookup-tables";
 
@@ -9,7 +9,6 @@ export function BacklogMeter() {
   const cycleTime = useSimulator((s) => s.cycleTime);
   const hardwarePlatform = useSimulator((s) => s.hardwarePlatform);
   const [backlog, setBacklog] = useState(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
 
   const preset = PLATFORM_PRESETS[hardwarePlatform];
   const decoderLatencyMs = preset ? preset.decoderLatencyUs / 1000 : 10;
@@ -18,11 +17,10 @@ export function BacklogMeter() {
 
   useEffect(() => {
     if (mode !== "simulate") {
-      setBacklog(0);
       return;
     }
 
-    intervalRef.current = setInterval(() => {
+    const interval = setInterval(() => {
       setBacklog(prev => {
         if (backlogRate > 0) {
           return Math.min(prev + backlogRate * 0.1, 100); // accumulate
@@ -31,7 +29,7 @@ export function BacklogMeter() {
       });
     }, 100);
 
-    return () => clearInterval(intervalRef.current);
+    return () => clearInterval(interval);
   }, [mode, backlogRate]);
 
   if (mode !== "simulate") return null;

@@ -3,7 +3,7 @@
  * Falls back gracefully when backend is unavailable.
  */
 
-type MessageHandler = (response: any) => void;
+type MessageHandler = (response: unknown) => void;
 
 class MLXBridge {
   private ws: WebSocket | null = null;
@@ -25,8 +25,7 @@ class MLXBridge {
         this.connected = true;
         this.notifyListeners();
         // Ping to check MLX availability
-        this.send({ type: "ping" }).then((_r) => {
-        });
+        void this.send({ type: "ping" });
       };
 
       this.ws.onmessage = (event) => {
@@ -88,7 +87,7 @@ class MLXBridge {
     this.listeners.forEach((l) => l(this.connected));
   }
 
-  send<T = any>(request: Record<string, any>): Promise<T> {
+  send<T = unknown>(request: Record<string, unknown>): Promise<T> {
     return new Promise((resolve, reject) => {
       if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
         reject(new Error("Not connected to MLX backend"));

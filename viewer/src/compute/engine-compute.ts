@@ -4,7 +4,7 @@
  */
 
 import type { ArchitectureType, ComputeResult, MemoryCode, NoiseModel, ProcessorCode, TargetProblem } from "./interface";
-import { ORATOMIC_ARCHITECTURES, instantiate, type Architecture } from "@/engine/architecture";
+import { ORATOMIC_ARCHITECTURES, instantiate } from "@/engine/architecture";
 import { ORATOMIC_CODES } from "@/engine/code-family";
 import { sensitivityAnalysis, bottleneckAnalysis, type SensitivityResult } from "@/engine/sensitivity";
 import { type Bindings, evaluate } from "@/engine/expr";

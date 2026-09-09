@@ -2,7 +2,6 @@ import { describe, test, expect } from "vitest";
 import {
   lit, param, add, mul, div, sub, pow, log, neg,
   evaluate, simplify, differentiate, freeParams, pretty, substitute,
-  type Bindings,
 } from "../expr";
 
 describe("evaluate", () => {

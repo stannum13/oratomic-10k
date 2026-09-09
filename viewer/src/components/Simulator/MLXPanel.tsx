@@ -1,13 +1,14 @@
 "use client";
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- optional MLX backend responses are schema-less JSON */
+
 import { useState, useEffect } from "react";
 import { useSimulator } from "@/store/simulator";
 import { mlxBridge } from "@/compute/mlx-bridge";
 
 function useMLXConnection() {
-  const [connected, setConnected] = useState(false);
+  const [connected, setConnected] = useState(() => mlxBridge.isConnected());
   useEffect(() => {
-    setConnected(mlxBridge.isConnected());
     const unsub = mlxBridge.onConnectionChange(setConnected);
     return () => { unsub(); };
   }, []);

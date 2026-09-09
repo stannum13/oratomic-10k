@@ -118,7 +118,7 @@ export class SimpleBPDecoder implements Decoder {
 export class BPLSDDecoderStub implements Decoder {
   name = "BP-LSD (paper)";
 
-  decode(_syndrome: Uint8Array, _config: DecoderConfig): SyndromeResult {
+  decode(): SyndromeResult {
     return {
       converged: true,
       iterations: 0,
@@ -147,7 +147,7 @@ export class BPLSDDecoderStub implements Decoder {
 export class NeuralDecoderStub implements Decoder {
   name = "Neural FNO (planned)";
 
-  decode(_syndrome: Uint8Array, _config: DecoderConfig): SyndromeResult {
+  decode(): SyndromeResult {
     return {
       converged: true,
       iterations: 1,

@@ -4,7 +4,7 @@
  * symbolic gate counts that depend on key size and architecture.
  */
 
-import { type Expr, lit, add, mul, div, param, floor, log10, pow } from "./expr";
+import { type Expr, lit, add, mul, div, floor, log10, pow } from "./expr";
 
 export interface CircuitNode {
   name: string;
