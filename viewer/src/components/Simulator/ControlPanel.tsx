@@ -23,18 +23,17 @@ import { DistanceSweep } from "./DistanceSweep";
 import { SessionRecorder } from "./SessionRecorder";
 import { ForwardPass } from "./ForwardPass";
 import { HardwareInset } from "./HardwareInset";
+import { MethodologyPanel } from "./MethodologyPanel";
 
 // ─── Accordion Section ──────────────────────────────────
 
 function Section({
-  id,
   title,
   badge,
   expanded,
   onToggle,
   children,
 }: {
-  id: string;
   title: string;
   badge?: string;
   expanded: boolean;
@@ -192,7 +191,10 @@ export function ControlPanel() {
       <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
         Inputs
       </div>
-      <Section id="platform" title="Hardware Platform" expanded={expanded === "platform"} onToggle={() => toggle("platform")}>
+      <Section title="Methodology & Sources" badge="Read me" expanded={expanded === "methodology"} onToggle={() => toggle("methodology")}>
+        <MethodologyPanel />
+      </Section>
+      <Section title="Hardware Platform" expanded={expanded === "platform"} onToggle={() => toggle("platform")}>
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--s2)" }}>
           {Object.entries(PLATFORM_PRESETS).map(([key, preset]) => (
             <button
@@ -226,10 +228,10 @@ export function ControlPanel() {
           ))}
         </div>
       </Section>
-      <Section id="hardware" title="Hardware Modality" expanded={expanded === "hardware"} onToggle={() => toggle("hardware")}>
+      <Section title="Hardware Modality" expanded={expanded === "hardware"} onToggle={() => toggle("hardware")}>
         <HardwareInset />
       </Section>
-      <Section id="presets" title="Presets" badge={`${presets.length}`} expanded={expanded === "presets"} onToggle={() => toggle("presets")}>
+      <Section title="Presets" badge={`${presets.length}`} expanded={expanded === "presets"} onToggle={() => toggle("presets")}>
         <div className="space-y-1 max-h-52 overflow-y-auto pr-1">
           {presets.map((preset, i) => (
             <button
@@ -246,7 +248,7 @@ export function ControlPanel() {
               </div>
               {"whatToLookAt" in preset && (
                 <div className="text-[9px] text-[var(--text-quaternary)] opacity-0 group-hover:opacity-50 mt-1 line-clamp-2 transition-opacity">
-                  {(preset as any).whatToLookAt}
+                  {preset.whatToLookAt}
                 </div>
               )}
             </button>
@@ -254,7 +256,7 @@ export function ControlPanel() {
         </div>
       </Section>
 
-      <Section id="physics" title="Physical Parameters" expanded={expanded === "physics"} onToggle={() => toggle("physics")}>
+      <Section title="Physical Parameters" expanded={expanded === "physics"} onToggle={() => toggle("physics")}>
         <SliderKnob label="Physical Error Rate (p)" value={physicalErrorRate} min={0.0001} max={0.01} step={0.0001} logarithmic formatValue={(v) => `${(v * 100).toFixed(2)}%`} onChange={setPhysicalErrorRate} />
         <SliderKnob label="Cycle Time" value={cycleTime} min={0.001} max={10} step={0.001} unit="ms" logarithmic formatValue={(v) => v >= 1 ? `${v.toFixed(1)}` : `${(v * 1000).toFixed(0)} \u00B5s`} onChange={setCycleTime} />
         <ToggleKnob<TargetProblem> label="Target Problem" value={targetProblem} options={[{ value: "ecc-256", label: "ECC-256" }, { value: "rsa-2048", label: "RSA-2048" }]} onChange={setTargetProblem} />
@@ -262,7 +264,7 @@ export function ControlPanel() {
         <ToggleKnob<NoiseModel> label="Noise model" value={noiseModel} options={[{ value: "depolarizing", label: "Depol." }, { value: "biased-z", label: "Biased Z" }, { value: "circuit-level", label: "Circuit" }]} onChange={setNoiseModel} />
       </Section>
 
-      <Section id="codes" title="Code Architecture" expanded={expanded === "codes"} onToggle={() => toggle("codes")}>
+      <Section title="Code Architecture" expanded={expanded === "codes"} onToggle={() => toggle("codes")}>
         <ToggleKnob<MemoryCode> label="Memory Code" value={memoryCode} options={[{ value: "lp16", label: "lp\u2081\u2086" }, { value: "lp20", label: "lp\u2082\u2080" }, { value: "lp24", label: "lp\u2082\u2084" }]} onChange={setMemoryCode} />
         <ToggleKnob<ProcessorCode> label="Processor Code" value={processorCode} options={[{ value: "bb18", label: "bb\u2081\u2088" }, { value: "lp-proc", label: "lp\u2082\u2080 proc" }]} onChange={setProcessorCode} />
 
@@ -286,7 +288,7 @@ export function ControlPanel() {
       <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
         Analysis
       </div>
-      <Section id="construct" title="Live Code Construction" expanded={expanded === "construct"} onToggle={() => toggle("construct")}>
+      <Section title="Live Code Construction" expanded={expanded === "construct"} onToggle={() => toggle("construct")}>
         <button
           onClick={computeLiveCode}
           disabled={liveCodeLoading}
@@ -309,7 +311,7 @@ export function ControlPanel() {
         </div>
       </Section>
 
-      <Section id="timing" title="Timing Breakdown" expanded={expanded === "timing"} onToggle={() => toggle("timing")}>
+      <Section title="Timing Breakdown" expanded={expanded === "timing"} onToggle={() => toggle("timing")}>
         <div className="flex h-3 rounded-sm overflow-hidden mb-2">
           {segments.map((seg) => (
             <div key={seg.label} style={{ width: `${(seg.value / cycleTime) * 100}%`, backgroundColor: seg.color, opacity: 0.5 }} />
@@ -324,39 +326,39 @@ export function ControlPanel() {
         </div>
       </Section>
 
-      <Section id="circuit" title="Circuit Structure" expanded={expanded === "circuit"} onToggle={() => toggle("circuit")}>
+      <Section title="Circuit Structure" expanded={expanded === "circuit"} onToggle={() => toggle("circuit")}>
         <CircuitViewer />
       </Section>
 
-      <Section id="syndrome" title="Syndrome Replay" expanded={expanded === "syndrome"} onToggle={() => toggle("syndrome")}>
+      <Section title="Syndrome Replay" expanded={expanded === "syndrome"} onToggle={() => toggle("syndrome")}>
         <SyndromeReplay />
       </Section>
 
-      <Section id="forward-pass" title="Forward Pass" expanded={expanded === "forward-pass"} onToggle={() => toggle("forward-pass")}>
+      <Section title="Forward Pass" expanded={expanded === "forward-pass"} onToggle={() => toggle("forward-pass")}>
         <ForwardPass />
       </Section>
 
-      <Section id="sweep" title="Parameter Sweep" expanded={expanded === "sweep"} onToggle={() => toggle("sweep")}>
+      <Section title="Parameter Sweep" expanded={expanded === "sweep"} onToggle={() => toggle("sweep")}>
         <ParameterSweep />
       </Section>
 
-      <Section id="compare" title="Comparison" expanded={expanded === "compare"} onToggle={() => toggle("compare")}>
+      <Section title="Comparison" expanded={expanded === "compare"} onToggle={() => toggle("compare")}>
         <ComparisonMode />
       </Section>
 
-      <Section id="platforms" title="Platform Comparison" expanded={expanded === "platforms"} onToggle={() => toggle("platforms")}>
+      <Section title="Platform Comparison" expanded={expanded === "platforms"} onToggle={() => toggle("platforms")}>
         <PlatformComparison />
       </Section>
 
-      <Section id="pareto" title="Pareto Frontier" expanded={expanded === "pareto"} onToggle={() => toggle("pareto")}>
+      <Section title="Pareto Frontier" expanded={expanded === "pareto"} onToggle={() => toggle("pareto")}>
         <ParetoPlot />
       </Section>
 
-      <Section id="distance" title="Distance Sweep" expanded={expanded === "distance"} onToggle={() => toggle("distance")}>
+      <Section title="Distance Sweep" expanded={expanded === "distance"} onToggle={() => toggle("distance")}>
         <DistanceSweep />
       </Section>
 
-      <Section id="sensitivity" title="Sensitivity" expanded={expanded === "sensitivity"} onToggle={() => toggle("sensitivity")}>
+      <Section title="Sensitivity" expanded={expanded === "sensitivity"} onToggle={() => toggle("sensitivity")}>
         <SensitivityPanel />
       </Section>
 
@@ -364,15 +366,15 @@ export function ControlPanel() {
       <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
         System
       </div>
-      <Section id="mlx" title="MLX Compute" badge="GPU" expanded={expanded === "mlx"} onToggle={() => toggle("mlx")}>
+      <Section title="MLX Compute" badge="GPU" expanded={expanded === "mlx"} onToggle={() => toggle("mlx")}>
         <MLXPanel />
       </Section>
 
-      <Section id="session" title="Session Recording" expanded={expanded === "session"} onToggle={() => toggle("session")}>
+      <Section title="Session Recording" expanded={expanded === "session"} onToggle={() => toggle("session")}>
         <SessionRecorder />
       </Section>
 
-      <Section id="export" title="Export" expanded={expanded === "export"} onToggle={() => toggle("export")}>
+      <Section title="Export" expanded={expanded === "export"} onToggle={() => toggle("export")}>
         <ExportPanel />
       </Section>
     </div>

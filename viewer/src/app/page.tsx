@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Header } from "@/components/Layout/Header";
+import { ReleaseIntro } from "@/components/Layout/ReleaseIntro";
 import { decodeConfig } from "@/lib/url-state";
 import { StatusBar } from "@/components/Layout/StatusBar";
 import { ComparisonStrip } from "@/components/Layout/ComparisonStrip";
@@ -85,6 +86,7 @@ function LeftPane() {
       <Walkthrough />
       <SectionTabs />
       <div style={{ padding: `var(--s7) var(--s6)` }}>
+        {activeSection === 0 && <ReleaseIntro />}
         <div className="article">
           {paperData.sections.map((section, i) => (
             <SectionTracker key={section.id} sectionIndex={i}>

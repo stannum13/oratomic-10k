@@ -235,3 +235,109 @@ select {
   background-position: right 8px center;
   padding-right: 24px;
 }
+
+.release-intro {
+  margin-bottom: var(--s7);
+  padding: var(--s5);
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.release-kicker,
+.methodology-kind {
+  color: var(--text-tertiary);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.release-intro h1 {
+  margin: var(--s3) 0;
+  color: var(--text-primary);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: var(--lh-heading);
+}
+
+.release-intro p,
+.methodology-item p,
+.comparison-caveat {
+  color: var(--text-secondary);
+  line-height: var(--lh-body);
+}
+
+.release-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  margin-top: var(--s4);
+}
+
+.release-actions button,
+.release-actions a {
+  border: 1px solid var(--border);
+  padding: var(--s2) var(--s3);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--fs-label);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.release-actions button {
+  background: var(--text-primary);
+  color: var(--bg);
+}
+
+.release-credit {
+  margin-top: var(--s4);
+  color: var(--text-tertiary);
+  font-size: var(--fs-label);
+}
+
+.methodology-panel {
+  display: grid;
+  gap: var(--s4);
+}
+
+.methodology-title {
+  margin-top: var(--s1);
+  color: var(--text-primary);
+  font-size: var(--fs-label);
+  font-weight: 500;
+}
+
+.methodology-item p,
+.comparison-caveat {
+  margin: var(--s1) 0 0;
+  font-size: var(--fs-label);
+}
+
+.methodology-links {
+  display: grid;
+  gap: var(--s2);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--border);
+}
+
+.methodology-links a {
+  color: var(--text-secondary);
+  font-size: var(--fs-label);
+}
+
+.estimate-badge {
+  display: inline-block;
+  margin-left: var(--s2);
+  color: var(--text-tertiary);
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.comparison-caveat {
+  padding-top: var(--s3);
+  border-top: 1px solid var(--border);
+}

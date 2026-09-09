@@ -47,6 +47,9 @@ export function PlatformComparison() {
                   color: isActive ? "var(--text-primary)" : "var(--text-secondary)",
                 }}>
                   {preset.label}
+                  {key === "ionq-walking-cat" && (
+                    <span className="estimate-badge">Illustrative estimate</span>
+                  )}
                 </div>
                 <div style={{ fontSize: 9, color: "var(--text-tertiary)" }}>
                   p={preset.defaultErrorRate} · {preset.codeType}
@@ -82,6 +85,9 @@ export function PlatformComparison() {
           );
         })}
       </div>
+      <p className="comparison-caveat">
+        Cross-platform rows are scenario estimates for orientation, not reported equivalent benchmark results.
+      </p>
     </div>
   );
 }
