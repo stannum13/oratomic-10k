@@ -164,11 +164,10 @@ html, body {
 .simulator-guide__eyebrow {
   margin-bottom: var(--s1);
   color: var(--accent);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  letter-spacing: normal;
 }
 
 .simulator-guide h1 {
@@ -207,10 +206,9 @@ html, body {
 .guided-scenarios__heading,
 .control-group-label {
   color: var(--text-tertiary);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  letter-spacing: normal;
 }
 
 .simulator-guide__provenance { margin: 0 0 var(--s3); }
@@ -252,8 +250,7 @@ html, body {
   margin-top: 2px;
   color: var(--text-tertiary);
   font-size: var(--fs-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  letter-spacing: normal;
 }
 
 @keyframes metric-update {
@@ -419,19 +416,19 @@ html, body {
 
 .zone-label__name,
 .zone-label__count {
-  font-family: var(--font-mono);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
 
 .zone-label__name {
+  font-family: var(--font-body);
   font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .zone-label__count {
   color: var(--text-secondary);
+  font-family: var(--font-mono);
 }
 
 .scene-navigation-hint {
@@ -445,7 +442,7 @@ html, body {
   border-radius: 999px;
   background: color-mix(in oklab, var(--bg-elevated) 94%, transparent);
   color: var(--text-secondary);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 11px;
   white-space: nowrap;
   pointer-events: none;
@@ -565,10 +562,9 @@ html, body {
 .physical-stack article > span,
 .system-terms > span {
   color: var(--text-tertiary);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  letter-spacing: normal;
 }
 
 .system-hero h2 { margin: var(--s1) 0 var(--s2); font-size: clamp(22px, 3vw, 34px); font-weight: 500; line-height: 1.1; }
@@ -780,9 +776,9 @@ select {
 .release-kicker,
 .methodology-kind {
   color: var(--text-tertiary);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  letter-spacing: normal;
 }
 
 .release-intro h1 {
@@ -886,8 +882,7 @@ select {
   color: var(--text-tertiary);
   font-size: 8px;
   font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: normal;
 }
 
 .comparison-caveat {
@@ -938,6 +933,10 @@ select {
   line-height: 1.05;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.metric--runtime strong {
+  font-size: clamp(20px, 1.9vw, 28px);
 }
 
 .metric span {
@@ -1100,8 +1099,7 @@ select {
     background: transparent;
     color: var(--text-tertiary);
     font-size: var(--fs-label);
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
+    letter-spacing: normal;
   }
 
   .mobile-view-toggle button[aria-pressed="true"] {
@@ -1251,10 +1249,12 @@ select {
   .mobile-simulator > [data-mobile-section] { min-width: 0; }
 
   .metrics-block {
+    grid-template-columns: 0.9fr 0.9fr 1.2fr;
     margin: var(--s4) var(--s3) var(--s6);
   }
   .metric { padding: var(--s3) var(--s2); }
   .metric strong { font-size: clamp(20px, 7vw, 28px); }
+  .metric--runtime strong { font-size: 20px; }
   .metric span { min-height: 30px; font-size: 11px; }
 
   .core-controls,

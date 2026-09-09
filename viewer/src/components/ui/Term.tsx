@@ -1,14 +1,26 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, type MouseEvent, type ReactNode } from "react";
 import { getGlossaryEntry, type GlossaryTerm } from "@/lib/qpu-glossary";
 
 export function Term({ term, children }: { term: GlossaryTerm; children?: ReactNode }) {
   const entry = getGlossaryEntry(term);
+  const [pinned, setPinned] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  const togglePinned = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    setPinned((current) => !current);
+  };
 
   return (
-    <details className="term">
-      <summary>{children ?? entry.label}</summary>
+    <details
+      className="term"
+      open={pinned || hovered}
+      onMouseEnter={() => window.matchMedia("(hover: hover)").matches && setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <summary onClick={togglePinned}>{children ?? entry.label}</summary>
       <div className="term__popover">
         <strong>{entry.label}</strong>
         <p>{entry.definition}</p>

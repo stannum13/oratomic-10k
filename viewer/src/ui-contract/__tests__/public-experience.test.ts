@@ -14,6 +14,7 @@ describe("public simulator experience", () => {
     const knob = read("src/components/Simulator/Knob.tsx");
 
     expect(metrics).toContain('aria-live="polite"');
+    expect(metrics).toContain('metric--runtime');
     expect(controls).toContain("Target workload");
     expect(knob).toContain('role="radiogroup"');
     expect(scenarios).toContain("Run a scenario");
@@ -155,6 +156,8 @@ describe("public simulator experience", () => {
 
     expect(term).toContain("<details");
     expect(term).toContain("<summary");
+    expect(term).toContain("onMouseEnter");
+    expect(term).toContain("onMouseLeave");
     expect(term).toContain('target="_blank"');
     expect(term).toContain('rel="noreferrer"');
   });
@@ -193,6 +196,7 @@ describe("public simulator experience", () => {
   it("constrains mobile camera interaction and removes misleading overlays", () => {
     const page = read("src/app/page.tsx");
     const viewport = read("src/components/Scene/Viewport.tsx");
+    const emission = read("src/components/Scene/EmissionLayer.tsx");
     const visibility = read("src/hooks/useElementVisibility.ts");
 
     expect(page).toContain("Reset view");
@@ -200,6 +204,8 @@ describe("public simulator experience", () => {
     expect(viewport).toContain("enablePan={!mobile}");
     expect(viewport).toContain('frameloop={active ? "always" : "never"}');
     expect(viewport).toContain("slice(0, 2)");
+    expect(viewport).toContain("center={true}");
+    expect(emission).toContain("resourceCenter[0] - 1");
     expect(visibility).toContain("IntersectionObserver");
   });
 });

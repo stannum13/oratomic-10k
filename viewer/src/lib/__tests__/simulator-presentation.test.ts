@@ -26,6 +26,8 @@ describe("simulator presentation", () => {
       marginLabel: "2.0× headroom",
       bindingLabel: "Reliable-operation budget",
     });
+    expect(deriveFeasibility({ feasible: true, toffoliBudget: 3.9e28, toffoliCount: 1e8, extrapolationWarning: null }).marginLabel)
+      .toBe("3.9 × 10²⁰ headroom");
     expect(deriveFeasibility({ feasible: false, toffoliBudget: 25, toffoliCount: 100, extrapolationWarning: "outside fit" })).toMatchObject({
       marginRatio: 0.25,
       marginLabel: "25% of required budget",

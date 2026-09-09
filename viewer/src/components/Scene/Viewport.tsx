@@ -13,14 +13,13 @@ import { TannerOverlay } from "./TannerOverlay";
 import { EmissionLayer } from "./EmissionLayer";
 import * as THREE from "three";
 
-function ZoneLabel({ name, center, count, gridSize, spacing }: {
+function ZoneLabel({ name, center, count }: {
   name: string; center: [number, number, number]; count: number;
-  gridSize: [number, number]; spacing: number;
 }) {
   return (
     <Html
-      position={[center[0] - (gridSize[0] * spacing) / 2, -0.15, center[2] - (gridSize[1] * spacing) / 2 - 0.3]}
-      center={false}
+      position={[center[0], 0.35, center[2]]}
+      center={true}
       style={{ pointerEvents: "none" }}
     >
       <div className="zone-label">
@@ -72,8 +71,6 @@ function Scene({ enableEffects, mobile, resetSignal }: { enableEffects: boolean;
           name={zone.name}
           center={zone.center}
           count={breakdownMap[zone.name]}
-          gridSize={zone.gridSize}
-          spacing={zone.spacing}
         />
       ))}
 
@@ -101,7 +98,7 @@ export function Viewport({ mobile = false, enableEffects = true, active = true, 
 
   return (
     <Canvas
-      camera={{ position: mobile ? [1, 14, 18] : [1, 10, 17], fov: mobile ? 42 : 40, near: 0.1, far: 100 }}
+      camera={{ position: mobile ? [1, 14, 22] : [1, 11, 22], fov: mobile ? 44 : 42, near: 0.1, far: 100 }}
       gl={{
         antialias: !mobile, alpha: false,
         powerPreference: "high-performance",

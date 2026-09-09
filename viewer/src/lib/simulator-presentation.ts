@@ -26,6 +26,19 @@ export interface AllocationSegment {
   percent: number;
 }
 
+const SUPERSCRIPT_DIGITS: Record<string, string> = {
+  "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴",
+  "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹", "-": "⁻",
+};
+
+function formatHeadroom(ratio: number): string {
+  if (ratio < 1e6) return `${ratio.toFixed(1)}× headroom`;
+  const exponent = Math.floor(Math.log10(ratio));
+  const mantissa = ratio / 10 ** exponent;
+  const superscript = String(exponent).split("").map((digit) => SUPERSCRIPT_DIGITS[digit] ?? digit).join("");
+  return `${mantissa.toFixed(1)} × 10${superscript} headroom`;
+}
+
 export function clampNumber(value: number, min: number, max: number, fallback: number): number {
   if (!Number.isFinite(value)) return fallback;
   return Math.min(max, Math.max(min, value));
@@ -34,7 +47,7 @@ export function clampNumber(value: number, min: number, max: number, fallback: n
 export function deriveFeasibility(input: FeasibilityInput): FeasibilitySummary {
   const marginRatio = input.toffoliCount > 0 ? input.toffoliBudget / input.toffoliCount : 0;
   const marginLabel = input.feasible
-    ? `${marginRatio.toFixed(1)}\u00d7 headroom`
+    ? formatHeadroom(marginRatio)
     : `${Math.max(0, marginRatio * 100).toFixed(0)}% of required budget`;
 
   return {

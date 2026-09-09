@@ -22,7 +22,7 @@ export function MetricsBlock() {
   return (
     <section className="metrics-block" aria-label="Current simulation results" aria-live="polite">
       {metrics.map((metric) => (
-        <div className="metric" key={metric.label}>
+        <div className={`metric${metric.label === "Runtime" ? " metric--runtime" : ""}`} key={metric.label}>
           <strong>{metric.value}</strong>
           <span>{metric.label}</span>
         </div>
