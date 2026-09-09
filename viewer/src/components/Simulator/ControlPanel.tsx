@@ -98,13 +98,13 @@ function QuickStats() {
   ];
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", padding: "var(--s4) var(--s5)", gap: "var(--s4)" }}>
+    <div className="quick-stats" aria-live="polite" aria-label="Live simulation results">
       {stats.map((stat) => (
-        <div key={stat.label} style={{ flex: 1 }}>
-          <div className="mono" style={{ fontSize: "var(--fs-body)", fontWeight: 600, color: "var(--text-primary)" }}>
+        <div className="quick-stat" key={`${stat.label}-${stat.value}`}>
+          <div className="quick-stat__value mono">
             {stat.value}
           </div>
-          <div style={{ fontSize: "var(--fs-label)", color: "var(--text-tertiary)", marginTop: 2, textTransform: "uppercase", letterSpacing: "var(--tracking-label)" }}>
+          <div className="quick-stat__label">
             {stat.label}
           </div>
         </div>
@@ -112,6 +112,24 @@ function QuickStats() {
     </div>
   );
 }
+
+const GUIDED_SCENARIOS = [
+  {
+    label: "Minimum qubits",
+    prompt: "How low can the physical-qubit count go?",
+    presetIndex: 0,
+  },
+  {
+    label: "Balanced baseline",
+    prompt: "What changes when speed and qubit count are balanced?",
+    presetIndex: 1,
+  },
+  {
+    label: "Error-rate cliff",
+    prompt: "How quickly does feasibility collapse as errors rise?",
+    presetIndex: 2,
+  },
+] as const;
 
 // ─── Main Control Panel ─────────────────────────────────
 
@@ -123,10 +141,11 @@ export function ControlPanel() {
     hardwarePlatform, setHardwarePlatform,
     setPhysicalErrorRate, setCycleTime, setArchitectureType, setTargetProblem,
     setMemoryCode, setProcessorCode, setDecoderType,
-    computed, computeLiveCode, liveCode, liveCodeLoading,
+    computed, computeLiveCode, liveCode, liveCodeLoading, resetConfig,
   } = useSimulator();
 
   const [expanded, setExpanded] = useState<string>("physics");
+  const [controlDepth, setControlDepth] = useState<"core" | "advanced">("core");
   const toggle = (id: string) => setExpanded(expanded === id ? "" : id);
 
   const decoderInfo = getDecoder(decoderType).getStats();
@@ -156,8 +175,9 @@ export function ControlPanel() {
     <div className="pb-8">
       <section className="simulator-guide" aria-labelledby="simulator-guide-title">
         <div className="simulator-guide__eyebrow">Interactive simulator</div>
-        <h1 id="simulator-guide-title">Tune the architecture</h1>
-        <p>Every parameter updates the headline results and 3D qubit allocation live.</p>
+        <h1 id="simulator-guide-title">What does it take to operate a 10,000-qubit system?</h1>
+        <p>Choose a scenario, tune an assumption, and watch the headline metrics and labeled 3D allocation update together.</p>
+        <div className="simulator-guide__provenance">Independent, research-informed model</div>
         <div className="simulator-guide__steps" aria-label="Simulator workflow">
           <span>1 · Choose</span>
           <span>2 · Tune</span>
@@ -167,9 +187,27 @@ export function ControlPanel() {
       </section>
       <QuickStats />
 
-      {/* Pin button for comparison */}
-      <div style={{ padding: "0 var(--s5) var(--s3)", display: "flex", justifyContent: "flex-end" }}>
+      <section className="guided-scenarios" aria-labelledby="guided-scenarios-title">
+        <div className="guided-scenarios__heading" id="guided-scenarios-title">Start with a guided scenario</div>
+        <div className="guided-scenarios__grid">
+          {GUIDED_SCENARIOS.map((scenario) => (
+            <button
+              className="guided-scenario"
+              key={scenario.label}
+              type="button"
+              onClick={() => applyPreset(presets[scenario.presetIndex])}
+            >
+              <span>{scenario.label}</span>
+              <small>{scenario.prompt}</small>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <div className="configuration-actions">
+        <button type="button" onClick={resetConfig}>Reset configuration</button>
         <button
+          type="button"
           onClick={() => {
             const s = useSimulator.getState();
             s.setPinnedConfig({
@@ -185,17 +223,6 @@ export function ControlPanel() {
               },
             });
           }}
-          style={{
-            fontSize: "var(--fs-label)",
-            color: "var(--text-tertiary)",
-            background: "none",
-            border: `1px solid var(--border)`,
-            borderRadius: 3,
-            padding: "var(--s1) var(--s3)",
-            cursor: "pointer",
-            letterSpacing: "var(--tracking-label)",
-            textTransform: "uppercase",
-          }}
         >
           Pin for comparison
         </button>
@@ -206,14 +233,17 @@ export function ControlPanel() {
         <BacklogMeter />
       </div>
 
-      {/* ── Inputs ── */}
-      <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
-        Inputs
+      <div className="control-depth" role="group" aria-label="Control depth">
+        <button type="button" aria-pressed={controlDepth === "core"} onClick={() => setControlDepth("core")}>Core controls</button>
+        <button type="button" aria-pressed={controlDepth === "advanced"} onClick={() => setControlDepth("advanced")}>Advanced analysis</button>
       </div>
-      <Section title="Methodology & Sources" badge="Read me" expanded={expanded === "methodology"} onToggle={() => toggle("methodology")}>
-        <MethodologyPanel />
-      </Section>
-      <Section title="Hardware Platform" expanded={expanded === "platform"} onToggle={() => toggle("platform")}>
+
+      {controlDepth === "advanced" && <>
+        <div className="control-group-label">Model &amp; hardware</div>
+        <Section title="Methodology & Sources" badge="Read me" expanded={expanded === "methodology"} onToggle={() => toggle("methodology")}>
+          <MethodologyPanel />
+        </Section>
+        <Section title="Hardware Platform" expanded={expanded === "platform"} onToggle={() => toggle("platform")}>
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--s2)" }}>
           {Object.entries(PLATFORM_PRESETS).map(([key, preset]) => (
             <button
@@ -246,11 +276,11 @@ export function ControlPanel() {
             </button>
           ))}
         </div>
-      </Section>
-      <Section title="Hardware Modality" expanded={expanded === "hardware"} onToggle={() => toggle("hardware")}>
-        <HardwareInset />
-      </Section>
-      <Section title="Presets" badge={`${presets.length}`} expanded={expanded === "presets"} onToggle={() => toggle("presets")}>
+        </Section>
+        <Section title="Hardware Modality" expanded={expanded === "hardware"} onToggle={() => toggle("hardware")}>
+          <HardwareInset />
+        </Section>
+        <Section title="Full Scenario Library" badge={`${presets.length}`} expanded={expanded === "presets"} onToggle={() => toggle("presets")}>
         <div className="space-y-1 max-h-52 overflow-y-auto pr-1">
           {presets.map((preset, i) => (
             <button
@@ -273,9 +303,13 @@ export function ControlPanel() {
             </button>
           ))}
         </div>
-      </Section>
+        </Section>
+      </>}
 
+      {controlDepth === "core" && <>
+      <div className="control-group-label">Tune the assumptions</div>
       <Section title="Physical Parameters" expanded={expanded === "physics"} onToggle={() => toggle("physics")}>
+        <p className="parameter-help">Physical error rate is the chance that one operation fails. Cycle time is the duration of one error-correction round.</p>
         <SliderKnob label="Physical Error Rate (p)" value={physicalErrorRate} min={0.0001} max={0.01} step={0.0001} logarithmic formatValue={(v) => `${(v * 100).toFixed(2)}%`} onChange={setPhysicalErrorRate} />
         <SliderKnob label="Cycle Time" value={cycleTime} min={0.001} max={10} step={0.001} unit="ms" logarithmic formatValue={(v) => v >= 1 ? `${v.toFixed(1)}` : `${(v * 1000).toFixed(0)} \u00B5s`} onChange={setCycleTime} />
         <ToggleKnob<TargetProblem> label="Target Problem" value={targetProblem} options={[{ value: "ecc-256", label: "ECC-256" }, { value: "rsa-2048", label: "RSA-2048" }]} onChange={setTargetProblem} />
@@ -284,6 +318,7 @@ export function ControlPanel() {
       </Section>
 
       <Section title="Code Architecture" expanded={expanded === "codes"} onToggle={() => toggle("codes")}>
+        <p className="parameter-help">Code choices trade physical-qubit overhead against error suppression and decoder demand.</p>
         <ToggleKnob<MemoryCode> label="Memory Code" value={memoryCode} options={[{ value: "lp16", label: "lp\u2081\u2086" }, { value: "lp20", label: "lp\u2082\u2080" }, { value: "lp24", label: "lp\u2082\u2084" }]} onChange={setMemoryCode} />
         <ToggleKnob<ProcessorCode> label="Processor Code" value={processorCode} options={[{ value: "bb18", label: "bb\u2081\u2088" }, { value: "lp-proc", label: "lp\u2082\u2080 proc" }]} onChange={setProcessorCode} />
 
@@ -302,9 +337,10 @@ export function ControlPanel() {
           )}
         </div>
       </Section>
+      </>}
 
-      {/* ── Analysis ── */}
-      <div style={{ padding: "var(--s4) var(--s5) var(--s1)", fontSize: "var(--fs-label)", color: "var(--text-tertiary)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>
+      {controlDepth === "advanced" && <>
+      <div className="control-group-label">
         Analysis
       </div>
       <Section title="Live Code Construction" expanded={expanded === "construct"} onToggle={() => toggle("construct")}>
@@ -392,6 +428,7 @@ export function ControlPanel() {
       <Section title="Export" expanded={expanded === "export"} onToggle={() => toggle("export")}>
         <ExportPanel />
       </Section>
+      </>}
     </div>
   );
 }

@@ -40,4 +40,37 @@ describe("public simulator experience", () => {
     expect(controls).toContain("aria-controls={panelId}");
     expect(controls).toContain("id={panelId}");
   });
+
+  it("offers a guided, layered simulator workflow", () => {
+    const controls = read("src/components/Simulator/ControlPanel.tsx");
+
+    expect(controls).toContain("Start with a guided scenario");
+    expect(controls).toContain("Minimum qubits");
+    expect(controls).toContain("Balanced baseline");
+    expect(controls).toContain("Error-rate cliff");
+    expect(controls).toContain("Core controls");
+    expect(controls).toContain("Advanced analysis");
+    expect(controls).toContain('aria-label="Control depth"');
+    expect(controls).toContain("Physical error rate is the chance that one operation fails");
+  });
+
+  it("makes live results and configuration actions explicit", () => {
+    const controls = read("src/components/Simulator/ControlPanel.tsx");
+    const header = read("src/components/Layout/Header.tsx");
+    const store = read("src/store/simulator.ts");
+    const css = read("src/app/globals.css");
+
+    expect(controls).toContain('aria-live="polite"');
+    expect(controls).toContain("Independent, research-informed model");
+    expect(controls).toContain("Reset configuration");
+    expect(header).toContain("Copy configuration");
+    expect(store).toContain("resetConfig: () => void");
+    expect(css).toContain("@keyframes metric-update");
+  });
+
+  it("does not show an unexplained 10,000 watermark in the scene", () => {
+    const page = read("src/app/page.tsx");
+
+    expect(page).not.toContain("{/* Watermark */}");
+  });
 });

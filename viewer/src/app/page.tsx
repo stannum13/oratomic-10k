@@ -216,22 +216,6 @@ export default function Home() {
           <LeftPane />
         </div>
         <div className="pane-right" style={{ flex: 1, position: "relative" }}>
-          {/* Watermark */}
-          <div style={{
-            position: "absolute",
-            bottom: "var(--s7)",
-            left: "var(--s7)",
-            zIndex: 1,
-            fontFamily: "var(--font-display)",
-            fontSize: "72px",
-            fontWeight: 200,
-            color: "#0F1218",
-            letterSpacing: "-0.02em",
-            userSelect: "none",
-            pointerEvents: "none",
-          }}>
-            10,000
-          </div>
           <SceneInfo />
           <EmissionLegend />
           <div className="scene-navigation-hint" aria-label="3D scene controls">

@@ -75,6 +75,7 @@ interface SimulatorState {
   }>;
   pushHistory: () => void;
   undoParams: () => void;
+  resetConfig: () => void;
 }
 
 function recompute(state: {
@@ -99,6 +100,7 @@ const defaults = {
   processorCode: "lp-proc" as ProcessorCode,
   decoderType: "bp-lsd",
   noiseModel: "depolarizing" as NoiseModel,
+  hardwarePlatform: "oratomic-neutral-atom",
 };
 
 export const useSimulator = create<SimulatorState>((set, get) => ({
@@ -106,7 +108,6 @@ export const useSimulator = create<SimulatorState>((set, get) => ({
   activeSection: 0,
   timeScale: 0,
   ...defaults,
-  hardwarePlatform: "oratomic-neutral-atom",
   computed: recompute(defaults),
   liveCode: null,
   liveCodeLoading: false,
@@ -208,6 +209,15 @@ export const useSimulator = create<SimulatorState>((set, get) => ({
       computed: recompute(next),
     });
   },
+  resetConfig: () =>
+    set({
+      ...defaults,
+      computed: recompute(defaults),
+      paramHistory: [],
+      pinnedConfig: null,
+      liveCode: null,
+      liveCodeLoading: false,
+    }),
 
   computeLiveCode: () => {
     const state = useSimulator.getState();

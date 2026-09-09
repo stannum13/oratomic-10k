@@ -99,6 +99,7 @@ export function Header() {
 
         <button
           onClick={handleShare}
+          aria-live="polite"
           style={{
             padding: `var(--s2) var(--s3)`,
             fontSize: "var(--fs-label)", fontWeight: 500,
@@ -108,7 +109,7 @@ export function Header() {
             letterSpacing: "var(--tracking-label)", textTransform: "uppercase",
           }}
         >
-          {shareStatus === "copied" ? "Copied" : shareStatus === "failed" ? "Copy failed" : "Share"}
+          {shareStatus === "copied" ? "Copied" : shareStatus === "failed" ? "Copy failed" : "Copy configuration"}
         </button>
       </div>
     </header>
