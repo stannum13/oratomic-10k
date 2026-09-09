@@ -5,6 +5,24 @@ import { describe, expect, it } from "vitest";
 const read = (path: string) => readFileSync(resolve(process.cwd(), path), "utf8");
 
 describe("public simulator experience", () => {
+  it("defines reusable mobile and desktop result primitives", () => {
+    const metrics = read("src/components/Simulator/MetricsBlock.tsx");
+    const controls = read("src/components/Simulator/CoreControls.tsx");
+    const scenarios = read("src/components/Simulator/ScenarioPicker.tsx");
+    const feasibility = read("src/components/Simulator/FeasibilityStrip.tsx");
+    const allocation = read("src/components/Simulator/AllocationBar.tsx");
+    const knob = read("src/components/Simulator/Knob.tsx");
+
+    expect(metrics).toContain('aria-live="polite"');
+    expect(controls).toContain("Target workload");
+    expect(knob).toContain('role="radiogroup"');
+    expect(scenarios).toContain("Run a scenario");
+    expect(feasibility).toContain("<details");
+    expect(feasibility).toContain("Closest constraint");
+    expect(allocation).toContain('aria-label="Physical-qubit allocation"');
+    expect(knob).toContain('inputMode="decimal"');
+  });
+
   it("defines complete semantic color tokens in both themes", () => {
     const css = read("src/app/globals.css");
     const root = css.match(/:root\s*\{([\s\S]*?)\n\}/)?.[1] ?? "";

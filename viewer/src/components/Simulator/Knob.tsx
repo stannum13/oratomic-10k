@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect, useId, useState } from "react";
+import { clampNumber } from "@/lib/simulator-presentation";
+
 interface SliderKnobProps {
   label: string;
   value: number;
@@ -7,6 +10,7 @@ interface SliderKnobProps {
   max: number;
   step: number;
   unit?: string;
+  inputUnit?: string;
   logarithmic?: boolean;
   onChange: (v: number) => void;
   formatValue?: (v: number) => string;
@@ -19,11 +23,22 @@ export function SliderKnob({
   max,
   step,
   unit,
+  inputUnit,
   logarithmic,
   onChange,
   formatValue,
 }: SliderKnobProps) {
+  const inputId = useId();
+  const [inputValue, setInputValue] = useState(String(value));
   const displayValue = formatValue ? formatValue(value) : value.toString();
+
+  useEffect(() => setInputValue(String(value)), [value]);
+
+  const commitInput = () => {
+    const next = clampNumber(Number.parseFloat(inputValue), min, max, value);
+    setInputValue(String(next));
+    onChange(next);
+  };
 
   const sliderValue = logarithmic ? Math.log10(value) : value;
   const sliderMin = logarithmic ? Math.log10(min) : min;
@@ -32,12 +47,27 @@ export function SliderKnob({
 
   return (
     <div className="mb-4">
-      <div className="flex justify-between items-center mb-1.5">
-        <span className="text-[11px] text-[var(--text-tertiary)]">{label}</span>
-        <span className="text-[11px] mono font-medium text-[var(--text-secondary)]">
-          {displayValue}
-          {unit && <span className="text-[var(--text-quaternary)] ml-0.5">{unit}</span>}
-        </span>
+      <div className="slider-control__heading">
+        <label htmlFor={inputId}>{label}</label>
+        <div className="slider-control__readout">
+          <span className="slider-control__formatted mono">{displayValue}{unit && ` ${unit}`}</span>
+          <input
+            id={inputId}
+            type="number"
+            inputMode="decimal"
+            min={min}
+            max={max}
+            step={step}
+            value={inputValue}
+            aria-label={`${label} numeric value`}
+            onChange={(event) => setInputValue(event.target.value)}
+            onBlur={commitInput}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") event.currentTarget.blur();
+            }}
+          />
+          {inputUnit && <span>{inputUnit}</span>}
+        </div>
       </div>
       <div style={{ position: "relative", height: 20, display: "flex", alignItems: "center" }}>
         <input
@@ -50,7 +80,9 @@ export function SliderKnob({
           value={sliderValue}
           onChange={(e) => {
             const raw = parseFloat(e.target.value);
-            onChange(logarithmic ? Math.pow(10, raw) : raw);
+            const next = logarithmic ? Math.pow(10, raw) : raw;
+            setInputValue(String(next));
+            onChange(next);
           }}
           style={{
             width: "100%",
@@ -96,7 +128,8 @@ export function ToggleKnob<T extends string>({
             onClick={() => onChange(opt.value)}
             style={{
               flex: 1,
-              padding: "5px 8px",
+            minHeight: 44,
+            padding: "8px",
               fontSize: "var(--fs-label)",
               fontWeight: 500,
               borderRadius: 2,
