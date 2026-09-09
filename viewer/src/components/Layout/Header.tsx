@@ -62,7 +62,7 @@ export function Header() {
         </span>
         <span style={{ color: "var(--border)", fontSize: "var(--fs-body)" }}>/</span>
         <span style={{ fontSize: "var(--fs-body)", fontWeight: 300, color: "var(--text-tertiary)" }}>
-          10k Architecture
+          10k
         </span>
         <span className="app-version" style={{
           fontSize: "var(--fs-label)",

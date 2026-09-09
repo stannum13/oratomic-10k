@@ -163,10 +163,17 @@ describe("public simulator experience", () => {
   it("optimizes the QPU view for touch and hidden mobile panes", () => {
     const page = read("src/app/page.tsx");
     const viewport = read("src/components/Scene/Viewport.tsx");
+    const mobile = read("src/components/Simulator/MobileSimulator.tsx");
+    const media = read("src/hooks/useMediaQuery.ts");
 
-    expect(page).toContain("View QPU result");
-    expect(page).toContain("Drag to rotate · Pinch to zoom");
-    expect(page).toContain('mobilePane === "scene"');
+    const order = ["metrics", "controls", "feasibility", "scenarios", "allocation", "visualization", "explainer"]
+      .map((section) => mobile.indexOf(`data-mobile-section="${section}"`));
+    expect(order.every((position) => position > 0)).toBe(true);
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+    expect(mobile).toContain("What is this?");
+    expect(mobile).toContain("formatRuntime");
+    expect(page).toContain("<MobileSimulator");
+    expect(media).toContain("matchMedia");
     expect(viewport).toContain("[1, 1.5]");
     expect(viewport).toContain("enableEffects");
   });

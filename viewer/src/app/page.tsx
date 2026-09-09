@@ -15,6 +15,8 @@ import { ControlPanel } from "@/components/Simulator/ControlPanel";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { EmissionLegend } from "@/components/Scene/EmissionLegend";
 import { QpuSystemView } from "@/components/Scene/QpuSystemView";
+import { MobileSimulator } from "@/components/Simulator/MobileSimulator";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
 import { useSimulator } from "@/store/simulator";
 import paperData from "../../public/data/paper-sections.json";
@@ -190,12 +192,25 @@ function SceneInfo() {
   );
 }
 
+function QpuCanvas({ mobile, reducedMotion = false }: { mobile: boolean; reducedMotion?: boolean }) {
+  return (
+    <div className={mobile ? "mobile-qpu-canvas" : "desktop-qpu-canvas"}>
+      <SceneInfo />
+      <div className="scene-navigation-hint" aria-label="3D scene controls">
+        {mobile ? "One finger rotates · Pinch zooms" : "Drag to rotate · Scroll to zoom · Right-drag to pan"}
+      </div>
+      <ErrorBoundary fallback={<div className="viewport-paused">3D viewport unavailable. Allocation and PHY explanations remain available.</div>}>
+        <Viewport mobile={mobile} enableEffects={!mobile && !reducedMotion} />
+      </ErrorBoundary>
+    </div>
+  );
+}
+
 export default function Home() {
-  const [mobilePane, setMobilePane] = useState<"controls" | "scene">("controls");
   const [sceneView, setSceneView] = useState<"qpu" | "system">("qpu");
-  const [mediaReady, setMediaReady] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)") ?? false;
+  const mode = useSimulator((state) => state.mode);
 
   useEffect(() => {
     const config = decodeConfig(window.location.search);
@@ -210,38 +225,33 @@ export default function Home() {
     if (config.a || config.p) store.setMode("simulate");
   }, []);
 
-  useEffect(() => {
-    const mobileQuery = window.matchMedia("(max-width: 767px)");
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => {
-      setIsMobile(mobileQuery.matches);
-      setPrefersReducedMotion(motionQuery.matches);
-      setMediaReady(true);
-    };
-    update();
-    mobileQuery.addEventListener("change", update);
-    motionQuery.addEventListener("change", update);
-    return () => {
-      mobileQuery.removeEventListener("change", update);
-      motionQuery.removeEventListener("change", update);
-    };
-  }, []);
-
   const showQpu = () => {
     setSceneView("qpu");
-    setMobilePane("scene");
   };
-  const viewportVisible = mediaReady && (!isMobile || mobilePane === "scene");
+
+  if (isMobile === undefined) {
+    return <div className="app-shell app-shell--loading"><Header /><div className="viewport-paused">Initializing simulator</div></div>;
+  }
+
+  if (isMobile) {
+    return (
+      <div className="app-shell mobile-app-shell">
+        <KeyboardShortcuts />
+        <Header />
+        {mode === "simulate" ? (
+          <MobileSimulator sceneView={sceneView} onSceneView={setSceneView} qpuView={<QpuCanvas mobile reducedMotion={prefersReducedMotion} />} />
+        ) : (
+          <div className="mobile-reading"><LeftPane onViewQpu={showQpu} /></div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="app-shell" style={{ display: "flex", flexDirection: "column", height: "100vh", background: "var(--bg)" }}>
       <KeyboardShortcuts />
       <Header />
-      <div className="mobile-view-toggle" role="group" aria-label="Mobile workspace view">
-        <button type="button" aria-pressed={mobilePane === "controls"} onClick={() => setMobilePane("controls")}>Controls</button>
-        <button type="button" aria-pressed={mobilePane === "scene"} onClick={showQpu}>View QPU result</button>
-      </div>
-      <div className="workspace" data-mobile-view={mobilePane} style={{ display: "flex", flex: 1, minHeight: 0 }}>
+      <div className="workspace" style={{ display: "flex", flex: 1, minHeight: 0 }}>
         <div className="pane-left" style={{ width: "38%", overflowY: "auto", flexShrink: 0 }}>
           <LeftPane onViewQpu={showQpu} />
         </div>
@@ -254,22 +264,8 @@ export default function Home() {
           </div>
           <div className="visualization-body">
           {sceneView === "qpu" ? <>
-            <SceneInfo />
             <EmissionLegend />
-            <div className="scene-navigation-hint" aria-label="3D scene controls">
-              {isMobile ? "Drag to rotate · Pinch to zoom" : "Drag to rotate · Scroll to zoom · Right-drag to pan"}
-            </div>
-            <ErrorBoundary fallback={
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "var(--bg)" }}>
-                <span style={{ color: "var(--text-tertiary)", fontSize: "var(--fs-label)" }}>3D viewport unavailable</span>
-              </div>
-            }>
-              {viewportVisible ? (
-                <Viewport mobile={isMobile} enableEffects={!isMobile && !prefersReducedMotion} />
-              ) : (
-                <div className="viewport-paused" aria-label="QPU visualization paused">Open the QPU pane to load the interactive view.</div>
-              )}
-            </ErrorBoundary>
+            <QpuCanvas mobile={false} reducedMotion={prefersReducedMotion} />
           </> : <QpuSystemView />}
           </div>
         </div>
