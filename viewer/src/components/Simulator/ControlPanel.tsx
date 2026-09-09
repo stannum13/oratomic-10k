@@ -279,7 +279,7 @@ export function ControlPanel({ onViewQpu }: { onViewQpu?: () => void }) {
                 color: "var(--text-tertiary)",
                 marginTop: 2,
               }}>
-                {preset.codeType} · p={preset.defaultErrorRate} · {preset.maxQubitsDemo.toLocaleString()} qubits demonstrated
+                {preset.codeType} · default p={preset.defaultErrorRate} · timing profile is illustrative
               </div>
             </button>
           ))}

@@ -45,7 +45,7 @@ function stages(copy: {
     { id: "readout", label: "Sensing + readout", layer: "analog", description: copy.sensing, classicalAnalogy: "Receiver or sensor front end." },
     { id: "analog", label: "Analog front end", layer: "analog", description: copy.analog, classicalAnalogy: "Amplification, filtering, impedance matching, and signal conditioning." },
     { id: "adc", label: "ADC + transduction", layer: "analog", description: "Convert the conditioned physical signal into sampled digital evidence.", classicalAnalogy: "The analog-to-digital boundary of a mixed-signal computer." },
-    { id: "dsp", label: "Filter + denoise", layer: "digital", description: "Suppress measurement noise, compensate drift, and integrate repeated samples without altering the quantum state itself.", classicalAnalogy: "Digital signal processing before a detector or modem makes a decision." },
+    { id: "dsp", label: "Filter + denoise", layer: "digital", description: "Filter sampled readout evidence, compensate drift, and integrate observations before classification. This cannot undo a physical quantum error or recover an unmeasured state.", classicalAnalogy: "Digital signal processing before a detector or modem makes a decision." },
     { id: "classify", label: "State classification", layer: "digital", description: "Map a conditioned signal to a discrete measurement outcome and confidence.", classicalAnalogy: "Symbol detection: converting a noisy waveform into a digital symbol." },
     { id: "decode", label: "Syndrome decoder", layer: "digital", description: "Infer a likely physical-error pattern from many parity-check outcomes.", classicalAnalogy: "An error-correcting-code decoder operating on a continuous stream." },
     { id: "schedule", label: "Control + scheduler", layer: "feedback", description: "Choose correction-frame updates and schedule the next operations under hardware constraints.", classicalAnalogy: "Compute/control plane, runtime scheduler, and accelerator command queue." },
@@ -112,7 +112,7 @@ export const QPU_PROFILES: Record<string, QpuProfile> = {
       { label: "Module scaling", description: "Trap capacity and inter-module links constrain topology.", stageId: "qpu", modeled: false },
     ],
     sourceUrl: "https://arxiv.org/abs/2604.19481",
-    sourceLabel: "Tripier et al. — Walking Cat architecture",
+    sourceLabel: "Walking Cat architecture paper",
   },
   "google-surface-code": {
     id: "google-surface-code",

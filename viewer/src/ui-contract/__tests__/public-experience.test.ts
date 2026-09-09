@@ -66,6 +66,8 @@ describe("public simulator experience", () => {
     expect(header).toContain("Copy configuration");
     expect(store).toContain("resetConfig: () => void");
     expect(css).toContain("@keyframes metric-update");
+    expect(controls).not.toContain("qubits demonstrated");
+    expect(controls).toContain("timing profile is illustrative");
   });
 
   it("does not show an unexplained 10,000 watermark in the scene", () => {

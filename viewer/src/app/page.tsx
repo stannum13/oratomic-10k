@@ -156,8 +156,10 @@ function SceneInfo() {
     <div style={{ position: "absolute", top: "var(--s3)", right: "var(--s3)", zIndex: 2 }}>
       <button
         onClick={() => setShow(!show)}
+        aria-label="Explain the current 3D scene"
+        aria-expanded={show}
         style={{
-          width: 24, height: 24,
+          width: 40, height: 40,
           borderRadius: "50%",
           background: show ? "var(--bg-elevated)" : "transparent",
           border: `1px solid var(--border)`,
