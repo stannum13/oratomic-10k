@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useId } from "react";
 import { clampNumber } from "@/lib/simulator-presentation";
 
 interface SliderKnobProps {
@@ -29,16 +29,7 @@ export function SliderKnob({
   formatValue,
 }: SliderKnobProps) {
   const inputId = useId();
-  const [inputValue, setInputValue] = useState(String(value));
   const displayValue = formatValue ? formatValue(value) : value.toString();
-
-  useEffect(() => setInputValue(String(value)), [value]);
-
-  const commitInput = () => {
-    const next = clampNumber(Number.parseFloat(inputValue), min, max, value);
-    setInputValue(String(next));
-    onChange(next);
-  };
 
   const sliderValue = logarithmic ? Math.log10(value) : value;
   const sliderMin = logarithmic ? Math.log10(min) : min;
@@ -53,15 +44,19 @@ export function SliderKnob({
           <span className="slider-control__formatted mono">{displayValue}{unit && ` ${unit}`}</span>
           <input
             id={inputId}
+            key={value}
             type="number"
             inputMode="decimal"
             min={min}
             max={max}
             step={step}
-            value={inputValue}
+            defaultValue={value}
             aria-label={`${label} numeric value`}
-            onChange={(event) => setInputValue(event.target.value)}
-            onBlur={commitInput}
+            onBlur={(event) => {
+              const next = clampNumber(Number.parseFloat(event.currentTarget.value), min, max, value);
+              event.currentTarget.value = String(next);
+              onChange(next);
+            }}
             onKeyDown={(event) => {
               if (event.key === "Enter") event.currentTarget.blur();
             }}
@@ -81,7 +76,6 @@ export function SliderKnob({
           onChange={(e) => {
             const raw = parseFloat(e.target.value);
             const next = logarithmic ? Math.pow(10, raw) : raw;
-            setInputValue(String(next));
             onChange(next);
           }}
           style={{

@@ -23,6 +23,33 @@ describe("public simulator experience", () => {
     expect(knob).toContain('inputMode="decimal"');
   });
 
+  it("orders desktop payoff before controls and scenarios", () => {
+    const controls = read("src/components/Simulator/ControlPanel.tsx");
+    const metricsAt = controls.indexOf("<MetricsBlock");
+    const controlsAt = controls.indexOf("<CoreControls");
+    const scenariosAt = controls.indexOf("<ScenarioPicker");
+    const advancedAt = controls.indexOf('className="control-depth"');
+
+    expect(metricsAt).toBeGreaterThan(0);
+    expect(controlsAt).toBeGreaterThan(metricsAt);
+    expect(scenariosAt).toBeGreaterThan(controlsAt);
+    expect(advancedAt).toBeGreaterThan(scenariosAt);
+  });
+
+  it("uses truthful desktop chrome without duplicate payoff metrics", () => {
+    const header = read("src/components/Layout/Header.tsx");
+    const status = read("src/components/Layout/StatusBar.tsx");
+    const page = read("src/app/page.tsx");
+
+    expect(header).toContain('className="header-overflow"');
+    expect(header).toContain("<details");
+    expect(page).toContain('className="visualization-header"');
+    expect(status).toContain("toffoli budget");
+    expect(status).not.toContain('label: "qubits"');
+    expect(status).not.toContain('label: "block error"');
+    expect(status).not.toContain('label: "runtime"');
+  });
+
   it("defines complete semantic color tokens in both themes", () => {
     const css = read("src/app/globals.css");
     const root = css.match(/:root\s*\{([\s\S]*?)\n\}/)?.[1] ?? "";
@@ -61,24 +88,27 @@ describe("public simulator experience", () => {
 
   it("offers a guided, layered simulator workflow", () => {
     const controls = read("src/components/Simulator/ControlPanel.tsx");
+    const core = read("src/components/Simulator/CoreControls.tsx");
+    const scenarios = read("src/components/Simulator/ScenarioPicker.tsx");
 
-    expect(controls).toContain("Start with a guided scenario");
-    expect(controls).toContain("Minimum qubits");
-    expect(controls).toContain("Balanced baseline");
-    expect(controls).toContain("Error-rate cliff");
+    expect(scenarios).toContain("Minimum qubits");
+    expect(scenarios).toContain("Balanced baseline");
+    expect(scenarios).toContain("Error-rate cliff");
     expect(controls).toContain("Core controls");
     expect(controls).toContain("Advanced analysis");
     expect(controls).toContain('aria-label="Control depth"');
-    expect(controls).toContain("Physical error rate is the chance that one operation fails");
+    expect(core).toContain("Physical error rate");
+    expect(core).toContain("Cycle time");
   });
 
   it("makes live results and configuration actions explicit", () => {
     const controls = read("src/components/Simulator/ControlPanel.tsx");
+    const metrics = read("src/components/Simulator/MetricsBlock.tsx");
     const header = read("src/components/Layout/Header.tsx");
     const store = read("src/store/simulator.ts");
     const css = read("src/app/globals.css");
 
-    expect(controls).toContain('aria-live="polite"');
+    expect(metrics).toContain('aria-live="polite"');
     expect(controls).toContain("Independent, research-informed model");
     expect(controls).toContain("Reset configuration");
     expect(header).toContain("Copy configuration");
@@ -119,10 +149,11 @@ describe("public simulator experience", () => {
 
   it("uses curiosity-led copy and explicit methods", () => {
     const controls = read("src/components/Simulator/ControlPanel.tsx");
+    const scenarios = read("src/components/Simulator/ScenarioPicker.tsx");
     const methods = read("src/components/Simulator/MethodologyPanel.tsx");
 
     expect(controls).toContain("What can a 10,000-qubit quantum computer actually do?");
-    expect(controls).toContain("Run a scenario");
+    expect(scenarios).toContain("Run a scenario");
     expect(methods).toContain("Methods for this state");
     for (const kind of ["Paper-derived", "Fitted projection", "Model assumption", "Illustrative estimate", "Not modeled"]) {
       expect(methods).toContain(kind);

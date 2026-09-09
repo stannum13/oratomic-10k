@@ -246,10 +246,13 @@ export default function Home() {
           <LeftPane onViewQpu={showQpu} />
         </div>
         <div className="pane-right" style={{ flex: 1, position: "relative" }}>
-          <div className="scene-view-switcher" role="group" aria-label="QPU explanatory view">
-            <button type="button" aria-pressed={sceneView === "qpu"} onClick={() => setSceneView("qpu")}>QPU architecture</button>
-            <button type="button" aria-pressed={sceneView === "system"} onClick={() => setSceneView("system")}>PHY + feedback</button>
+          <div className="visualization-header">
+            <div className="scene-view-switcher" role="tablist" aria-label="QPU explanatory view">
+              <button type="button" role="tab" aria-selected={sceneView === "qpu"} onClick={() => setSceneView("qpu")}>QPU architecture</button>
+              <button type="button" role="tab" aria-selected={sceneView === "system"} onClick={() => setSceneView("system")}>PHY + feedback</button>
+            </div>
           </div>
+          <div className="visualization-body">
           {sceneView === "qpu" ? <>
             <SceneInfo />
             <EmissionLegend />
@@ -268,6 +271,7 @@ export default function Home() {
               )}
             </ErrorBoundary>
           </> : <QpuSystemView />}
+          </div>
         </div>
       </div>
       <ComparisonStrip />

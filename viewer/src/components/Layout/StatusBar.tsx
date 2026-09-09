@@ -2,24 +2,10 @@
 
 import { useSimulator } from "@/store/simulator";
 import { CodeParams } from "@/components/ui/Math";
-import { formatNumber } from "@/lib/format";
-
-function fmtSci(n: number): string {
-  if (n === 0 || !isFinite(n) || isNaN(n)) return "\u2014";
-  const exp = Math.floor(Math.log10(Math.abs(n)));
-  return `10${superscript(exp)}`;
-}
 
 function superscript(n: number): string {
   const map: Record<string, string> = { "0": "\u2070", "1": "\u00B9", "2": "\u00B2", "3": "\u00B3", "4": "\u2074", "5": "\u2075", "6": "\u2076", "7": "\u2077", "8": "\u2078", "9": "\u2079", "-": "\u207B" };
   return String(n).split("").map(c => map[c] || c).join("");
-}
-
-function fmtRuntime(d: number): string {
-  if (!isFinite(d) || d < 0 || isNaN(d)) return "\u2014";
-  if (d >= 365) return `${(d / 365).toFixed(1)} yr`;
-  if (d >= 1) return `${d.toFixed(0)} days`;
-  return `${(d * 24).toFixed(1)} hr`;
 }
 
 function fmtToffoli(n: number): string {
@@ -35,24 +21,7 @@ export function StatusBar() {
 
   const items = [
     {
-      label: "qubits",
-      value: formatNumber(computed.totalQubits),
-      tooltip: `N = N_memory + N_processor + N_resource + N_operation = ${computed.qubitBreakdown.memory} + ${computed.qubitBreakdown.processor} + ${computed.qubitBreakdown.resource} + ${computed.qubitBreakdown.operation}`,
-    },
-    {
-      label: "block error",
-      mobileHidden: true,
-      value: fmtSci(computed.blockErrorRate),
-      tooltip: `P_L = a · p^b = ${computed.codeParams.n > 4000 ? "1.0" : "14.6"} × (p)^${computed.codeParams.d >= 24 ? 12 : computed.codeParams.d >= 20 ? 10 : 7.1}`,
-    },
-    {
-      label: "runtime",
-      value: fmtRuntime(computed.runtimeDays),
-      tooltip: `T = N_toffoli × τ_toff × t_cycle / 86400 days`,
-    },
-    {
       label: "toffoli budget",
-      mobileHidden: true,
       value: fmtToffoli(computed.toffoliBudget),
       tooltip: `Budget = ln(0.9) / (τ_toff × ln(1 - P_L)) at 90% success`,
     },
@@ -69,7 +38,7 @@ export function StatusBar() {
       </div>
 
       {items.map((item, i) => (
-        <div key={i} className={item.mobileHidden ? "status-item status-item--mobile-hidden" : "status-item"}>
+        <div key={i} className="status-item">
           <span>{item.label}</span>
           <span className="value" title={item.tooltip}>{item.value}</span>
         </div>

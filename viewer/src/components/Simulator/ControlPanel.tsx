@@ -2,8 +2,8 @@
 
 import { useState, type ReactNode } from "react";
 import { useSimulator } from "@/store/simulator";
-import { SliderKnob, ToggleKnob } from "./Knob";
-import type { ArchitectureType, MemoryCode, NoiseModel, ProcessorCode, TargetProblem } from "@/compute/interface";
+import { ToggleKnob } from "./Knob";
+import type { ArchitectureType, MemoryCode, ProcessorCode, TargetProblem } from "@/compute/interface";
 import configsData from "../../../public/data/example-configs.json";
 import { getDecoder } from "@/compute/decoder";
 import { ParameterSweep } from "./ParameterSweep";
@@ -24,6 +24,11 @@ import { ForwardPass } from "./ForwardPass";
 import { HardwareInset } from "./HardwareInset";
 import { MethodologyPanel } from "./MethodologyPanel";
 import { Term } from "@/components/ui/Term";
+import { MetricsBlock } from "./MetricsBlock";
+import { CoreControls } from "./CoreControls";
+import { ScenarioPicker } from "./ScenarioPicker";
+import { FeasibilityStrip } from "./FeasibilityStrip";
+import { AllocationBar } from "./AllocationBar";
 
 // ─── Accordion Section ──────────────────────────────────
 
@@ -79,66 +84,12 @@ function Section({
   );
 }
 
-// ─── Quick Stats Bar ────────────────────────────────────
-
-function QuickStats() {
-  const computed = useSimulator((s) => s.computed);
-
-  const fmtSup = (n: number): string => {
-    if (n === 0 || !isFinite(n) || isNaN(n)) return "\u2014";
-    const exp = Math.floor(Math.log10(Math.abs(n)));
-    const map: Record<string, string> = { "0":"\u2070","1":"\u00B9","2":"\u00B2","3":"\u00B3","4":"\u2074","5":"\u2075","6":"\u2076","7":"\u2077","8":"\u2078","9":"\u2079","-":"\u207B" };
-    const sup = String(exp).split("").map(c => map[c] || c).join("");
-    return `10${sup}`;
-  };
-
-  const stats = [
-    { label: "Qubits", value: computed.totalQubits >= 1e3 ? `${(computed.totalQubits / 1e3).toFixed(1)}k` : `${computed.totalQubits}` },
-    { label: "Block error", value: fmtSup(computed.blockErrorRate) },
-    { label: "Runtime", value: computed.runtimeDays >= 365 ? `${(computed.runtimeDays / 365).toFixed(1)} yr` : computed.runtimeDays >= 1 ? `${computed.runtimeDays.toFixed(0)} days` : `${(computed.runtimeDays * 24).toFixed(0)} hr` },
-  ];
-
-  return (
-    <div className="quick-stats" aria-live="polite" aria-label="Live simulation results">
-      {stats.map((stat) => (
-        <div className="quick-stat" key={`${stat.label}-${stat.value}`}>
-          <div className="quick-stat__value mono">
-            {stat.value}
-          </div>
-          <div className="quick-stat__label">
-            {stat.label}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-const GUIDED_SCENARIOS = [
-  {
-    label: "Minimum qubits",
-    prompt: "How low can the physical-qubit count go?",
-    presetIndex: 0,
-  },
-  {
-    label: "Balanced baseline",
-    prompt: "What changes when speed and qubit count are balanced?",
-    presetIndex: 1,
-  },
-  {
-    label: "Error-rate cliff",
-    prompt: "How quickly does feasibility collapse as errors rise?",
-    presetIndex: 2,
-  },
-] as const;
-
 // ─── Main Control Panel ─────────────────────────────────
 
 export function ControlPanel({ onViewQpu }: { onViewQpu?: () => void }) {
   const {
-    physicalErrorRate, cycleTime, architectureType, targetProblem,
+    cycleTime,
     memoryCode, processorCode, decoderType,
-    noiseModel, setNoiseModel,
     hardwarePlatform, setHardwarePlatform,
     setPhysicalErrorRate, setCycleTime, setArchitectureType, setTargetProblem,
     setMemoryCode, setProcessorCode, setDecoderType,
@@ -174,48 +125,14 @@ export function ControlPanel({ onViewQpu }: { onViewQpu?: () => void }) {
 
   return (
     <div className="pb-8">
-      <section className="simulator-guide" aria-labelledby="simulator-guide-title">
-        <div className="simulator-guide__eyebrow">Interactive simulator</div>
-        <h1 id="simulator-guide-title">What can a 10,000-qubit quantum computer actually do?</h1>
-        <p>Give it ECC-256 or RSA-2048, tune its error rate, cycle time, codes, and architecture, then watch the estimated qubit allocation, feasibility, and runtime change.</p>
-        <div className="control-terms" aria-label="Workload definitions">
-          <Term term="ecc-256" />
-          <Term term="rsa-2048" />
-          <Term term="physical-error" />
-          <Term term="cycle-time" />
-        </div>
-        <div className="simulator-guide__provenance">Independent, research-informed model</div>
-        <div className="simulator-guide__steps" aria-label="Simulator workflow">
-          <span>1 · Choose</span>
-          <span>2 · Tune</span>
-          <span>3 · Observe</span>
-          <span>4 · Compare</span>
-        </div>
-      </section>
-      <QuickStats />
-
-      <section className="guided-scenarios" aria-labelledby="guided-scenarios-title">
-        <div className="guided-scenarios__heading" id="guided-scenarios-title">Run a scenario</div>
-        <p className="guided-scenarios__intro">Start with a guided scenario, then change one assumption to see what drives the result.</p>
-        <div className="guided-scenarios__grid">
-          {GUIDED_SCENARIOS.map((scenario) => (
-            <button
-              className="guided-scenario"
-              key={scenario.label}
-              type="button"
-              onClick={() => applyPreset(presets[scenario.presetIndex])}
-            >
-              <span>{scenario.label}</span>
-              <small>{scenario.prompt}</small>
-            </button>
-          ))}
-        </div>
-      </section>
+      <MetricsBlock />
+      <CoreControls />
+      <FeasibilityStrip />
 
       <div className="configuration-actions">
-        <button type="button" onClick={resetConfig}>Reset configuration</button>
         <button
           type="button"
+          className="configuration-actions__primary"
           onClick={() => {
             const s = useSimulator.getState();
             s.setPinnedConfig({
@@ -234,7 +151,30 @@ export function ControlPanel({ onViewQpu }: { onViewQpu?: () => void }) {
         >
           Pin for comparison
         </button>
+        <button type="button" className="configuration-actions__reset" onClick={resetConfig}>Reset configuration</button>
       </div>
+
+      <ScenarioPicker />
+      <AllocationBar />
+
+      <section className="simulator-guide" aria-labelledby="simulator-guide-title">
+        <div className="simulator-guide__eyebrow">Interactive simulator</div>
+        <h1 id="simulator-guide-title">What can a 10,000-qubit quantum computer actually do?</h1>
+        <p>Give it ECC-256 or RSA-2048, tune its error rate, cycle time, codes, and architecture, then watch the estimated qubit allocation, feasibility, and runtime change.</p>
+        <div className="control-terms" aria-label="Workload definitions">
+          <Term term="ecc-256" />
+          <Term term="rsa-2048" />
+          <Term term="physical-error" />
+          <Term term="cycle-time" />
+        </div>
+        <div className="simulator-guide__provenance">Independent, research-informed model</div>
+        <div className="simulator-guide__steps" aria-label="Simulator workflow">
+          <span>1 · Choose</span>
+          <span>2 · Tune</span>
+          <span>3 · Observe</span>
+          <span>4 · Compare</span>
+        </div>
+      </section>
 
       <div style={{ padding: "0 var(--s5)" }}>
         <TimeScaleControl />
@@ -315,16 +255,6 @@ export function ControlPanel({ onViewQpu }: { onViewQpu?: () => void }) {
       </>}
 
       {controlDepth === "core" && <>
-      <div className="control-group-label">Tune the assumptions</div>
-      <Section title="Physical Parameters" expanded={expanded === "physics"} onToggle={() => toggle("physics")}>
-        <p className="parameter-help">Physical error rate is the chance that one operation fails. Cycle time is the duration of one error-correction round.</p>
-        <SliderKnob label="Physical Error Rate (p)" value={physicalErrorRate} min={0.0001} max={0.01} step={0.0001} logarithmic formatValue={(v) => `${(v * 100).toFixed(2)}%`} onChange={setPhysicalErrorRate} />
-        <SliderKnob label="Cycle Time" value={cycleTime} min={0.001} max={10} step={0.001} unit="ms" logarithmic formatValue={(v) => v >= 1 ? `${v.toFixed(1)}` : `${(v * 1000).toFixed(0)} \u00B5s`} onChange={setCycleTime} />
-        <ToggleKnob<TargetProblem> label="Target Problem" value={targetProblem} options={[{ value: "ecc-256", label: "ECC-256" }, { value: "rsa-2048", label: "RSA-2048" }]} onChange={setTargetProblem} />
-        <ToggleKnob<ArchitectureType> label="Architecture" value={architectureType} options={[{ value: "space-efficient", label: "Space" }, { value: "balanced", label: "Balanced" }, { value: "time-efficient", label: "Time" }]} onChange={setArchitectureType} />
-        <ToggleKnob<NoiseModel> label="Noise model" value={noiseModel} options={[{ value: "depolarizing", label: "Depol." }, { value: "biased-z", label: "Biased Z" }, { value: "circuit-level", label: "Circuit" }]} onChange={setNoiseModel} />
-      </Section>
-
       <Section title="Code Architecture" expanded={expanded === "codes"} onToggle={() => toggle("codes")}>
         <p className="parameter-help">Code choices trade physical-qubit overhead against error suppression and decoder demand.</p>
         <ToggleKnob<MemoryCode> label="Memory Code" value={memoryCode} options={[{ value: "lp16", label: "lp\u2081\u2086" }, { value: "lp20", label: "lp\u2082\u2080" }, { value: "lp24", label: "lp\u2082\u2084" }]} onChange={setMemoryCode} />

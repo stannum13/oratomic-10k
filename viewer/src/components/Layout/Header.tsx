@@ -64,7 +64,7 @@ export function Header() {
         <span style={{ fontSize: "var(--fs-body)", fontWeight: 300, color: "var(--text-tertiary)" }}>
           10k Architecture
         </span>
-        <span style={{
+        <span className="app-version" style={{
           fontSize: "var(--fs-label)",
           color: "var(--text-tertiary)",
           marginLeft: "var(--s2)",
@@ -75,7 +75,7 @@ export function Header() {
       </div>
 
       <div className="header-actions" style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>
-        <div style={{ display: "flex", border: `1px solid var(--border)`, borderRadius: 3, overflow: "hidden" }}>
+        <div className="mode-switch" style={{ display: "flex", border: `1px solid var(--border)`, borderRadius: 3, overflow: "hidden" }}>
           {(["paper", "simulate"] as const).map((m) => (
             <button
               key={m}
@@ -95,11 +95,12 @@ export function Header() {
           ))}
         </div>
 
-        <ThemeToggle />
+        <div className="header-desktop-action"><ThemeToggle /></div>
 
         <button
           onClick={handleShare}
           aria-live="polite"
+          className="header-desktop-action header-copy-action"
           style={{
             padding: `var(--s2) var(--s3)`,
             fontSize: "var(--fs-label)", fontWeight: 500,
@@ -111,6 +112,14 @@ export function Header() {
         >
           {shareStatus === "copied" ? "Copied" : shareStatus === "failed" ? "Copy failed" : "Copy configuration"}
         </button>
+
+        <details className="header-overflow">
+          <summary aria-label="More actions">•••</summary>
+          <div className="header-overflow__menu">
+            <button type="button" onClick={handleShare}>{shareStatus === "copied" ? "Copied" : shareStatus === "failed" ? "Copy failed" : "Copy configuration"}</button>
+            <ThemeToggle />
+          </div>
+        </details>
       </div>
     </header>
   );
