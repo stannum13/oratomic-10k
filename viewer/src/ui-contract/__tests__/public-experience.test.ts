@@ -138,6 +138,18 @@ describe("public simulator experience", () => {
     expect(system).toContain("Diagnostic abstraction");
   });
 
+  it("renders PHY as one continuous document with responsive platform controls", () => {
+    const system = read("src/components/Scene/QpuSystemView.tsx");
+
+    for (const id of ["signal-loop", "noise-pathways", "system-bottlenecks", "classical-map"]) {
+      expect(system).toContain(`id="${id}"`);
+    }
+    expect(system).toContain('className="platform-select"');
+    expect(system).toContain('className="platform-switcher"');
+    expect(system).not.toContain("system-layer-switcher");
+    expect(system).not.toContain("useState<Layer>");
+  });
+
   it("uses definition-first, safely sourced terminology", () => {
     const term = read("src/components/ui/Term.tsx");
 
