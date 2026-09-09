@@ -25,10 +25,16 @@ export function decodeConfig(search: string): Partial<ShareableConfig> | null {
   const result: Partial<ShareableConfig> = {};
 
   const p = params.get("p");
-  if (p) result.p = parseFloat(p);
+  if (p) {
+    const value = Number(p);
+    if (Number.isFinite(value) && value >= 0.0001 && value <= 0.01) result.p = value;
+  }
 
   const t = params.get("t");
-  if (t) result.t = parseFloat(t);
+  if (t) {
+    const value = Number(t);
+    if (Number.isFinite(value) && value >= 0.001 && value <= 10) result.t = value;
+  }
 
   const a = params.get("a");
   if (a && ["space-efficient", "balanced", "time-efficient"].includes(a)) {

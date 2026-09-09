@@ -30,9 +30,8 @@ function ThemeToggle() {
 }
 
 function MLXIndicator() {
-  const [connected, setConnected] = useState(false);
+  const [connected, setConnected] = useState(() => mlxBridge.isConnected());
   useEffect(() => {
-    setConnected(mlxBridge.isConnected());
     const unsub = mlxBridge.onConnectionChange(setConnected);
     return () => { unsub(); };
   }, []);
@@ -62,18 +61,22 @@ function MLXIndicator() {
 export function Header() {
   const mode = useSimulator((s) => s.mode);
   const setMode = useSimulator((s) => s.setMode);
-  const [copied, setCopied] = useState(false);
+  const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "failed">("idle");
 
-  const handleShare = () => {
+  const handleShare = async () => {
     const state = useSimulator.getState();
     const url = `${window.location.origin}${window.location.pathname}?${encodeConfig({
       p: state.physicalErrorRate, t: state.cycleTime,
       a: state.architectureType, prob: state.targetProblem,
       mem: state.memoryCode, proc: state.processorCode,
     })}`;
-    navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareStatus("copied");
+    } catch {
+      setShareStatus("failed");
+    }
+    setTimeout(() => setShareStatus("idle"), 2000);
   };
 
   return (
@@ -136,7 +139,7 @@ export function Header() {
             letterSpacing: "var(--tracking-label)", textTransform: "uppercase",
           }}
         >
-          {copied ? "Copied" : "Share"}
+          {shareStatus === "copied" ? "Copied" : shareStatus === "failed" ? "Copy failed" : "Share"}
         </button>
       </div>
     </header>
