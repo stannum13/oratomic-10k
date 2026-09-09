@@ -20,3 +20,10 @@ export function formatDays(d: number): string {
   if (d >= 1 / 24) return `${(d * 24).toFixed(1)} hr`;
   return `${(d * 24 * 60).toFixed(0)} min`;
 }
+
+export function formatRuntime(days: number): string {
+  if (!Number.isFinite(days) || days < 0) return "\u2014";
+  if (days >= 365) return `${(days / 365).toFixed(1)} yr`;
+  if (days >= 1) return `${days.toFixed(0)} days`;
+  return `${(days * 24).toFixed(1)} hr`;
+}
