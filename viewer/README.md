@@ -1,6 +1,10 @@
 # Oratomic 10k Qubit Architecture Viewer
 
-Interactive 3D viewer and simulator for the paper **"Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits"** by Cain, Xu, King, Picard, Levine, Endres, Preskill, Huang, Bluvstein (Oratomic / Caltech, 2025).
+Interactive 3D viewer and simulator for the paper **"Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits"** by Cain, Xu, King, Picard, Levine, Endres, Preskill, Huang, Bluvstein (Oratomic / Caltech, 2026).
+
+**Live demo:** [stannum13.github.io/oratomic-10k](https://stannum13.github.io/oratomic-10k/)
+
+For a quick review, open **Simulate**, change the physical error rate or architecture, and watch qubit count, block error, runtime, feasibility, and the 3D allocation update. Open **Methodology & Sources** for the boundary between paper-derived values, fitted projections, model assumptions, and illustrative estimates.
 
 ## What This Is
 
@@ -36,6 +40,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 npm run build    # static export to out/
+npm run build:pages # static export with the /oratomic-10k base path
 npx serve out    # test locally
 ```
 
@@ -87,4 +92,6 @@ Next.js 16, React 19, TypeScript, React Three Fiber, drei, postprocessing, Zusta
 
 ## References
 
-Cain, M., Xu, Q., King, R., et al. "Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits." (2025)
+Cain, M., Xu, Q., King, R., et al. "Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits." (2026)
+
+[arXiv:2603.28627](https://arxiv.org/abs/2603.28627). Independent interactive implementation by Shivank; not affiliated with IonQ, Oratomic, or Caltech. Cross-platform rows are illustrative scenarios unless explicitly identified as paper-derived.

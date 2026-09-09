@@ -2,6 +2,10 @@
 
 Interactive 3D viewer and architecture simulator for fault-tolerant quantum computation with 10,000 reconfigurable atomic qubits.
 
+**[Open the interactive visualization](https://stannum13.github.io/oratomic-10k/)**
+
+Change physical error rate, cycle time, code choice, and architecture to see qubit allocation, logical error, runtime, feasibility, and the 3D system update live. The methodology panel distinguishes paper-derived quantities, fitted projections, model assumptions, and illustrative cross-platform estimates.
+
 <!-- ![Screenshot](viewer/screenshot.png) -->
 
 ## Quick Start
@@ -50,7 +54,9 @@ viewer/                   # Interactive Next.js + Three.js app
 ## Paper
 
 Based on: *"Shor's algorithm is possible with as few as 10,000 reconfigurable atomic qubits"*
-by Cain, Xu, King, et al. (Oratomic / Caltech, 2025).
+by Cain, Xu, King, et al. (Oratomic / Caltech, 2026).
+
+Source: [arXiv:2603.28627](https://arxiv.org/abs/2603.28627). This repository is an independent interactive implementation by Shivank and is not affiliated with IonQ, Oratomic, or Caltech.
 
 ## License
 
