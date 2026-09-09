@@ -51,11 +51,12 @@ function SectionTabs() {
       background: "var(--bg-pane-left)",
       overflowX: "auto",
       flexWrap: "nowrap",
-    }}>
+    }} role="tablist" aria-label="Paper sections">
       {SECTION_LABELS.map((name, i) => (
         <button
           key={i}
           className="tab"
+          role="tab"
           aria-selected={activeSection === i}
           onClick={() => {
             const el = document.querySelector(`[data-section="${i}"]`);
@@ -187,6 +188,8 @@ function SceneInfo() {
 }
 
 export default function Home() {
+  const [mobilePane, setMobilePane] = useState<"controls" | "scene">("controls");
+
   useEffect(() => {
     const config = decodeConfig(window.location.search);
     if (!config) return;
@@ -201,10 +204,14 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh", background: "var(--bg)" }}>
+    <div className="app-shell" style={{ display: "flex", flexDirection: "column", height: "100vh", background: "var(--bg)" }}>
       <KeyboardShortcuts />
       <Header />
-      <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+      <div className="mobile-view-toggle" role="group" aria-label="Mobile workspace view">
+        <button type="button" aria-pressed={mobilePane === "controls"} onClick={() => setMobilePane("controls")}>Controls</button>
+        <button type="button" aria-pressed={mobilePane === "scene"} onClick={() => setMobilePane("scene")}>3D scene</button>
+      </div>
+      <div className="workspace" data-mobile-view={mobilePane} style={{ display: "flex", flex: 1, minHeight: 0 }}>
         <div className="pane-left" style={{ width: "38%", overflowY: "auto", flexShrink: 0 }}>
           <LeftPane />
         </div>

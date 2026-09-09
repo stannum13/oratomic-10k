@@ -80,13 +80,13 @@ export function Header() {
   };
 
   return (
-    <header style={{
+    <header className="app-header" style={{
       display: "flex", alignItems: "center", justifyContent: "space-between",
       padding: `0 var(--s6)`, height: 48,
       borderBottom: `1px solid var(--border)`,
       background: "var(--bg)",
     }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>
+      <div className="app-brand" style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>
         <span style={{ fontSize: "var(--fs-body)", fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
           Oratomic
         </span>
@@ -104,7 +104,7 @@ export function Header() {
         </span>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>
+      <div className="header-actions" style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>
         <div style={{ display: "flex", border: `1px solid var(--border)`, borderRadius: 3, overflow: "hidden" }}>
           {(["paper", "simulate"] as const).map((m) => (
             <button
