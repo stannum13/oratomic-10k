@@ -41,6 +41,7 @@ export function StatusBar() {
     },
     {
       label: "block error",
+      mobileHidden: true,
       value: fmtSci(computed.blockErrorRate),
       tooltip: `P_L = a · p^b = ${computed.codeParams.n > 4000 ? "1.0" : "14.6"} × (p)^${computed.codeParams.d >= 24 ? 12 : computed.codeParams.d >= 20 ? 10 : 7.1}`,
     },
@@ -51,6 +52,7 @@ export function StatusBar() {
     },
     {
       label: "toffoli budget",
+      mobileHidden: true,
       value: fmtToffoli(computed.toffoliBudget),
       tooltip: `Budget = ln(0.9) / (τ_toff × ln(1 - P_L)) at 90% success`,
     },
@@ -67,13 +69,13 @@ export function StatusBar() {
       </div>
 
       {items.map((item, i) => (
-        <div key={i} style={{ display: "flex", gap: "var(--s2)", alignItems: "baseline" }}>
+        <div key={i} className={item.mobileHidden ? "status-item status-item--mobile-hidden" : "status-item"}>
           <span>{item.label}</span>
           <span className="value" title={item.tooltip}>{item.value}</span>
         </div>
       ))}
 
-      <div style={{ marginLeft: "auto" }}>
+      <div className="status-code-params">
         <CodeParams n={computed.codeParams.n} k={computed.codeParams.k} d={computed.codeParams.d} />
       </div>
     </div>

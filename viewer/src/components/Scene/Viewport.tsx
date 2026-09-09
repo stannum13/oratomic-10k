@@ -35,7 +35,7 @@ function ZoneLabel({ name, center, count, gridSize, spacing }: {
   );
 }
 
-function Scene() {
+function Scene({ enableEffects }: { enableEffects: boolean }) {
   const breakdown = useSimulator((s) => s.computed.qubitBreakdown);
   const mode = useSimulator((s) => s.mode);
   const activeSection = useSimulator((s) => s.activeSection);
@@ -85,12 +85,12 @@ function Scene() {
         onStart={() => getCameraRigCallbacks().onStart?.()}
         onEnd={() => getCameraRigCallbacks().onEnd?.()}
       />
-      <BloomEffect />
+      {enableEffects && <BloomEffect />}
     </>
   );
 }
 
-export function Viewport() {
+export function Viewport({ mobile = false, enableEffects = true }: { mobile?: boolean; enableEffects?: boolean }) {
   const theme = useSimulator((s) => s.theme);
   const bgColor = theme === "light" ? "#FAFAFA" : "#08090C";
 
@@ -98,15 +98,15 @@ export function Viewport() {
     <Canvas
       camera={{ position: [0, 10, 22], fov: 45, near: 0.1, far: 100 }}
       gl={{
-        antialias: true, alpha: false,
+        antialias: !mobile, alpha: false,
         powerPreference: "high-performance",
         toneMapping: THREE.ACESFilmicToneMapping,
         toneMappingExposure: 1.0,
       }}
       style={{ background: bgColor }}
-      dpr={[1, 2]}
+      dpr={mobile ? [1, 1.5] : [1, 2]}
     >
-      <Scene />
+      <Scene enableEffects={enableEffects} />
     </Canvas>
   );
 }

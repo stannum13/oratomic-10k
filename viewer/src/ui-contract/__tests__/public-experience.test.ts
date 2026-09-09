@@ -96,4 +96,27 @@ describe("public simulator experience", () => {
     expect(term).toContain('target="_blank"');
     expect(term).toContain('rel="noreferrer"');
   });
+
+  it("uses curiosity-led copy and explicit methods", () => {
+    const controls = read("src/components/Simulator/ControlPanel.tsx");
+    const methods = read("src/components/Simulator/MethodologyPanel.tsx");
+
+    expect(controls).toContain("What can a 10,000-qubit quantum computer actually do?");
+    expect(controls).toContain("Run a scenario");
+    expect(methods).toContain("Methods for this state");
+    for (const kind of ["Paper-derived", "Fitted projection", "Model assumption", "Illustrative estimate", "Not modeled"]) {
+      expect(methods).toContain(kind);
+    }
+  });
+
+  it("optimizes the QPU view for touch and hidden mobile panes", () => {
+    const page = read("src/app/page.tsx");
+    const viewport = read("src/components/Scene/Viewport.tsx");
+
+    expect(page).toContain("View QPU result");
+    expect(page).toContain("Drag to rotate · Pinch to zoom");
+    expect(page).toContain('mobilePane === "scene"');
+    expect(viewport).toContain("[1, 1.5]");
+    expect(viewport).toContain("enableEffects");
+  });
 });

@@ -23,6 +23,7 @@ import { SessionRecorder } from "./SessionRecorder";
 import { ForwardPass } from "./ForwardPass";
 import { HardwareInset } from "./HardwareInset";
 import { MethodologyPanel } from "./MethodologyPanel";
+import { Term } from "@/components/ui/Term";
 
 // ─── Accordion Section ──────────────────────────────────
 
@@ -133,7 +134,7 @@ const GUIDED_SCENARIOS = [
 
 // ─── Main Control Panel ─────────────────────────────────
 
-export function ControlPanel() {
+export function ControlPanel({ onViewQpu }: { onViewQpu?: () => void }) {
   const {
     physicalErrorRate, cycleTime, architectureType, targetProblem,
     memoryCode, processorCode, decoderType,
@@ -175,8 +176,14 @@ export function ControlPanel() {
     <div className="pb-8">
       <section className="simulator-guide" aria-labelledby="simulator-guide-title">
         <div className="simulator-guide__eyebrow">Interactive simulator</div>
-        <h1 id="simulator-guide-title">What does it take to operate a 10,000-qubit system?</h1>
-        <p>Choose a scenario, tune an assumption, and watch the headline metrics and labeled 3D allocation update together.</p>
+        <h1 id="simulator-guide-title">What can a 10,000-qubit quantum computer actually do?</h1>
+        <p>Give it ECC-256 or RSA-2048, tune its error rate, cycle time, codes, and architecture, then watch the estimated qubit allocation, feasibility, and runtime change.</p>
+        <div className="control-terms" aria-label="Workload definitions">
+          <Term term="ecc-256" />
+          <Term term="rsa-2048" />
+          <Term term="physical-error" />
+          <Term term="cycle-time" />
+        </div>
         <div className="simulator-guide__provenance">Independent, research-informed model</div>
         <div className="simulator-guide__steps" aria-label="Simulator workflow">
           <span>1 · Choose</span>
@@ -188,7 +195,8 @@ export function ControlPanel() {
       <QuickStats />
 
       <section className="guided-scenarios" aria-labelledby="guided-scenarios-title">
-        <div className="guided-scenarios__heading" id="guided-scenarios-title">Start with a guided scenario</div>
+        <div className="guided-scenarios__heading" id="guided-scenarios-title">Run a scenario</div>
+        <p className="guided-scenarios__intro">Start with a guided scenario, then change one assumption to see what drives the result.</p>
         <div className="guided-scenarios__grid">
           {GUIDED_SCENARIOS.map((scenario) => (
             <button
@@ -429,6 +437,11 @@ export function ControlPanel() {
         <ExportPanel />
       </Section>
       </>}
+      {onViewQpu && (
+        <button type="button" className="view-qpu-result" onClick={onViewQpu}>
+          View QPU result <span aria-hidden="true">→</span>
+        </button>
+      )}
     </div>
   );
 }

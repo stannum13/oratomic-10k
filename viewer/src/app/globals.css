@@ -209,6 +209,18 @@ html, body {
 
 .simulator-guide__provenance { margin: 0 0 var(--s3); }
 
+.control-terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s3);
+  margin-bottom: var(--s3);
+}
+
+.control-terms .term > summary {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
 .quick-stats {
   display: flex;
   justify-content: space-between;
@@ -245,6 +257,12 @@ html, body {
 
 .guided-scenarios { padding: var(--s2) var(--s5) var(--s4); }
 .guided-scenarios__heading { margin-bottom: var(--s2); }
+.guided-scenarios__intro {
+  margin: 0 0 var(--s3);
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.5;
+}
 .guided-scenarios__grid { display: grid; gap: var(--s2); }
 
 .guided-scenario {
@@ -421,6 +439,17 @@ html, body {
   font-size: 11px;
   white-space: nowrap;
   pointer-events: none;
+}
+
+.viewport-paused {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  padding: var(--s6);
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  text-align: center;
 }
 
 .scene-view-switcher {
@@ -746,6 +775,25 @@ select {
   gap: var(--s4);
 }
 
+.methodology-heading {
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--border);
+}
+
+.methodology-heading h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--fs-body);
+  font-weight: 500;
+}
+
+.methodology-heading p {
+  margin: var(--s2) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-label);
+  line-height: var(--lh-body);
+}
+
 .methodology-title {
   margin-top: var(--s1);
   color: var(--text-primary);
@@ -790,6 +838,18 @@ select {
   display: none;
 }
 
+.view-qpu-result {
+  display: none;
+}
+
+.status-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+}
+
+.status-code-params { margin-left: auto; }
+
 @media (max-width: 767px) {
   .app-shell {
     height: 100dvh !important;
@@ -799,7 +859,7 @@ select {
   .app-header {
     height: auto !important;
     min-height: 48px;
-    padding: var(--s2) var(--s3) !important;
+    padding: max(var(--s2), env(safe-area-inset-top)) var(--s3) var(--s2) !important;
     flex-wrap: wrap;
     gap: var(--s2);
   }
@@ -817,6 +877,12 @@ select {
 
   .header-actions {
     gap: var(--s2) !important;
+  }
+
+  .header-actions button,
+  .header-actions a {
+    min-width: 44px;
+    min-height: 44px;
   }
 
   .mobile-view-toggle {
@@ -871,8 +937,34 @@ select {
     flex: 0 0 auto;
     justify-content: flex-start;
     overflow-x: auto;
-    padding: var(--s2) var(--s3);
+    padding: var(--s2) var(--s3) max(var(--s2), env(safe-area-inset-bottom));
     white-space: nowrap;
+  }
+
+  .status-item--mobile-hidden,
+  .status-code-params {
+    display: none;
+  }
+
+  .view-qpu-result {
+    position: sticky;
+    bottom: 0;
+    z-index: 12;
+    display: flex;
+    width: calc(100% - (2 * var(--s3)));
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    margin: var(--s5) var(--s3) 0;
+    padding: var(--s3) var(--s4) max(var(--s3), env(safe-area-inset-bottom));
+    border: 1px solid var(--text-primary);
+    border-radius: 4px;
+    background: var(--text-primary);
+    color: var(--bg);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
   }
 
   .simulator-guide__steps {
@@ -881,6 +973,16 @@ select {
 
   .scene-navigation-hint {
     bottom: var(--s3);
+    font-size: 10px;
+  }
+
+  .zone-label {
+    gap: 4px;
+    padding: 5px 7px;
+  }
+
+  .zone-label__name,
+  .zone-label__count {
     font-size: 10px;
   }
 
