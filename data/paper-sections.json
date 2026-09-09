@@ -1,0 +1,55 @@
+{
+  "sections": [
+    {
+      "id": "hero",
+      "title": "Shor's Algorithm with 10,000 Atomic Qubits",
+      "subtitle": "Oratomic — Cain, Xu, King, Picard, Levine, Endres, Preskill, Huang, Bluvstein",
+      "body": "Quantum computers have the potential to perform computational tasks beyond the reach of classical machines. By leveraging advances in high-rate quantum error-correcting codes, efficient logical instruction sets, and circuit design, Shor's algorithm can be executed at cryptographically relevant scales with as few as 10,000 reconfigurable atomic qubits.",
+      "keyInsight": "Five orders of magnitude reduction in qubit requirements over two decades of research."
+    },
+    {
+      "id": "architecture",
+      "title": "Neutral-Atom Architecture",
+      "body": "The computer is divided into four primary functional zones. The memory zone stores logical quantum information. The processor zone stores quantum information undergoing active computation. The operation zone performs Clifford logical Pauli product measurements (PPMs). The resource zone generates magic states to elevate Clifford PPMs to universal quantum computation.",
+      "keyInsight": "Reconfigurable atom arrays enable nonlocal connectivity required for high-rate qLDPC codes, with demonstrated arrays exceeding 6,100 qubits.",
+      "zones": [
+        { "name": "Memory", "role": "Stores logical quantum information during computation", "color": "#4dc9f6" },
+        { "name": "Processor", "role": "Active computation on subcircuits", "color": "#f67019" },
+        { "name": "Operation", "role": "Ancillary qubits for code surgery PPMs", "color": "#4bc076" },
+        { "name": "Resource", "role": "Magic state generation via cultivation + distillation", "color": "#e8548e" }
+      ]
+    },
+    {
+      "id": "codes",
+      "title": "Codes, Logic, and Compilation",
+      "body": "High-rate quantum low-density parity check (qLDPC) codes leverage nonlocality to densely pack many logical qubits into a single code block. We analyze lifted-product codes with encoding rates of approximately 30%, encoding more than 1,000 logical qubits. At p=0.1%, the lp₂₄ code achieves extrapolated per-cycle block failure rates of approximately 10⁻¹¹ — comparable to surface codes with the same distance but 161× fewer physical qubits.",
+      "keyInsight": "LP codes with ~30% encoding rate achieve 161× qubit savings over surface codes at equivalent error suppression.",
+      "equation": "[[n = (r²_A + n²_A)·ℓ, k ≥ (n_A − r_A)²·ℓ, d]]"
+    },
+    {
+      "id": "surgery",
+      "title": "Surgery and Logic",
+      "body": "Universal computation is performed by teleporting logical qubits from memory to processor, executing Pauli-based computation with CCZ gate teleportation, then teleporting back. Each sub-circuit C_i involves 4m_i + 4β_i + γ_i PPMs, where m_i is the qubit count, β_i the Toffoli count, and γ_i the mid-circuit measurement count.",
+      "keyInsight": "Computation on smaller processor codes avoids the prohibitive cost of surgery directly on large memory blocks.",
+      "equation": "τ(C_i) = (4m_i + 4β_i + γ_i) · τ_s, where τ_s ≈ 2d/3 cycles"
+    },
+    {
+      "id": "magic",
+      "title": "Magic State Distillation",
+      "body": "High-rate 8T-to-CCZ distillation combines surface-code cultivation with high-rate factory codes. Five bb₁₈ factory blocks produce 10 CCZ states each with error rate ~10⁻¹⁰ at p=0.1%, using 2,565 total qubits in ~120 cycles. The time cost per CCZ state is less than a single surgery cycle.",
+      "keyInsight": "Factory produces 10 CCZ states in 120 cycles (6d_p) — fast enough that magic state generation is never the bottleneck."
+    },
+    {
+      "id": "resources",
+      "title": "Resource Estimates",
+      "body": "ECC-256 requires p=0.093% with the lp₂₄ memory, with balanced architecture runtimes of ~264 days (1ms cycle time). The time-efficient architecture with P=130 parallelism achieves ~10 days for ECC-256 using 26,000 qubits. RSA-2048 runtimes are 1-2 orders of magnitude longer due to higher circuit depth.",
+      "keyInsight": "Architecture choice creates a 100× runtime spread: from years (space-efficient) to days (time-efficient with parallelism)."
+    },
+    {
+      "id": "simulator",
+      "title": "Architecture Simulator",
+      "body": "Explore the full parameter space of the Oratomic architecture. Adjust physical error rates, select code families, switch between architecture types, and see how qubit counts, error rates, and runtimes respond in real time.",
+      "keyInsight": "Configure your own architecture and understand the design tradeoffs that drive fault-tolerant quantum computing."
+    }
+  ]
+}

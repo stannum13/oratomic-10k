@@ -1,0 +1,3 @@
+:HL["/oratomic-10k/_next/static/chunks/29-lb7xj2j83s.css","style"]
+:HC["/",""]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}},"staleTime":300,"buildId":"pZQlutV89OY3Eqw3tMWkr"}

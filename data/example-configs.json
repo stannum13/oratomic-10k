@@ -1,0 +1,114 @@
+{
+  "configs": [
+    {
+      "name": "Headline: 10k Qubits for Shor",
+      "physicalErrorRate": 0.001,
+      "cycleTime": 1.0,
+      "architectureType": "space-efficient",
+      "targetProblem": "ecc-256",
+      "memoryCode": "lp20",
+      "processorCode": "lp-proc",
+      "description": "The paper's flagship result: breaking ECC-256 with fewer than 10,000 physical qubits using the space-efficient architecture with lp20 codes. This is the configuration that justifies the paper's title. The total qubit count of 9,739 sits just under the 10k mark.",
+      "whatToLookAt": "Total qubit count in the status bar (should be ~9.7k). Note the dominant memory zone in the 3D view -- over 60% of qubits are dedicated to storing the ECC state. Runtime will be long (months) because space-efficient pays in time."
+    },
+    {
+      "name": "Sweet Spot: Balanced ECC-256",
+      "physicalErrorRate": 0.001,
+      "cycleTime": 1.0,
+      "architectureType": "balanced",
+      "targetProblem": "ecc-256",
+      "memoryCode": "lp20",
+      "processorCode": "lp-proc",
+      "description": "The balanced architecture adds ~2,200 qubits over space-efficient but cuts the Toffoli cycle time multiplier from 72 to 19 -- a 3.8x speedup for only 23% more qubits. This is arguably the real sweet spot of the paper: the point of diminishing returns where adding more qubits stops helping proportionally.",
+      "whatToLookAt": "Compare runtime to the space-efficient config. The processor and operation zones grow visibly while memory stays the same. The timing waterfall proportions stay fixed (a limitation of the current model), but real runtime drops dramatically."
+    },
+    {
+      "name": "The Cliff: Error Rate Too High",
+      "physicalErrorRate": 0.005,
+      "cycleTime": 1.0,
+      "architectureType": "balanced",
+      "targetProblem": "ecc-256",
+      "memoryCode": "lp20",
+      "processorCode": "lp-proc",
+      "description": "At p=0.5%, you're approaching the pseudo-threshold of most qLDPC codes. The block error rate explodes, the Toffoli budget collapses toward zero, and the runtime becomes meaningless. This demonstrates why the paper's results are contingent on achieving p ~ 10^-3 -- a target no neutral-atom platform has reliably demonstrated at scale.",
+      "whatToLookAt": "Block error rate in the status bar jumps by many orders of magnitude. Toffoli budget drops to near zero. The visual layout looks identical (qubit counts don't change with error rate in this model), which itself reveals a limitation -- in reality you'd need more code distance."
+    },
+    {
+      "name": "lp16 vs lp20: Why Code Rate Matters",
+      "physicalErrorRate": 0.001,
+      "cycleTime": 1.0,
+      "architectureType": "balanced",
+      "targetProblem": "ecc-256",
+      "memoryCode": "lp16",
+      "processorCode": "lp-proc",
+      "description": "Switch to lp16 codes and watch the block error rate degrade dramatically despite identical physical error rates. The lp16 fit coefficients (a=14.6, b=7.1) vs lp20 (a=1.0, b=10) mean the error suppression exponent drops from 10 to 7.1. This is the core argument for why high-rate qLDPC codes are essential -- lower-rate codes need proportionally better physical qubits.",
+      "whatToLookAt": "Compare block error rate to the Sweet Spot config. Note that qubit counts fall back to a fallback value because lp16 doesn't have a dedicated qubit breakdown entry in the lookup tables -- another thing to fix."
+    },
+    {
+      "name": "RSA-2048: The Hard Problem",
+      "physicalErrorRate": 0.001,
+      "cycleTime": 1.0,
+      "architectureType": "balanced",
+      "targetProblem": "rsa-2048",
+      "memoryCode": "lp20",
+      "processorCode": "lp-proc",
+      "description": "RSA-2048 requires 2x the Toffoli gates of ECC-256 (2.7B vs 1.35B) but the tau_toff multiplier actually drops (10 vs 19 for balanced). This creates a nuanced tradeoff: more total work but each Toffoli is cheaper in cycles. The qubit layout is identical because the current model doesn't vary qubit counts by target problem within the same architecture -- a significant simplification.",
+      "whatToLookAt": "Compare Toffoli count and runtime to ECC-256 balanced. The qubit breakdown being identical for ECC vs RSA in the same architecture is a modeling gap -- RSA should need more memory qubits for the larger register."
+    },
+    {
+      "name": "Time-Efficient: Brute Force Parallelism",
+      "physicalErrorRate": 0.001,
+      "cycleTime": 1.0,
+      "architectureType": "time-efficient",
+      "targetProblem": "ecc-256",
+      "memoryCode": "lp20",
+      "processorCode": "lp-proc",
+      "description": "The time-efficient architecture throws qubits at the problem -- 26,000 for ECC-256 with 130-way parallelism, completing in ~10 days. This is 2.7x the qubits of the space-efficient design but finishes in days instead of months. The model uses hardcoded presets rather than computing from first principles, which is honest about the paper's approach but limits exploratory value.",
+      "whatToLookAt": "Qubit count jumps to 26k. The breakdown uses fixed 40/25/20/15 percentage splits rather than the structured breakdown of space/balanced modes. The 3D view should show a much larger atom array. Runtime drops to ~10 days."
+    },
+    {
+      "name": "Microsecond Cycles: Future Hardware",
+      "physicalErrorRate": 0.001,
+      "cycleTime": 0.001,
+      "architectureType": "balanced",
+      "targetProblem": "ecc-256",
+      "memoryCode": "lp20",
+      "processorCode": "lp-proc",
+      "description": "What if cycle times dropped from 1ms to 1us? This 1000x speedup in cycle time translates directly to 1000x faster runtime. Current neutral-atom platforms operate at ~1ms cycles due to Rydberg gate durations and atom transport. Sub-ms cycles would require fundamentally different gate mechanisms or parallelized syndrome extraction. The model linearly scales runtime with cycle time, which is approximately correct but ignores decoder throughput bottlenecks.",
+      "whatToLookAt": "Runtime drops by 1000x. The timing waterfall scales proportionally, but in reality the decode fraction would dominate at fast cycle times because classical decoding can't keep up -- the BP-LSD decoder needs ~10-100us per round even on optimized hardware."
+    },
+    {
+      "name": "Slow Cycles: Today's Reality",
+      "physicalErrorRate": 0.003,
+      "cycleTime": 5.0,
+      "architectureType": "balanced",
+      "targetProblem": "ecc-256",
+      "memoryCode": "lp20",
+      "processorCode": "lp-proc",
+      "description": "A more realistic near-term configuration: p=3e-3 (achievable but not great) and 5ms cycles (accounting for slow atom transport and reloading). This shows what happens when you plug in hardware parameters from actual neutral-atom experiments rather than aspirational targets. The result is sobering.",
+      "whatToLookAt": "Runtime becomes impractically long. Block error rate worsens by orders of magnitude compared to the p=1e-3 case. This configuration reveals the gap between the paper's assumptions and current experimental capabilities."
+    },
+    {
+      "name": "lp24 Premium: Diminishing Returns?",
+      "physicalErrorRate": 0.001,
+      "cycleTime": 1.0,
+      "architectureType": "space-efficient",
+      "targetProblem": "ecc-256",
+      "memoryCode": "lp24",
+      "processorCode": "bb18",
+      "description": "lp24 codes have a higher error suppression exponent (b=12 vs b=10 for lp20) but require more physical qubits per logical qubit, pushing the total from 9,739 to 11,033. The question is whether the improved block error rate justifies the 13% qubit overhead. At p=1e-3, lp20 already gives excellent suppression, so lp24 is overkill -- but at higher physical error rates, lp24 becomes essential.",
+      "whatToLookAt": "Compare block error rate and qubit count to the Headline config. The block error rate improves but the qubit count crosses 10k, undermining the paper's headline claim. Try increasing physical error rate to 2e-3 where lp24's advantage becomes dramatic."
+    },
+    {
+      "name": "RSA Time-Efficient: The 100k Qubit Machine",
+      "physicalErrorRate": 0.001,
+      "cycleTime": 1.0,
+      "architectureType": "time-efficient",
+      "targetProblem": "rsa-2048",
+      "memoryCode": "lp24",
+      "processorCode": "lp-proc",
+      "description": "The most resource-hungry configuration: breaking RSA-2048 with maximum parallelism requires 102,000 qubits. This is an order of magnitude beyond the headline 10k result and shows the cost of targeting the most commercially relevant cryptographic problem with speed. Compare to Google's 2024 estimate of ~4M qubits for RSA-2048 with surface codes -- the qLDPC advantage is stark.",
+      "whatToLookAt": "Qubit count at 102k. Runtime of ~97 days. The 3D visualization will be dramatically larger. This is the configuration most relevant to national security discussions about quantum threats to current cryptography."
+    }
+  ]
+}
