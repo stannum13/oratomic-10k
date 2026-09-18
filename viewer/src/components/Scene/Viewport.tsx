@@ -53,8 +53,8 @@ function Scene({ enableEffects, mobile, resetSignal }: { enableEffects: boolean;
 
   return (
     <>
-      <ambientLight intensity={0.28} />
-      <directionalLight position={[5, 20, 10]} intensity={0.55} color="#ffffff" />
+      <ambientLight intensity={mobile ? 0.28 : 0.42} />
+      <directionalLight position={[5, 20, 10]} intensity={mobile ? 0.55 : 0.72} color="#ffffff" />
       <directionalLight position={[-8, 10, -5]} intensity={0.25} color="#ffffff" />
 
       <fog attach="fog" args={[bgColor, 20, 50]} />
@@ -98,7 +98,7 @@ export function Viewport({ mobile = false, enableEffects = true, active = true, 
 
   return (
     <Canvas
-      camera={{ position: mobile ? [1, 14, 22] : [1, 11, 22], fov: mobile ? 44 : 42, near: 0.1, far: 100 }}
+      camera={{ position: mobile ? [1, 14, 22] : [1, 10.5, 20.5], fov: mobile ? 44 : 42, near: 0.1, far: 100 }}
       gl={{
         antialias: !mobile, alpha: false,
         powerPreference: "high-performance",

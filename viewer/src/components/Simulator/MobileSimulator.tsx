@@ -21,6 +21,7 @@ export function MobileSimulator({
   qpuView: ReactNode;
 }) {
   const computed = useSimulator((state) => state.computed);
+  const targetProblem = useSimulator((state) => state.targetProblem);
   const resetConfig = useSimulator((state) => state.resetConfig);
 
   const pin = () => {
@@ -41,6 +42,9 @@ export function MobileSimulator({
 
   return (
     <main className="mobile-simulator">
+      <p className="mobile-simulator__context">
+        Estimated resources and runtime for {targetProblem === "ecc-256" ? "ECC-256" : "RSA-2048"} under the assumptions below.
+      </p>
       <div data-mobile-section="metrics"><MetricsBlock /></div>
       <div data-mobile-section="controls">
         <CoreControls compact />

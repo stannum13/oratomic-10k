@@ -14,9 +14,15 @@ export interface FeasibilitySummary {
   feasible: boolean;
   marginRatio: number;
   marginLabel: string;
+  statusLabel: string;
   bindingLabel: string;
   explanation: string;
   warning: string | null;
+}
+
+export function formatMilliseconds(value: number): string {
+  if (!Number.isFinite(value) || value < 0) return "—";
+  return String(Number(value.toFixed(3)));
 }
 
 export interface AllocationSegment {
@@ -54,9 +60,10 @@ export function deriveFeasibility(input: FeasibilityInput): FeasibilitySummary {
     feasible: input.feasible,
     marginRatio,
     marginLabel,
+    statusLabel: input.feasible && marginRatio >= 1e6 ? "Budget non-binding" : marginLabel,
     bindingLabel: "Reliable-operation budget",
     explanation: input.feasible
-      ? `The modeled reliable Toffoli budget is ${marginLabel} above the selected workload.`
+      ? `The modeled reliable Toffoli budget has ${marginLabel} for the selected workload. This does not account for every hardware or control bottleneck.`
       : `The modeled reliable Toffoli budget supplies only ${marginLabel}; physical error is the binding input in this estimate.`,
     warning: input.extrapolationWarning,
   };

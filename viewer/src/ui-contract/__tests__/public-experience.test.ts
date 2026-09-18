@@ -19,7 +19,7 @@ describe("public simulator experience", () => {
     expect(knob).toContain('role="radiogroup"');
     expect(scenarios).toContain("Run a scenario");
     expect(feasibility).toContain("<details");
-    expect(feasibility).toContain("Closest constraint");
+    expect(feasibility).toContain("Modeled constraint");
     expect(allocation).toContain('aria-label="Physical-qubit allocation"');
     expect(knob).toContain('inputMode="decimal"');
   });
@@ -186,11 +186,22 @@ describe("public simulator experience", () => {
     expect(order.every((position) => position > 0)).toBe(true);
     expect(order).toEqual([...order].sort((a, b) => a - b));
     expect(mobile).toContain("What is this?");
+    expect(mobile).toContain("Estimated resources and runtime for");
     expect(mobile).toContain("formatRuntime");
     expect(page).toContain("<MobileSimulator");
     expect(media).toContain("matchMedia");
     expect(viewport).toContain("[1, 1.5]");
     expect(viewport).toContain("enableEffects");
+    expect(viewport).toContain("mobile ? [1, 14, 22] : [1, 10.5, 20.5]");
+    expect(viewport).toContain("mobile ? 0.28 : 0.42");
+  });
+
+  it("describes feasibility without claiming every system constraint is modeled", () => {
+    const feasibility = read("src/components/Simulator/FeasibilityStrip.tsx");
+
+    expect(feasibility).toContain("Modeled constraint:");
+    expect(feasibility).toContain("summary.statusLabel");
+    expect(feasibility).not.toContain("Closest constraint:");
   });
 
   it("constrains mobile camera interaction and removes misleading overlays", () => {

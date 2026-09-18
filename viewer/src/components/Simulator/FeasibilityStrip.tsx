@@ -12,8 +12,8 @@ export function FeasibilityStrip() {
     <details className="feasibility-strip" data-state={summary.feasible ? "feasible" : "infeasible"}>
       <summary>
         <span className="feasibility-strip__badge">{summary.feasible ? "Feasible" : "Infeasible"}</span>
-        <span><b>Closest constraint:</b> {summary.bindingLabel}</span>
-        <strong>{summary.marginLabel}</strong>
+        <span><b>Modeled constraint:</b> {summary.bindingLabel}</span>
+        <strong>{summary.statusLabel}</strong>
       </summary>
       <div className="feasibility-strip__detail">
         <p>{summary.explanation}</p>

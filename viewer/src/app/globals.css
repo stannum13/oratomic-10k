@@ -1248,6 +1248,13 @@ select {
   .mobile-simulator { display: grid; gap: 0; width: 100%; }
   .mobile-simulator > [data-mobile-section] { min-width: 0; }
 
+  .mobile-simulator__context {
+    margin: var(--s4) var(--s3) 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
   .metrics-block {
     grid-template-columns: 0.9fr 0.9fr 1.2fr;
     margin: var(--s4) var(--s3) var(--s6);

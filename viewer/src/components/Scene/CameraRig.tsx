@@ -35,7 +35,7 @@ export function CameraRig({ mobile = false, resetSignal = 0 }: { mobile?: boolea
   const mode = useSimulator((s) => s.mode);
 
   useEffect(() => {
-    const position: [number, number, number] = mobile ? [1, 14, 22] : [1, 11, 22];
+    const position: [number, number, number] = mobile ? [1, 14, 22] : [1, 10.5, 20.5];
     camera.position.set(...position);
     camera.lookAt(1, 0, 0);
     targetPos.current.set(...position);

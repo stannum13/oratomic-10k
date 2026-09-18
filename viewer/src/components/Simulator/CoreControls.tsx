@@ -3,6 +3,7 @@
 import type { ArchitectureType, NoiseModel, TargetProblem } from "@/compute/interface";
 import { useSimulator } from "@/store/simulator";
 import { SliderKnob, ToggleKnob } from "./Knob";
+import { formatMilliseconds } from "@/lib/simulator-presentation";
 
 export function CoreControls({ compact = false }: { compact?: boolean }) {
   const state = useSimulator();
@@ -20,7 +21,7 @@ export function CoreControls({ compact = false }: { compact?: boolean }) {
         onChange={state.setTargetProblem}
       />
       <SliderKnob label="Physical error rate" value={state.physicalErrorRate} min={0.0001} max={0.01} step={0.0001} logarithmic inputUnit="probability" formatValue={(value) => `${(value * 100).toFixed(2)}%`} onChange={state.setPhysicalErrorRate} />
-      <SliderKnob label="Cycle time" value={state.cycleTime} min={0.001} max={10} step={0.001} unit="ms" inputUnit="ms" logarithmic formatValue={(value) => value >= 1 ? value.toFixed(1) : (value * 1000).toFixed(0)} onChange={state.setCycleTime} />
+      <SliderKnob label="Cycle time" value={state.cycleTime} min={0.001} max={10} step={0.001} unit="ms" inputUnit="ms" logarithmic formatValue={formatMilliseconds} onChange={state.setCycleTime} />
       {!compact && (
         <div className="secondary-controls">
           <ToggleKnob<ArchitectureType> label="Allocation strategy" value={state.architectureType} options={[{ value: "space-efficient", label: "Space" }, { value: "balanced", label: "Balanced" }, { value: "time-efficient", label: "Time" }]} onChange={state.setArchitectureType} />

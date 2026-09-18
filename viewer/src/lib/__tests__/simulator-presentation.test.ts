@@ -3,6 +3,7 @@ import {
   clampNumber,
   deriveAllocation,
   deriveFeasibility,
+  formatMilliseconds,
   formatRuntime,
 } from "../simulator-presentation";
 
@@ -12,6 +13,12 @@ describe("simulator presentation", () => {
     expect(formatRuntime(10)).toBe("10 days");
     expect(formatRuntime(730)).toBe("2.0 yr");
     expect(formatRuntime(Number.NaN)).toBe("—");
+  });
+
+  it("keeps cycle-time readouts in milliseconds", () => {
+    expect(formatMilliseconds(0.001)).toBe("0.001");
+    expect(formatMilliseconds(1)).toBe("1");
+    expect(formatMilliseconds(1.25)).toBe("1.25");
   });
 
   it("clamps editable values without admitting NaN", () => {
@@ -24,10 +31,13 @@ describe("simulator presentation", () => {
     expect(deriveFeasibility({ feasible: true, toffoliBudget: 200, toffoliCount: 100, extrapolationWarning: null })).toMatchObject({
       marginRatio: 2,
       marginLabel: "2.0× headroom",
+      statusLabel: "2.0× headroom",
       bindingLabel: "Reliable-operation budget",
     });
-    expect(deriveFeasibility({ feasible: true, toffoliBudget: 3.9e28, toffoliCount: 1e8, extrapolationWarning: null }).marginLabel)
-      .toBe("3.9 × 10²⁰ headroom");
+    expect(deriveFeasibility({ feasible: true, toffoliBudget: 3.9e28, toffoliCount: 1e8, extrapolationWarning: null })).toMatchObject({
+      marginLabel: "3.9 × 10²⁰ headroom",
+      statusLabel: "Budget non-binding",
+    });
     expect(deriveFeasibility({ feasible: false, toffoliBudget: 25, toffoliCount: 100, extrapolationWarning: "outside fit" })).toMatchObject({
       marginRatio: 0.25,
       marginLabel: "25% of required budget",
