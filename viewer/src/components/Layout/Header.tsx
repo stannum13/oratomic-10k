@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSimulator } from "@/store/simulator";
 import { encodeConfig } from "@/lib/url-state";
+import { getQpuProfile } from "@/lib/qpu-profiles";
 
 function ThemeToggle() {
   const theme = useSimulator((s) => s.theme);
@@ -31,6 +32,8 @@ function ThemeToggle() {
 export function Header() {
   const mode = useSimulator((s) => s.mode);
   const setMode = useSimulator((s) => s.setMode);
+  const hardwarePlatform = useSimulator((s) => s.hardwarePlatform);
+  const profile = getQpuProfile(hardwarePlatform);
   const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "failed">("idle");
 
   const handleShare = async () => {
@@ -39,6 +42,7 @@ export function Header() {
       p: state.physicalErrorRate, t: state.cycleTime,
       a: state.architectureType, prob: state.targetProblem,
       mem: state.memoryCode, proc: state.processorCode,
+      platform: state.hardwarePlatform,
     })}`;
     try {
       await navigator.clipboard.writeText(url);
@@ -58,11 +62,11 @@ export function Header() {
     }}>
       <div className="app-brand" style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>
         <span style={{ fontSize: "var(--fs-body)", fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
-          Oratomic
+          {profile.shortLabel}
         </span>
-        <span style={{ color: "var(--border)", fontSize: "var(--fs-body)" }}>/</span>
-        <span style={{ fontSize: "var(--fs-body)", fontWeight: 300, color: "var(--text-tertiary)" }}>
-          10k
+        <span className="app-brand__separator" style={{ color: "var(--border)", fontSize: "var(--fs-body)" }}>/</span>
+        <span className="app-brand__platform" style={{ fontSize: "var(--fs-body)", fontWeight: 300, color: "var(--text-tertiary)" }}>
+          {profile.platformLabel}
         </span>
         <span className="app-version" style={{
           fontSize: "var(--fs-label)",

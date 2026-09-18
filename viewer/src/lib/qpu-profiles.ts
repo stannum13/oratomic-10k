@@ -23,6 +23,7 @@ export interface DiagnosticItem {
 export interface QpuProfile {
   id: string;
   shortLabel: string;
+  platformLabel: string;
   medium: string;
   control: string;
   readout: string;
@@ -57,6 +58,7 @@ export const QPU_PROFILES: Record<string, QpuProfile> = {
   "oratomic-neutral-atom": {
     id: "oratomic-neutral-atom",
     shortLabel: "Oratomic",
+    platformLabel: "neutral atom",
     medium: "Individually trapped neutral atoms held in optical tweezers inside a vacuum system.",
     control: "Acousto-optic deflectors reposition tweezers; laser pulses drive Rydberg-mediated gates.",
     readout: "State-dependent fluorescence is collected by imaging optics and converted into detector signals.",
@@ -87,6 +89,7 @@ export const QPU_PROFILES: Record<string, QpuProfile> = {
   "ionq-walking-cat": {
     id: "ionq-walking-cat",
     shortLabel: "Walking Cat",
+    platformLabel: "trapped ion",
     medium: "Trapped-ion chains and modules confined by radio-frequency electric fields.",
     control: "Laser pulses perform gates while electrode waveforms shuttle ions between memory, gate, and readout regions.",
     readout: "State-dependent ion fluorescence is collected and classified into measurement outcomes.",
@@ -117,6 +120,7 @@ export const QPU_PROFILES: Record<string, QpuProfile> = {
   "google-surface-code": {
     id: "google-surface-code",
     shortLabel: "Surface Code",
+    platformLabel: "superconducting",
     medium: "Superconducting transmon qubits and tunable couplers operated in a cryogenic stack.",
     control: "Room-temperature pulse synthesis drives microwave control lines through cryogenic attenuation and wiring.",
     readout: "Dispersive resonators, amplifiers, ADCs, and FPGA-class processing convert microwave response into outcomes.",

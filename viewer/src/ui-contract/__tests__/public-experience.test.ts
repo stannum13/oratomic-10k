@@ -39,11 +39,21 @@ describe("public simulator experience", () => {
 
   it("uses truthful desktop chrome without duplicate payoff metrics", () => {
     const header = read("src/components/Layout/Header.tsx");
+    const layout = read("src/app/layout.tsx");
     const status = read("src/components/Layout/StatusBar.tsx");
     const page = read("src/app/page.tsx");
 
     expect(header).toContain('className="header-overflow"');
     expect(header).toContain("<details");
+    expect(header).toContain("getQpuProfile");
+    expect(header).toContain("profile.shortLabel");
+    expect(header).toContain("profile.platformLabel");
+    expect(header).not.toContain(">\n          Oratomic\n        </span>");
+    expect(layout).toContain('title: "FTQC Architecture Explorer"');
+    expect(layout).not.toContain("Oratomic — 10k Qubit Architecture");
+    expect(layout).not.toContain("reconfigurable atomic qubits");
+    expect(page).toContain("config.platform");
+    expect(page).toContain("setHardwarePlatform");
     expect(page).toContain('className="visualization-header"');
     expect(status).toContain("toffoli budget");
     expect(status).not.toContain('label: "qubits"');

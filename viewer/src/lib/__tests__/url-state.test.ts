@@ -8,6 +8,7 @@ const config: ShareableConfig = {
   prob: "ecc-256",
   mem: "lp20",
   proc: "lp-proc",
+  platform: "ionq-walking-cat",
 };
 
 describe("shareable simulator state", () => {
@@ -32,5 +33,10 @@ describe("shareable simulator state", () => {
   it("accepts numeric values at the supported boundaries", () => {
     expect(decodeConfig("?p=0.0001&t=0.001")).toEqual({ p: 0.0001, t: 0.001 });
     expect(decodeConfig("?p=0.01&t=10")).toEqual({ p: 0.01, t: 10 });
+  });
+
+  it("preserves old links while rejecting unknown platform ids", () => {
+    expect(decodeConfig("?p=0.001&a=balanced")).toEqual({ p: 0.001, a: "balanced" });
+    expect(decodeConfig("?platform=unknown&p=0.001")).toEqual({ p: 0.001 });
   });
 });

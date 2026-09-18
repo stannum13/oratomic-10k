@@ -7,6 +7,7 @@ export interface ShareableConfig {
   prob: TargetProblem;
   mem: MemoryCode;
   proc: ProcessorCode;
+  platform: string;
 }
 
 export function encodeConfig(config: ShareableConfig): string {
@@ -17,6 +18,7 @@ export function encodeConfig(config: ShareableConfig): string {
   params.set("prob", config.prob);
   params.set("mem", config.mem);
   params.set("proc", config.proc);
+  params.set("platform", config.platform);
   return params.toString();
 }
 
@@ -54,6 +56,11 @@ export function decodeConfig(search: string): Partial<ShareableConfig> | null {
   const proc = params.get("proc");
   if (proc && ["bb18", "lp-proc"].includes(proc)) {
     result.proc = proc as ProcessorCode;
+  }
+
+  const platform = params.get("platform");
+  if (platform && ["oratomic-neutral-atom", "ionq-walking-cat", "google-surface-code"].includes(platform)) {
+    result.platform = platform;
   }
 
   return Object.keys(result).length > 0 ? result : null;

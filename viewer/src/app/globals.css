@@ -1238,7 +1238,8 @@ select {
     backdrop-filter: blur(12px);
   }
 
-  .app-brand span:nth-child(3) { display: inline !important; }
+  .app-brand__separator,
+  .app-brand__platform { display: none !important; }
   .app-version,
   .header-desktop-action { display: none !important; }
   .header-overflow { display: block; }

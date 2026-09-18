@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Oratomic — 10k Qubit Architecture",
+  title: "FTQC Architecture Explorer",
   description:
-    "Interactive viewer and simulator for fault-tolerant quantum computation with reconfigurable atomic qubits",
+    "Interactive viewer and simulator for comparing fault-tolerant quantum-computing architectures",
 };
 
 export default function RootLayout({

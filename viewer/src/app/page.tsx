@@ -222,13 +222,14 @@ export default function Home() {
     const config = decodeConfig(window.location.search);
     if (!config) return;
     const store = useSimulator.getState();
+    if (config.platform) store.setHardwarePlatform(config.platform);
     if (config.p) store.setPhysicalErrorRate(config.p);
     if (config.t) store.setCycleTime(config.t);
     if (config.a) store.setArchitectureType(config.a);
     if (config.prob) store.setTargetProblem(config.prob);
     if (config.mem) store.setMemoryCode(config.mem);
     if (config.proc) store.setProcessorCode(config.proc);
-    if (config.a || config.p) store.setMode("simulate");
+    if (config.platform || config.a || config.p) store.setMode("simulate");
   }, []);
 
   const showQpu = () => {
