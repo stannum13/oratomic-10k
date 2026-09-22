@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { GUIDE_CHAPTERS } from "@/lib/guided-experience";
 import { createGuidePlayerState, getCurrentBeat, reduceGuidePlayer } from "@/lib/guide-player";
 import type { GuideChapterId } from "@/lib/url-state";
@@ -18,7 +18,7 @@ export function useGuidePlayer({
   onChapterChange?: (chapter: GuideChapterId) => void;
 }) {
   const [state, dispatch] = useReducer(reduceGuidePlayer, initialChapter ?? "frame", createGuidePlayerState);
-  const baseline = useRef(() => {
+  const [snapshot] = useState(() => {
     const simulator = useSimulator.getState();
     return {
       hardwarePlatform: simulator.hardwarePlatform,
@@ -32,7 +32,6 @@ export function useGuidePlayer({
       noiseModel: simulator.noiseModel,
     };
   });
-  const snapshot = useMemo(() => baseline.current(), []);
   const chapter = GUIDE_CHAPTERS[state.chapterIndex];
   const beat = getCurrentBeat(state);
 

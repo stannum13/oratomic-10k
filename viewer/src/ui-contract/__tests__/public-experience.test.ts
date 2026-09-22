@@ -254,6 +254,22 @@ describe("public simulator experience", () => {
     expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*\.guided-experience\s*\{[\s\S]*grid-template-columns:\s*1fr/);
   });
 
+  it("turns the final state into an expert-review handoff with related work", () => {
+    const review = read("src/components/Guided/ReviewTheModel.tsx");
+    const related = read("src/lib/related-work.ts");
+    const stage = read("src/components/Guided/GuidedStage.tsx");
+    const methods = read("src/components/Simulator/MethodologyPanel.tsx");
+
+    for (const prompt of ["Workload compilation", "QEC fit", "Control + readout", "Decoder + feedback", "Missing noise"]) {
+      expect(review).toContain(prompt);
+    }
+    for (const project of ["Microsoft Quantum Resource Estimator", "Qualtran", "Bench-Q", "Stim", "QEC Explorer", "Error Correction Zoo"]) {
+      expect(related).toContain(project);
+    }
+    expect(stage).toContain('beat.id === "compare-finish"');
+    expect(methods).toContain("Related tools and references");
+  });
+
   it("constrains mobile camera interaction and removes misleading overlays", () => {
     const page = read("src/app/page.tsx");
     const viewport = read("src/components/Scene/Viewport.tsx");

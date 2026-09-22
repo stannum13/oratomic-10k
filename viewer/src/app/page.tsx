@@ -232,11 +232,11 @@ export default function Home() {
     if (config?.prob) store.setTargetProblem(config.prob);
     if (config?.mem) store.setMemoryCode(config.mem);
     if (config?.proc) store.setProcessorCode(config.proc);
-    if (config?.chapter) setActiveGuideChapter(config.chapter);
+    if (config?.chapter) queueMicrotask(() => setActiveGuideChapter(config.chapter));
     const initialExperience = resolveInitialExperience(window.location.search);
     store.setExperienceMode(initialExperience);
     if (initialExperience === "explore") store.setMode("simulate");
-    setEntryReady(true);
+    queueMicrotask(() => setEntryReady(true));
   }, []);
 
   const showQpu = () => {

@@ -12,6 +12,7 @@ import { AllocationBar } from "@/components/Simulator/AllocationBar";
 import { FeasibilityStrip } from "@/components/Simulator/FeasibilityStrip";
 import { MetricsBlock } from "@/components/Simulator/MetricsBlock";
 import { BottleneckExplorer, ClassicalMapExplorer, NoisePathwaysExplorer, SignalFlowExplorer } from "@/components/Scene/SystemConcepts";
+import { ReviewTheModel } from "./ReviewTheModel";
 
 const zoneCopy = {
   memory: "Protects logical state while other parts of the machine work.",
@@ -118,6 +119,7 @@ export function GuidedStage({
 
       {beat.stage === "comparison" && (
         <div className="guided-comparison">
+          {beat.id === "compare-finish" ? <ReviewTheModel /> : <>
           <div className="architecture-cards" role="group" aria-label="Compare hardware architectures">
             {Object.entries(PLATFORM_PRESETS).map(([id, preset]) => {
               const itemProfile = getQpuProfile(id);
@@ -133,6 +135,7 @@ export function GuidedStage({
             })}
           </div>
           <div className="architecture-disclosure"><strong>{simulator.hardwarePlatform === "oratomic-neutral-atom" ? "Core model" : "Illustrative estimate"}</strong><p>{simulator.hardwarePlatform === "oratomic-neutral-atom" ? "The current symbolic resource equations implement the Oratomic/qLDPC proposal." : "This profile changes the physical and timing story, but does not yet substitute an equally complete architecture-specific resource engine."}</p></div>
+          </>}
         </div>
       )}
     </section>

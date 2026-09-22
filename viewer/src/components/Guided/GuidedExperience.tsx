@@ -22,20 +22,22 @@ export function GuidedExperience({
 }) {
   const player = useGuidePlayer({ initialChapter, reducedMotion, onChapterChange });
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const dispatch = player.dispatch;
+  const playerStatus = player.state.status;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target?.matches("input, select, textarea, button, [contenteditable=true]")) return;
-      if (event.key === "Escape") player.dispatch({ type: "PAUSE" });
+      if (event.key === "Escape") dispatch({ type: "PAUSE" });
       if (event.key === " ") {
         event.preventDefault();
-        player.dispatch({ type: player.state.status === "playing" ? "PAUSE" : "PLAY" });
+        dispatch({ type: playerStatus === "playing" ? "PAUSE" : "PLAY" });
       }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [player.dispatch, player.state.status]);
+  }, [dispatch, playerStatus]);
 
   if (player.state.status === "intro") {
     return (

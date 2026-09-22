@@ -4,6 +4,7 @@ import { PAPER_URL, REPOSITORY_URL } from "@/lib/methodology";
 import { getQpuProfile } from "@/lib/qpu-profiles";
 import { deriveQpuState } from "@/lib/qpu-state";
 import { useSimulator } from "@/store/simulator";
+import { RELATED_WORK } from "@/lib/related-work";
 
 export function MethodologyPanel() {
   const state = useSimulator();
@@ -63,6 +64,13 @@ export function MethodologyPanel() {
         <a href={PAPER_URL} target="_blank" rel="noreferrer">Cain et al., arXiv:2603.28627 ↗</a>
         <a href={REPOSITORY_URL} target="_blank" rel="noreferrer">Implementation and model code ↗</a>
       </div>
+      <details className="related-work">
+        <summary>Related tools and references</summary>
+        <p>This explorer emphasizes the cross-layer systems story. These projects go deeper into formal resource estimation, circuit-level simulation, or code taxonomy.</p>
+        <ul>
+          {RELATED_WORK.map((item) => <li key={item.name}><a href={item.url} target="_blank" rel="noreferrer">{item.name} ↗</a><span>{item.role}</span></li>)}
+        </ul>
+      </details>
     </div>
   );
 }
