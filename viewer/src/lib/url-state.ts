@@ -1,5 +1,10 @@
 import type { ArchitectureType, MemoryCode, ProcessorCode, TargetProblem } from "@/compute/interface";
 
+export type ExperienceMode = "guided" | "explore";
+export type GuideChapterId = "frame" | "allocate" | "noise" | "feedback" | "workload" | "compare";
+
+const GUIDE_CHAPTERS: GuideChapterId[] = ["frame", "allocate", "noise", "feedback", "workload", "compare"];
+
 export interface ShareableConfig {
   p: number;
   t: number;
@@ -8,6 +13,8 @@ export interface ShareableConfig {
   mem: MemoryCode;
   proc: ProcessorCode;
   platform: string;
+  experience?: ExperienceMode;
+  chapter?: GuideChapterId;
 }
 
 export function encodeConfig(config: ShareableConfig): string {
@@ -19,6 +26,8 @@ export function encodeConfig(config: ShareableConfig): string {
   params.set("mem", config.mem);
   params.set("proc", config.proc);
   params.set("platform", config.platform);
+  if (config.experience) params.set("experience", config.experience);
+  if (config.chapter) params.set("chapter", config.chapter);
   return params.toString();
 }
 
@@ -63,5 +72,23 @@ export function decodeConfig(search: string): Partial<ShareableConfig> | null {
     result.platform = platform;
   }
 
+  const experience = params.get("experience");
+  if (experience === "guided" || experience === "explore") {
+    result.experience = experience;
+  }
+
+  const chapter = params.get("chapter");
+  if (chapter && GUIDE_CHAPTERS.includes(chapter as GuideChapterId)) {
+    result.chapter = chapter as GuideChapterId;
+  }
+
   return Object.keys(result).length > 0 ? result : null;
+}
+
+export function resolveInitialExperience(search: string): ExperienceMode {
+  const params = new URLSearchParams(search);
+  const explicit = params.get("experience");
+  if (explicit === "guided" || explicit === "explore") return explicit;
+  const legacyFields = ["p", "t", "a", "prob", "mem", "proc", "platform"];
+  return legacyFields.some((field) => params.has(field)) ? "explore" : "guided";
 }

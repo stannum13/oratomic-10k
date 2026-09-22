@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { decodeConfig, encodeConfig, type ShareableConfig } from "../url-state";
+import { decodeConfig, encodeConfig, resolveInitialExperience, type ShareableConfig } from "../url-state";
 
 const config: ShareableConfig = {
   p: 0.001,
@@ -9,6 +9,7 @@ const config: ShareableConfig = {
   mem: "lp20",
   proc: "lp-proc",
   platform: "ionq-walking-cat",
+  experience: "explore",
 };
 
 describe("shareable simulator state", () => {
@@ -38,5 +39,17 @@ describe("shareable simulator state", () => {
   it("preserves old links while rejecting unknown platform ids", () => {
     expect(decodeConfig("?p=0.001&a=balanced")).toEqual({ p: 0.001, a: "balanced" });
     expect(decodeConfig("?platform=unknown&p=0.001")).toEqual({ p: 0.001 });
+  });
+
+  it("opens bare entries as guided and legacy configured links as explore", () => {
+    expect(resolveInitialExperience("")).toBe("guided");
+    expect(resolveInitialExperience("?p=0.001&a=balanced")).toBe("explore");
+    expect(resolveInitialExperience("?platform=ionq-walking-cat")).toBe("explore");
+  });
+
+  it("honors explicit experience and validated guide chapters", () => {
+    expect(resolveInitialExperience("?experience=guided&chapter=noise&p=0.001")).toBe("guided");
+    expect(decodeConfig("?experience=guided&chapter=noise")).toEqual({ experience: "guided", chapter: "noise" });
+    expect(decodeConfig("?experience=guided&chapter=unknown")).toEqual({ experience: "guided" });
   });
 });
