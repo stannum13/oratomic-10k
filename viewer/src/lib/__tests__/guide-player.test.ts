@@ -33,4 +33,14 @@ describe("guided experiment player", () => {
     const changed = { ...createGuidePlayerState("noise"), modified: true, status: "paused" as const };
     expect(reduceGuidePlayer(changed, { type: "RESTART" })).toEqual(createGuidePlayerState());
   });
+
+  it("clears the modified flag without losing the current beat", () => {
+    const changed = { ...createGuidePlayerState("noise"), modified: true, beatIndex: 1, status: "paused" as const };
+    expect(reduceGuidePlayer(changed, { type: "RESTORE_BASELINE" })).toMatchObject({
+      chapterIndex: 2,
+      beatIndex: 1,
+      modified: false,
+      status: "paused",
+    });
+  });
 });

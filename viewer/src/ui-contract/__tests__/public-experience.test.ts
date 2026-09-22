@@ -221,6 +221,24 @@ describe("public simulator experience", () => {
     expect(feasibility).not.toContain("Closest constraint:");
   });
 
+  it("provides an accessible guided experiment player", () => {
+    const guided = read("src/components/Guided/GuidedExperience.tsx");
+    const controls = read("src/components/Guided/PlayerControls.tsx");
+    const timeline = read("src/components/Guided/ChapterTimeline.tsx");
+    const stage = read("src/components/Guided/GuidedStage.tsx");
+
+    expect(guided).toContain("Start guided experiment");
+    expect(guided).toContain("Architecture explorer and resource estimator");
+    expect(guided).toContain("not a quantum emulator");
+    expect(guided).toContain("You changed the experiment");
+    expect(controls).toContain("Pause guided experiment");
+    expect(controls).toContain("Play guided experiment");
+    expect(timeline).toContain('aria-label="Guided experiment chapters"');
+    expect(stage).toContain("Core model");
+    expect(stage).toContain("Illustrative estimate");
+    expect(stage).toContain("markModified");
+  });
+
   it("constrains mobile camera interaction and removes misleading overlays", () => {
     const page = read("src/app/page.tsx");
     const viewport = read("src/components/Scene/Viewport.tsx");

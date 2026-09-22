@@ -19,6 +19,7 @@ export type GuidePlayerEvent =
   | { type: "PREVIOUS" }
   | { type: "GO_TO_CHAPTER"; chapter: GuideChapterId }
   | { type: "MANUAL_EDIT" }
+  | { type: "RESTORE_BASELINE" }
   | { type: "COMPLETE_ACTION" }
   | { type: "RESTART" };
 
@@ -71,6 +72,8 @@ export function reduceGuidePlayer(state: GuidePlayerState, event: GuidePlayerEve
     }
     case "MANUAL_EDIT":
       return { ...state, status: "paused", modified: true };
+    case "RESTORE_BASELINE":
+      return { ...state, status: "paused", modified: false };
     case "RESTART":
       return createGuidePlayerState();
   }
