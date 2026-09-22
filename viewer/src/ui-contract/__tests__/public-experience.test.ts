@@ -151,6 +151,7 @@ describe("public simulator experience", () => {
 
   it("renders PHY as one continuous document with responsive platform controls", () => {
     const system = read("src/components/Scene/QpuSystemView.tsx");
+    const concepts = read("src/components/Scene/SystemConcepts.tsx");
 
     for (const id of ["signal-loop", "noise-pathways", "system-bottlenecks", "classical-map"]) {
       expect(system).toContain(`id="${id}"`);
@@ -159,6 +160,12 @@ describe("public simulator experience", () => {
     expect(system).toContain('className="platform-switcher"');
     expect(system).not.toContain("system-layer-switcher");
     expect(system).not.toContain("useState<Layer>");
+    for (const component of ["SignalFlowExplorer", "NoisePathwaysExplorer", "BottleneckExplorer", "ClassicalMapExplorer"]) {
+      expect(system).toContain(component);
+      expect(concepts).toContain(`function ${component}`);
+    }
+    expect(system).not.toContain("state.activeNoise.map");
+    expect(concepts).toContain("aria-pressed");
   });
 
   it("uses definition-first, safely sourced terminology", () => {

@@ -56,5 +56,12 @@ describe("QPU state explanation", () => {
     expect(result.activeNoise.some((noise) => noise.modeled)).toBe(true);
     expect(result.activeNoise.some((noise) => !noise.modeled)).toBe(true);
     expect(result.activeNoise.find((noise) => noise.label === "Atom loss")?.status).toBe("Not modeled");
+    expect(result.scopeSummary).toEqual({ included: 1, notModeled: 4 });
+  });
+
+  it("normalizes positive timing stages for proportional comparison", () => {
+    const result = state();
+    expect(result.timingStages.reduce((sum, stage) => sum + stage.fraction, 0)).toBeCloseTo(1);
+    expect(result.timingStages.find((stage) => stage.label === "Decoder")?.fraction).toBeGreaterThan(0.8);
   });
 });

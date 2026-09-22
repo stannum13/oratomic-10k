@@ -17,6 +17,7 @@ export interface TimingStage {
   value: string;
   microseconds: number | null;
   provenance: ProvenanceKind;
+  fraction: number;
 }
 
 export interface ActiveDiagnostic extends DiagnosticItem {
@@ -28,6 +29,7 @@ export interface QpuStateSummary {
   causalExplanation: string;
   timingStages: TimingStage[];
   activeNoise: ActiveDiagnostic[];
+  scopeSummary: { included: number; notModeled: number };
 }
 
 function duration(value: number): string {
@@ -46,11 +48,13 @@ export function deriveQpuState(input: QpuStateInput): QpuStateSummary {
     { label: "Decoder", microseconds: preset.decoderLatencyUs, bottleneck: "Decoder latency" },
   ];
   const dominant = rawStages.reduce((best, stage) => stage.microseconds > best.microseconds ? stage : best);
+  const totalTiming = rawStages.reduce((sum, stage) => sum + Math.max(0, stage.microseconds), 0);
   const timingStages: TimingStage[] = rawStages.map((stage) => ({
     label: stage.label,
     value: duration(stage.microseconds),
     microseconds: stage.microseconds || null,
     provenance: stage.microseconds === 0 ? "Not modeled" : "Illustrative estimate",
+    fraction: totalTiming > 0 ? Math.max(0, stage.microseconds) / totalTiming : 0,
   }));
 
   const causalExplanation = input.computed.feasible
@@ -68,5 +72,9 @@ export function deriveQpuState(input: QpuStateInput): QpuStateSummary {
       ...item,
       status: item.modeled ? "Included in model" : "Not modeled",
     })),
+    scopeSummary: {
+      included: profile.noise.filter((item) => item.modeled).length,
+      notModeled: profile.noise.filter((item) => !item.modeled).length,
+    },
   };
 }

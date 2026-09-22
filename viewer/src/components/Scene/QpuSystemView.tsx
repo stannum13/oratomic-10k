@@ -5,6 +5,7 @@ import { getQpuProfile } from "@/lib/qpu-profiles";
 import { deriveQpuState } from "@/lib/qpu-state";
 import { useSimulator } from "@/store/simulator";
 import { Term } from "@/components/ui/Term";
+import { BottleneckExplorer, ClassicalMapExplorer, NoisePathwaysExplorer, SignalFlowExplorer } from "./SystemConcepts";
 
 export function QpuSystemView() {
   const simulator = useSimulator();
@@ -55,23 +56,22 @@ export function QpuSystemView() {
 
       <section id="signal-loop" className="signal-loop system-document-section" aria-labelledby="signal-loop-title">
         <div className="system-section-heading"><h3 id="signal-loop-title">Signal loop</h3><span>closed feedback topology</span></div>
-        <ol>{profile.signalStages.map((stage, index) => <li key={stage.id} data-layer={stage.layer}><span className="signal-stage__index">{String(index + 1).padStart(2, "0")}</span><div><strong>{stage.label}</strong><p>{stage.description}</p></div></li>)}</ol>
+        <SignalFlowExplorer profile={profile} />
       </section>
 
       <section id="noise-pathways" className="diagnostic-list system-document-section" aria-labelledby="noise-title">
         <div className="system-section-heading"><h3 id="noise-title">Noise pathways</h3><span>physical effects vs numerical scope</span></div>
-        {state.activeNoise.map((item) => <article key={item.label} data-modeled={item.modeled}><span className="diagnostic-mark" aria-hidden="true" /><div><strong>{item.label}</strong><p>{item.description}</p></div><span className="provenance-badge">{item.status}</span></article>)}
+        <NoisePathwaysExplorer items={state.activeNoise} />
       </section>
 
       <section id="system-bottlenecks" className="diagnostic-list system-document-section" aria-labelledby="bottlenecks-title">
         <div className="system-section-heading"><h3 id="bottlenecks-title">Bottlenecks</h3><span>latency, throughput, topology</span></div>
-        {profile.bottlenecks.map((item) => <article key={item.label} data-modeled={item.modeled}><span className="bottleneck-mark" aria-hidden="true" /><div><strong>{item.label}</strong><p>{item.description}</p></div><span className="provenance-badge">{item.modeled ? "Included in model" : "Not modeled"}</span></article>)}
+        <BottleneckExplorer profile={profile} state={state} />
       </section>
 
       <section id="classical-map" className="signal-loop system-document-section" aria-labelledby="classical-map-title">
         <div className="system-section-heading"><h3 id="classical-map-title">Classical-computer correspondence</h3><span>analogy, not equivalence</span></div>
-        <ol>{profile.signalStages.map((stage, index) => <li key={stage.id} data-layer={stage.layer}><span className="signal-stage__index">{String(index + 1).padStart(2, "0")}</span><div><strong>{stage.label}</strong><p>{stage.classicalAnalogy}</p></div></li>)}</ol>
-        <p className="analogy-limit"><strong>Where the analogy stops:</strong> a qubit is not a classical bit, and measurement does not copy an unknown quantum state.</p>
+        <ClassicalMapExplorer profile={profile} />
       </section>
 
       <section className="state-explainer system-document-section" aria-labelledby="state-explainer-title" aria-live="polite">
