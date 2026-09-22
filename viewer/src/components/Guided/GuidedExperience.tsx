@@ -70,7 +70,7 @@ export function GuidedExperience({
         <p className="guided-story__explanation">{player.beat.explanation}</p>
         <p className="guided-story__caption" aria-live="polite">{player.beat.caption}</p>
 
-        {player.state.modified && (
+        {player.state.modified && player.state.status === "paused" && (
           <div className="experiment-changed" role="status">
             <strong>You changed the experiment</strong>
             <p>Playback paused so the model does not overwrite your input.</p>

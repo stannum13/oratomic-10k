@@ -49,7 +49,7 @@ function advance(state: GuidePlayerState, fromAutoplay: boolean): GuidePlayerSta
 export function reduceGuidePlayer(state: GuidePlayerState, event: GuidePlayerEvent): GuidePlayerState {
   switch (event.type) {
     case "START":
-      return { ...state, status: event.reducedMotion ? "paused" : "playing" };
+      return { ...state, status: getCurrentBeat(state).awaitAction ? "awaiting-action" : event.reducedMotion ? "paused" : "playing" };
     case "PLAY":
       return state.status === "complete" ? state : { ...state, status: getCurrentBeat(state).awaitAction ? "awaiting-action" : "playing" };
     case "PAUSE":
@@ -68,7 +68,9 @@ export function reduceGuidePlayer(state: GuidePlayerState, event: GuidePlayerEve
     }
     case "GO_TO_CHAPTER": {
       const chapterIndex = GUIDE_CHAPTERS.findIndex((chapter) => chapter.id === event.chapter);
-      return chapterIndex < 0 ? state : { ...state, chapterIndex, beatIndex: 0, status: "paused" };
+      if (chapterIndex < 0) return state;
+      const status = GUIDE_CHAPTERS[chapterIndex].beats[0].awaitAction ? "awaiting-action" : "paused";
+      return { ...state, chapterIndex, beatIndex: 0, status };
     }
     case "MANUAL_EDIT":
       return { ...state, status: "paused", modified: true };

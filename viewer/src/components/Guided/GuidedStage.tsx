@@ -11,7 +11,7 @@ import { useSimulator } from "@/store/simulator";
 import { AllocationBar } from "@/components/Simulator/AllocationBar";
 import { FeasibilityStrip } from "@/components/Simulator/FeasibilityStrip";
 import { MetricsBlock } from "@/components/Simulator/MetricsBlock";
-import { BottleneckExplorer, ClassicalMapExplorer, NoisePathwaysExplorer, SignalFlowExplorer } from "@/components/Scene/SystemConcepts";
+import { BottleneckExplorer, NoisePathwaysExplorer, SignalFlowExplorer } from "@/components/Scene/SystemConcepts";
 import { ReviewTheModel } from "./ReviewTheModel";
 
 const zoneCopy = {
@@ -98,7 +98,7 @@ export function GuidedStage({
       {beat.stage === "feedback" && (
         <div className="guided-feedback">
           {beat.id === "feedback-signal"
-            ? <><SignalFlowExplorer profile={profile} focusId={beat.focusId} compact /><ClassicalMapExplorer profile={profile} focusId={beat.focusId} compact /></>
+            ? <SignalFlowExplorer profile={profile} focusId={beat.focusId} compact />
             : <BottleneckExplorer profile={profile} state={qpuState} compact onSelect={completeAction} />}
         </div>
       )}

@@ -47,10 +47,11 @@ export function useGuidePlayer({
 
   useEffect(() => {
     onChapterChange?.(chapter.id);
+    if (state.status === "intro") return;
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ chapterId: chapter.id, beatId: beat.id }));
     } catch { /* progress persistence is optional */ }
-  }, [beat.id, chapter.id, onChapterChange]);
+  }, [beat.id, chapter.id, onChapterChange, state.status]);
 
   useEffect(() => {
     if (state.status !== "playing" || beat.durationMs <= 0) return;

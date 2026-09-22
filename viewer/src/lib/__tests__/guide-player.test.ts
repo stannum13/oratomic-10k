@@ -21,6 +21,12 @@ describe("guided experiment player", () => {
     expect(next.status).toBe("awaiting-action");
   });
 
+  it("does not let direct chapter navigation bypass a required action", () => {
+    const compare = reduceGuidePlayer(createGuidePlayerState(), { type: "GO_TO_CHAPTER", chapter: "compare" });
+    expect(getCurrentBeat(compare).awaitAction).toBe(true);
+    expect(compare.status).toBe("awaiting-action");
+  });
+
   it("keeps navigation inside the six chapters", () => {
     const first = reduceGuidePlayer(createGuidePlayerState(), { type: "PREVIOUS" });
     expect(first.chapterIndex).toBe(0);
