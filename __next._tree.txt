@@ -1,3 +1,3 @@
-:HL["/oratomic-10k/_next/static/chunks/3i8ha5d56mqu3.css","style"]
+:HL["/oratomic-10k/_next/static/chunks/2cy2a6724okej.css","style"]
 :HC["/",""]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}},"staleTime":300,"buildId":"_H5yaP17p4N25XhzilG9L"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}},"staleTime":300,"buildId":"fD3R0v2bn2CCA0A_-CNY1"}
