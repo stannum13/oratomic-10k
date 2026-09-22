@@ -54,6 +54,11 @@ describe("public simulator experience", () => {
     expect(layout).not.toContain("reconfigurable atomic qubits");
     expect(page).toContain("config.platform");
     expect(page).toContain("setHardwarePlatform");
+    expect(page).toContain("resolveInitialExperience");
+    expect(page).toContain("<GuidedExperience");
+    expect(header).toContain("Guided");
+    expect(header).toContain("Explore");
+    expect(header).toContain("experience: state.experienceMode");
     expect(page).toContain('className="visualization-header"');
     expect(status).toContain("toffoli budget");
     expect(status).not.toContain('label: "qubits"');
@@ -124,6 +129,7 @@ describe("public simulator experience", () => {
     expect(controls).toContain("Reset configuration");
     expect(header).toContain("Copy configuration");
     expect(store).toContain("resetConfig: () => void");
+    expect(store).toContain('experienceMode: "guided" | "explore"');
     expect(css).toContain("@keyframes metric-update");
     expect(controls).not.toContain("qubits demonstrated");
     expect(controls).toContain("timing profile is illustrative");

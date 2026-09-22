@@ -12,6 +12,8 @@ import { SEED_MATRICES } from "@/lib/seed-matrices";
 import { PLATFORM_PRESETS } from "@/compute/lookup-tables";
 
 interface SimulatorState {
+  experienceMode: "guided" | "explore";
+  setExperienceMode: (mode: "guided" | "explore") => void;
   mode: "paper" | "simulate";
   activeSection: number;
   timeScale: number;
@@ -104,6 +106,7 @@ const defaults = {
 };
 
 export const useSimulator = create<SimulatorState>((set, get) => ({
+  experienceMode: "guided",
   mode: "paper",
   activeSection: 0,
   timeScale: 0,
@@ -121,6 +124,7 @@ export const useSimulator = create<SimulatorState>((set, get) => ({
   setPinnedConfig: (pinnedConfig) => set({ pinnedConfig }),
 
   setMode: (mode) => set({ mode }),
+  setExperienceMode: (experienceMode) => set({ experienceMode }),
   setTimeScale: (timeScale) => set({ timeScale }),
   setActiveSection: (activeSection) => {
     const scales: Record<number, number> = {

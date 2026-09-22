@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSimulator } from "@/store/simulator";
-import { encodeConfig } from "@/lib/url-state";
+import { encodeConfig, type GuideChapterId } from "@/lib/url-state";
 import { getQpuProfile } from "@/lib/qpu-profiles";
 
 function ThemeToggle() {
@@ -29,8 +29,9 @@ function ThemeToggle() {
   );
 }
 
-export function Header() {
-  const mode = useSimulator((s) => s.mode);
+export function Header({ activeChapter }: { activeChapter?: GuideChapterId }) {
+  const experienceMode = useSimulator((s) => s.experienceMode);
+  const setExperienceMode = useSimulator((s) => s.setExperienceMode);
   const setMode = useSimulator((s) => s.setMode);
   const hardwarePlatform = useSimulator((s) => s.hardwarePlatform);
   const profile = getQpuProfile(hardwarePlatform);
@@ -43,6 +44,8 @@ export function Header() {
       a: state.architectureType, prob: state.targetProblem,
       mem: state.memoryCode, proc: state.processorCode,
       platform: state.hardwarePlatform,
+      experience: state.experienceMode,
+      chapter: state.experienceMode === "guided" ? activeChapter : undefined,
     })}`;
     try {
       await navigator.clipboard.writeText(url);
@@ -80,21 +83,24 @@ export function Header() {
 
       <div className="header-actions" style={{ display: "flex", alignItems: "center", gap: "var(--s3)" }}>
         <div className="mode-switch" style={{ display: "flex", border: `1px solid var(--border)`, borderRadius: 3, overflow: "hidden" }}>
-          {(["paper", "simulate"] as const).map((m) => (
+          {(["guided", "explore"] as const).map((experience) => (
             <button
-              key={m}
-              onClick={() => setMode(m)}
+              key={experience}
+              onClick={() => {
+                setExperienceMode(experience);
+                if (experience === "explore") setMode("simulate");
+              }}
               style={{
                 padding: `var(--s2) var(--s4)`,
                 fontSize: "var(--fs-tab)", fontWeight: 500,
                 letterSpacing: "var(--tracking-tab)",
-                background: mode === m ? "var(--bg-elevated)" : "transparent",
-                color: mode === m ? "var(--text-primary)" : "var(--text-tertiary)",
+                background: experienceMode === experience ? "var(--bg-elevated)" : "transparent",
+                color: experienceMode === experience ? "var(--text-primary)" : "var(--text-tertiary)",
                 border: "none", cursor: "pointer",
-                borderRight: m === "paper" ? `1px solid var(--border)` : "none",
+                borderRight: experience === "guided" ? `1px solid var(--border)` : "none",
               }}
             >
-              {m === "paper" ? "Read" : "Simulate"}
+              {experience === "guided" ? "Guided" : "Explore"}
             </button>
           ))}
         </div>
@@ -121,6 +127,7 @@ export function Header() {
           <summary aria-label="More actions">•••</summary>
           <div className="header-overflow__menu">
             <button type="button" onClick={handleShare}>{shareStatus === "copied" ? "Copied" : shareStatus === "failed" ? "Copy failed" : "Copy configuration"}</button>
+            <button type="button" onClick={() => { setExperienceMode("explore"); setMode("paper"); }}>Read research summary</button>
             <ThemeToggle />
           </div>
         </details>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Header } from "@/components/Layout/Header";
 import { ReleaseIntro } from "@/components/Layout/ReleaseIntro";
-import { decodeConfig } from "@/lib/url-state";
+import { decodeConfig, resolveInitialExperience, type GuideChapterId } from "@/lib/url-state";
 import { StatusBar } from "@/components/Layout/StatusBar";
 import { ComparisonStrip } from "@/components/Layout/ComparisonStrip";
 import { PaperSection } from "@/components/Paper/PaperSection";
@@ -19,6 +19,7 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useElementVisibility } from "@/hooks/useElementVisibility";
 import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
 import { useSimulator } from "@/store/simulator";
+import { GuidedExperience } from "@/components/Guided/GuidedExperience";
 import paperData from "../../public/data/paper-sections.json";
 
 const Viewport = dynamic(
@@ -214,37 +215,58 @@ function QpuCanvas({ mobile, reducedMotion = false }: { mobile: boolean; reduced
 
 export default function Home() {
   const [sceneView, setSceneView] = useState<"qpu" | "system">("qpu");
+  const [activeGuideChapter, setActiveGuideChapter] = useState<GuideChapterId | undefined>(undefined);
+  const [entryReady, setEntryReady] = useState(false);
   const isMobile = useMediaQuery("(max-width: 767px)");
   const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)") ?? false;
   const mode = useSimulator((state) => state.mode);
+  const experienceMode = useSimulator((state) => state.experienceMode);
 
   useEffect(() => {
     const config = decodeConfig(window.location.search);
-    if (!config) return;
     const store = useSimulator.getState();
-    if (config.platform) store.setHardwarePlatform(config.platform);
-    if (config.p) store.setPhysicalErrorRate(config.p);
-    if (config.t) store.setCycleTime(config.t);
-    if (config.a) store.setArchitectureType(config.a);
-    if (config.prob) store.setTargetProblem(config.prob);
-    if (config.mem) store.setMemoryCode(config.mem);
-    if (config.proc) store.setProcessorCode(config.proc);
-    if (config.platform || config.a || config.p) store.setMode("simulate");
+    if (config?.platform) store.setHardwarePlatform(config.platform);
+    if (config?.p) store.setPhysicalErrorRate(config.p);
+    if (config?.t) store.setCycleTime(config.t);
+    if (config?.a) store.setArchitectureType(config.a);
+    if (config?.prob) store.setTargetProblem(config.prob);
+    if (config?.mem) store.setMemoryCode(config.mem);
+    if (config?.proc) store.setProcessorCode(config.proc);
+    if (config?.chapter) setActiveGuideChapter(config.chapter);
+    const initialExperience = resolveInitialExperience(window.location.search);
+    store.setExperienceMode(initialExperience);
+    if (initialExperience === "explore") store.setMode("simulate");
+    setEntryReady(true);
   }, []);
 
   const showQpu = () => {
     setSceneView("qpu");
   };
 
-  if (isMobile === undefined) {
-    return <div className="app-shell app-shell--loading"><Header /><div className="viewport-paused">Initializing simulator</div></div>;
+  if (isMobile === undefined || !entryReady) {
+    return <div className="app-shell app-shell--loading"><Header activeChapter={activeGuideChapter} /><div className="viewport-paused">Initializing simulator</div></div>;
+  }
+
+  if (experienceMode === "guided") {
+    return (
+      <div className="app-shell guided-app-shell">
+        <Header activeChapter={activeGuideChapter} />
+        <GuidedExperience
+          qpuView={<QpuCanvas mobile={isMobile} reducedMotion={prefersReducedMotion} />}
+          reducedMotion={prefersReducedMotion}
+          initialChapter={activeGuideChapter}
+          onChapterChange={setActiveGuideChapter}
+          onExplore={() => { useSimulator.getState().setExperienceMode("explore"); useSimulator.getState().setMode("simulate"); }}
+        />
+      </div>
+    );
   }
 
   if (isMobile) {
     return (
       <div className="app-shell mobile-app-shell">
         <KeyboardShortcuts />
-        <Header />
+        <Header activeChapter={activeGuideChapter} />
         {mode === "simulate" ? (
           <MobileSimulator sceneView={sceneView} onSceneView={setSceneView} qpuView={<QpuCanvas mobile reducedMotion={prefersReducedMotion} />} />
         ) : (
@@ -257,7 +279,7 @@ export default function Home() {
   return (
     <div className="app-shell" style={{ display: "flex", flexDirection: "column", height: "100vh", background: "var(--bg)" }}>
       <KeyboardShortcuts />
-      <Header />
+      <Header activeChapter={activeGuideChapter} />
       <div className="workspace" style={{ display: "flex", flex: 1, minHeight: 0 }}>
         <div className="pane-left" style={{ width: "38%", overflowY: "auto", flexShrink: 0 }}>
           <LeftPane onViewQpu={showQpu} />
