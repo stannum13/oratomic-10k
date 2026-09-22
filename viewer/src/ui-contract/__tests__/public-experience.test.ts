@@ -245,6 +245,15 @@ describe("public simulator experience", () => {
     expect(stage).toContain("markModified");
   });
 
+  it("defines a responsive hierarchy for guided and PHY interactions", () => {
+    const css = read("src/app/globals.css");
+    for (const selector of [".guided-experience", ".guided-story", ".guided-stage", ".guided-player", ".system-concept"]) {
+      expect(css).toContain(selector);
+    }
+    expect(css).toContain("@media (prefers-reduced-motion: reduce)");
+    expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*\.guided-experience\s*\{[\s\S]*grid-template-columns:\s*1fr/);
+  });
+
   it("constrains mobile camera interaction and removes misleading overlays", () => {
     const page = read("src/app/page.tsx");
     const viewport = read("src/components/Scene/Viewport.tsx");
